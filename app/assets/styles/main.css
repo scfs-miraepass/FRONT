@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+
+/* ============================================== */
+/*                                                */
+/*                   Base Style                   */
+/*                                                */
+/* ============================================== */
+img {
+    -webkit-user-drag: none;
+}
+
+html, body {
+    @apply bg-background select-none
+}
+
+body {
+    overflow-x: hidden;
+}
