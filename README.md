@@ -1,75 +1,35 @@
-# Nuxt Minimal Starter
+# MIRAE PASS FRONT
+---
+미래 패스 서비스의 프론트 시스템
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
-## Setup
-
-Make sure to install dependencies:
-
+## 🔒 개발 환경설정
+---
 ```bash
-# npm
-npm install
+# Git clone
+git clone https://git.rldn.xyz/scfs.miraepass/front.git
+cd front
 
-# pnpm
-pnpm install
-
-# yarn
+# 필요 라이브러리 설치및 환경 구성
 yarn install
 
-# bun
-bun install
-```
+# 환경변수 설정
+cp example.env .env
+vi .env
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
+# 개발 환경 실행
 yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+## 📦 프로젝트 구조
+---
+```
+...
 ```
 
-Locally preview production build:
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 🛠 기술 스택
+---
+Framework: Nuxt.js
+CSS Framework: TailwindCSS
+Nuxt Modules: @nuxt/fonts
+Package Management: Yarn
