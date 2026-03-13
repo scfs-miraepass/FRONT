@@ -4,15 +4,26 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: { enabled: true },
+
     vite: {
         plugins: [
             tailwindcss(),
         ],
     },
+
     css: ["./app/assets/styles/main.css"],
+
     runtimeConfig: {
         public: {
             apiBase: 'http://localhost:8000/', // NUXT_PUBLIC_API_BASE
         },
-    }
+    },
+
+    modules: ["@nuxt/fonts"],
+
+    fonts: {
+        families: [
+            { name: 'Pretendard', provider: 'local' },
+        ]
+    },
 })
