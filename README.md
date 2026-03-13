@@ -29,7 +29,7 @@ yarn dev
 
 ## 🛠 기술 스택
 ---
-Framework: Nuxt.js
-CSS Framework: TailwindCSS
-Nuxt Modules: @nuxt/fonts
-Package Management: Yarn
+- Framework: Nuxt.js
+- CSS Framework: TailwindCSS
+- Nuxt Modules: @nuxt/fonts
+- Package Management: Yarn
