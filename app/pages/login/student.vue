@@ -2,22 +2,25 @@
 import { Motion } from "motion-v";
 import { checkPasswordExistsAuthPasswordExistsUserIdGet } from "@/sdk"
 
+const toast = useToast()
 const studentId_payload = ref<number[]>([]);
 let loadingTimeout: any = null;
 
 const step1 = reactive<{
     password: boolean | null,
     loading: boolean
+    error?: string
 }>({
     password: null,
-    loading: false
+    loading: false,
+    error: undefined
 })
 
 const studentId = computed<number>(() => Number(studentId_payload.value?.join('')))
 
 const passwordCheck = async () => {
-    console.log(studentId.value)
     if (!studentId.value) return
+    step1.error = undefined
 
     loadingTimeout = setTimeout(() => {
         step1.loading = true
@@ -34,7 +37,12 @@ const passwordCheck = async () => {
 
     if (req.error) {
         step1.loading = false
-        // TODO: 학번에 따른 유저를 찾지 못했을 경우
+        step1.error = ""
+        toast.add({
+            title: '학번을 확인해주세요!',
+            description: '등록된 학생을 찾지 못했어요. 동일한 문제가 발생하면 담당자에게 문의해주세요.',
+            color: "error"
+        })
         return
     }
     step1.password = req.data.data
@@ -65,7 +73,7 @@ const login = () => {
             <p class="text-h6 font-bold" v-if="step1.password == true">비밀번호를<br />입력해주세요.</p>
             <p class="text-h6 font-bold" v-if="step1.password == false">비밀번호를<br />설정해주세요.</p>
             <div class="flex flex-col flex-1 gap-4 mt-15">
-                <UFormField label="학번" class="w-full" help="3학년 4반 6번 → 3046">
+                <UFormField label="학번" class="w-full" help="3학년 4반 6번 → 3046" :error="step1.error">
                     <UPinInput
                         type="number"
                         :length="4"
