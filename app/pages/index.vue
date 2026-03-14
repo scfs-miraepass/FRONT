@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const session = useSession()
+import Student from "@/components/home/student.vue";
 </script>
 
 <template>
-    {{ session }}
+    <Student />
 </template>
 
 <style scoped>

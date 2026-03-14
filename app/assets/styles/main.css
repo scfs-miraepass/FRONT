@@ -85,7 +85,7 @@ img {
 }
 
 html, body {
-    @apply select-none
+    @apply light:bg-elevated select-none
 }
 
 body {
