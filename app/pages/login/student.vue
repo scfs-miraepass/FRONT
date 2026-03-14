@@ -2,7 +2,7 @@
 import { Motion } from "motion-v";
 import { checkPasswordExistsAuthPasswordExistsUserIdGet } from "@/sdk"
 
-const studentId = ref<number>();
+const studentId_payload = ref<number[]>([]);
 let loadingTimeout: any = null;
 
 const step1 = reactive<{
@@ -12,6 +12,8 @@ const step1 = reactive<{
     password: null,
     loading: false
 })
+
+const studentId = computed<number>(() => Number(studentId_payload.value?.join('')))
 
 const passwordCheck = async () => {
     console.log(studentId.value)
@@ -64,12 +66,12 @@ const login = () => {
             <p class="text-h6 font-bold" v-if="step1.password == false">비밀번호를<br />설정해주세요.</p>
             <div class="flex flex-col flex-1 gap-4 mt-15">
                 <UFormField label="학번" class="w-full" help="3학년 4반 6번 → 3046">
-                    <UInput
+                    <UPinInput
                         type="number"
-                        class="w-full"
+                        :length="4"
                         size="xl"
                         :disabled="step1.password != null"
-                        v-model="studentId"
+                        v-model="studentId_payload"
                     />
                 </UFormField>
                 <Motion
@@ -105,6 +107,5 @@ const login = () => {
         >
             <p class="text-p0">{{ step1.password == null? '다음 단계':'로그인 하기' }}</p>
         </UButton>
-
     </Motion>
 </template>
