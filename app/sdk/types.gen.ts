@@ -135,6 +135,22 @@ export type ResponseModelUser = {
 };
 
 /**
+ * ResponseModel[bool]
+ */
+export type ResponseModelBool = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * Data
+     *
+     * 응답 데이터
+     */
+    data: boolean;
+};
+
+/**
  * ResponseModel[int]
  */
 export type ResponseModelInt = {
@@ -355,6 +371,40 @@ export type ChangePasswordAuthPasswordPutResponses = {
 };
 
 export type ChangePasswordAuthPasswordPutResponse = ChangePasswordAuthPasswordPutResponses[keyof ChangePasswordAuthPasswordPutResponses];
+
+export type CheckPasswordExistsAuthPasswordExistsUserIdGetData = {
+    body?: never;
+    path: {
+        /**
+         * User Id
+         */
+        user_id: number;
+    };
+    query?: never;
+    url: '/auth/password/exists/{user_id}';
+};
+
+export type CheckPasswordExistsAuthPasswordExistsUserIdGetErrors = {
+    /**
+     * 유저를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CheckPasswordExistsAuthPasswordExistsUserIdGetError = CheckPasswordExistsAuthPasswordExistsUserIdGetErrors[keyof CheckPasswordExistsAuthPasswordExistsUserIdGetErrors];
+
+export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: ResponseModelBool;
+};
+
+export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponse = CheckPasswordExistsAuthPasswordExistsUserIdGetResponses[keyof CheckPasswordExistsAuthPasswordExistsUserIdGetResponses];
 
 export type GrantPointsPointGrantPostData = {
     body: PointOperation;

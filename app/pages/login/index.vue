@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { Motion } from "motion-v"
-import {  } from "@/sdk/client"
+import type { UserType } from "@/sdk"
 
 definePageMeta({
     manualPageLoading: true
 })
 
-const typeSelect = () => {
+const [scope, animate] = useAnimate()
 
+const typeSelect = (type: UserType) => {
+    animate(
+        scope.value,
+        { opacity: 0 },
+        {
+            duration: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+        }
+    )
+    setTimeout(() => { navigateTo(`/login/${type}`, { replace: true })}, 800)
 }
 </script>
 
@@ -62,15 +72,16 @@ const typeSelect = () => {
             delay: 2.5,
             ease: [0, 0.71, 0.2, 1.01],
         }"
+        ref="scope"
     >
         <div class="flex-1 flex flex-col py-20">
             <p class="text-h6 font-bold">누구이신가요?</p>
             <div class="flex flex-1 items-center justify-center gap-3">
-                <UButton color="neutral" variant="outline" class="w-full aspect-square text-h1 flex flex-col rounded-2xl" block>
+                <UButton color="neutral" variant="outline" class="w-full aspect-square text-h1 flex flex-col rounded-2xl" block @click="typeSelect('student')">
                     <p class="text-h1">🧑‍🎓</p>
                     <p class="text-h5 mt-2">학생</p>
                 </UButton>
-                <UButton color="neutral" variant="outline" class="w-full aspect-square text-h1 flex flex-col rounded-2xl" block>
+                <UButton color="neutral" variant="outline" class="w-full aspect-square text-h1 flex flex-col rounded-2xl" block @click="typeSelect('teacher')">
                     <p class="text-h1">🧑‍🏫</p>
                     <p class="text-h5 mt-2">교사</p>
                 </UButton>

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchStudentSearchStudentGetData, SearchStudentSearchStudentGetErrors, SearchStudentSearchStudentGetResponses } from './types.gen';
+import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchStudentSearchStudentGetData, SearchStudentSearchStudentGetErrors, SearchStudentSearchStudentGetResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -64,6 +64,13 @@ export const changePasswordAuthPasswordPut = <ThrowOnError extends boolean = fal
         ...options.headers
     }
 });
+
+/**
+ * 비밀번호 존재 여부 확인
+ *
+ * 특정 ID의 유저가 비밀번호를 가지고 있는지(None이 아닌지) 여부를 확인합니다.
+ */
+export const checkPasswordExistsAuthPasswordExistsUserIdGet = <ThrowOnError extends boolean = false>(options: Options<CheckPasswordExistsAuthPasswordExistsUserIdGetData, ThrowOnError>) => (options.client ?? client).get<CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, ThrowOnError>({ url: '/auth/password/exists/{user_id}', ...options });
 
 /**
  * 포인트 지급
