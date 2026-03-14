@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
-import { checkPasswordExistsAuthPasswordExistsUserIdGet, changePasswordNewAuthPasswordPost, loginAuthLoginPost } from "@/sdk"
+import {
+    checkPasswordExistsAuthPasswordExistsUserIdGet, changePasswordNewAuthPasswordPost, loginAuthLoginPost,
+    teacherGetByNameSearchTeacherUserNameGet,
+    type User
+} from "@/sdk"
 
 const toast = useToast()
 const teacherName = ref<string>('');
 const password = ref<string>('');
 const password_confirm = ref<string>('');
 let loadingTimeout: any = null;
+let teacherObj: User | null = null;
 
 const step1 = reactive<{
     password: boolean | null,
@@ -27,15 +32,29 @@ const passwordCheck = async () => {
     }, 100)
 
 
-    // TODO
-    const req = await checkPasswordExistsAuthPasswordExistsUserIdGet({
+    const teacherGet = await teacherGetByNameSearchTeacherUserNameGet({
         path: {
-            user_id: teacherName.value
+            user_name: teacherName.value
         }
     })
 
     if (loadingTimeout) clearTimeout(loadingTimeout)
 
+    if (teacherGet.error) {
+        step1.loading = false
+        step1.error = ""
+        toast.add({
+            title: '이름을 확인해주세요!',
+            description: '등록된 교사을 찾지 못했어요. 동일한 문제가 발생하면 담당자에게 문의해주세요.',
+            color: "error"
+        })
+        return
+    }
+    const req = await checkPasswordExistsAuthPasswordExistsUserIdGet({
+        path: {
+            user_id: teacherGet.data.data.id!
+        }
+    })
     if (req.error) {
         step1.loading = false
         step1.error = ""
@@ -46,16 +65,18 @@ const passwordCheck = async () => {
         })
         return
     }
+    teacherObj = teacherGet.data.data
     step1.password = req.data.data
     step1.loading = false
 }
 
 const login = async () => {
+    if (!teacherObj) return
     if (step1.password == false) {
         // 초기 접속하여 비밀번호 변경을 해야하는 경우
         const req = await changePasswordNewAuthPasswordPost({
             body: {
-                user: teacherName.value,
+                user: teacherObj.id!,
                 password: password.value
             }
         })
@@ -65,10 +86,9 @@ const login = async () => {
         }
     }
 
-    // TODO
     const req = await loginAuthLoginPost({
         body: {
-            id: teacherName.value,
+            id: teacherObj.id!,
             password: password.value
         }
     })
