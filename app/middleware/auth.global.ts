@@ -19,6 +19,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 session.value = req.data.data
                 return navigateTo("/")
             }
+            return
         }
         if (req.error) {
             return navigateTo("/login", { replace: true })
