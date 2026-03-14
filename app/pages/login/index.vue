@@ -79,16 +79,16 @@ const typeSelect = (type: UserType) => {
             <div class="flex-1 flex flex-col items-center justify-center gap-3">
                 <div class="flex items-center justify-center gap-3 w-full">
                     <UButton color="neutral" variant="outline" class="w-full aspect-square flex flex-col rounded-2xl" block @click="typeSelect('student')">
-                        <p class="text-h1">🧑‍🎓</p>
+                        <p class="text-h1 tossface">🧑‍🎓</p>
                         <p class="text-h5 mt-2">학생</p>
                     </UButton>
                     <UButton color="neutral" variant="outline" class="w-full aspect-square flex flex-col rounded-2xl" block @click="typeSelect('teacher')">
-                        <p class="text-h1">🧑‍🏫</p>
+                        <p class="text-h1 tossface">🧑‍🏫</p>
                         <p class="text-h5 mt-2">교사</p>
                     </UButton>
                 </div>
                 <UButton color="neutral" variant="outline" class="w-full flex rounded-2xl py-5" block @click="typeSelect('service')">
-                    <p class="text-h6">💼</p>
+                    <p class="text-h6 tossface">💼</p>
                     <p class="text-h6">서비스</p>
                 </UButton>
             </div>

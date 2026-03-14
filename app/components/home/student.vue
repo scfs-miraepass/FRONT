@@ -12,7 +12,7 @@ const { width: pointWidth } = useElementSize(pointContainer)
     <div class="w-screen h-screen p-5" v-if="session?.type == 'student'">
         <div class="w-full flex items-center justify-between opacity-50 pl-2">
             <p class="text-ui-p1">{{ session.name }}님</p>
-            <UButton color="neutral" variant="ghost" icon="i-ph-gear-fill" class="p-2 rounded-2xl" size="xl" />
+            <UButton color="neutral" variant="ghost" icon="i-ph-gear-fill" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
         </div>
         <div class="px-2 pb-2 mt-4">
 

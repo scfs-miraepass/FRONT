@@ -72,7 +72,7 @@
     --text-ui-p2--font-weight: 400;
 
     /* NuxtFont */
-    --default-font-family: Pretendard, Tossface, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --default-font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 
 /* ============================================== */
@@ -90,4 +90,8 @@ html, body {
 
 body {
     overflow-x: hidden;
+}
+
+.tossface {
+    font-family: Tossface, emoji;
 }
