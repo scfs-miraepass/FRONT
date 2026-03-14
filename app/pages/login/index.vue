@@ -39,7 +39,7 @@ const typeSelect = (type: UserType) => {
             :initial="{ opacity: 0, translateY: '20px' }"
             :animate="{ opacity: 1, translateY: '0' }"
             :transition="{
-                duration: 0.8,
+                duration: 1,
                 delay: 0.5,
                 ease: [0, 0.71, 0.2, 1.01],
             }"
@@ -68,29 +68,31 @@ const typeSelect = (type: UserType) => {
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"
         :transition="{
-            duration: 0.8,
+            duration: 1,
             delay: 2.5,
             ease: [0, 0.71, 0.2, 1.01],
         }"
         ref="scope"
     >
         <div class="flex-1 flex flex-col py-20">
-            <p class="text-h6 font-bold">누구이신가요?</p>
-            <div class="flex flex-1 items-center justify-center gap-3">
-                <UButton color="neutral" variant="outline" class="w-full aspect-square text-h1 flex flex-col rounded-2xl" block @click="typeSelect('student')">
-                    <p class="text-h1">🧑‍🎓</p>
-                    <p class="text-h5 mt-2">학생</p>
-                </UButton>
-                <UButton color="neutral" variant="outline" class="w-full aspect-square text-h1 flex flex-col rounded-2xl" block @click="typeSelect('teacher')">
-                    <p class="text-h1">🧑‍🏫</p>
-                    <p class="text-h5 mt-2">교사</p>
+            <p class="text-h6 font-bold">먼저 선택해주세요.</p>
+            <div class="flex-1 flex flex-col items-center justify-center gap-3">
+                <div class="flex items-center justify-center gap-3 w-full">
+                    <UButton color="neutral" variant="outline" class="w-full aspect-square flex flex-col rounded-2xl" block @click="typeSelect('student')">
+                        <p class="text-h1">🧑‍🎓</p>
+                        <p class="text-h5 mt-2">학생</p>
+                    </UButton>
+                    <UButton color="neutral" variant="outline" class="w-full aspect-square flex flex-col rounded-2xl" block @click="typeSelect('teacher')">
+                        <p class="text-h1">🧑‍🏫</p>
+                        <p class="text-h5 mt-2">교사</p>
+                    </UButton>
+                </div>
+                <UButton color="neutral" variant="outline" class="w-full flex rounded-2xl py-5" block @click="typeSelect('service')">
+                    <p class="text-h6">💼</p>
+                    <p class="text-h6">서비스</p>
                 </UButton>
             </div>
         </div>
-
-<!--        <UButton class="rounded-2xl justify-center flex py-4.5">-->
-<!--            <p class="text-p0">시작하기</p>-->
-<!--        </UButton>-->
     </Motion>
 
 </template>
