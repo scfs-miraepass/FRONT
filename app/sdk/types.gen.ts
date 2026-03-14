@@ -611,8 +611,11 @@ export type PointHistoryPointHistoryGetResponses = {
 
 export type PointHistoryPointHistoryGetResponse = PointHistoryPointHistoryGetResponses[keyof PointHistoryPointHistoryGetResponses];
 
-export type SearchStudentSearchStudentGetData = {
-    body?: never;
+export type SearchSearchGetData = {
+    /**
+     * T
+     */
+    body?: Array<UserType>;
     path?: never;
     query: {
         /**
@@ -620,10 +623,10 @@ export type SearchStudentSearchStudentGetData = {
          */
         q: string;
     };
-    url: '/search/student';
+    url: '/search';
 };
 
-export type SearchStudentSearchStudentGetErrors = {
+export type SearchSearchGetErrors = {
     /**
      * 세션이 만료되었거나 유효하지 않음
      */
@@ -638,13 +641,47 @@ export type SearchStudentSearchStudentGetErrors = {
     422: HttpValidationError;
 };
 
-export type SearchStudentSearchStudentGetError = SearchStudentSearchStudentGetErrors[keyof SearchStudentSearchStudentGetErrors];
+export type SearchSearchGetError = SearchSearchGetErrors[keyof SearchSearchGetErrors];
 
-export type SearchStudentSearchStudentGetResponses = {
+export type SearchSearchGetResponses = {
     /**
      * 정상 처리
      */
     200: ResponseModelListUser;
 };
 
-export type SearchStudentSearchStudentGetResponse = SearchStudentSearchStudentGetResponses[keyof SearchStudentSearchStudentGetResponses];
+export type SearchSearchGetResponse = SearchSearchGetResponses[keyof SearchSearchGetResponses];
+
+export type TeacherGetByNameSearchTeacherUserNameGetData = {
+    body?: never;
+    path: {
+        /**
+         * User Name
+         */
+        user_name: string;
+    };
+    query?: never;
+    url: '/search/teacher/{user_name}';
+};
+
+export type TeacherGetByNameSearchTeacherUserNameGetErrors = {
+    /**
+     * 유저를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type TeacherGetByNameSearchTeacherUserNameGetError = TeacherGetByNameSearchTeacherUserNameGetErrors[keyof TeacherGetByNameSearchTeacherUserNameGetErrors];
+
+export type TeacherGetByNameSearchTeacherUserNameGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelUser;
+};
+
+export type TeacherGetByNameSearchTeacherUserNameGetResponse = TeacherGetByNameSearchTeacherUserNameGetResponses[keyof TeacherGetByNameSearchTeacherUserNameGetResponses];

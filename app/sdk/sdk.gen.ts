@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchStudentSearchStudentGetData, SearchStudentSearchStudentGetErrors, SearchStudentSearchStudentGetResponses } from './types.gen';
+import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -129,8 +129,22 @@ export const getPointBalancePointTargetUserIdGet = <ThrowOnError extends boolean
 export const pointHistoryPointHistoryGet = <ThrowOnError extends boolean = false>(options?: Options<PointHistoryPointHistoryGetData, ThrowOnError>) => (options?.client ?? client).get<PointHistoryPointHistoryGetResponses, PointHistoryPointHistoryGetErrors, ThrowOnError>({ url: '/point/history', ...options });
 
 /**
- * 학생 검색
+ * 유저 검색
  *
- * 학생 유저를 이름 또는 ID(학번)으로 검색합니다.
+ * 유저를 이름 또는 ID(학번)으로 검색합니다.
  */
-export const searchStudentSearchStudentGet = <ThrowOnError extends boolean = false>(options: Options<SearchStudentSearchStudentGetData, ThrowOnError>) => (options.client ?? client).get<SearchStudentSearchStudentGetResponses, SearchStudentSearchStudentGetErrors, ThrowOnError>({ url: '/search/student', ...options });
+export const searchSearchGet = <ThrowOnError extends boolean = false>(options: Options<SearchSearchGetData, ThrowOnError>) => (options.client ?? client).get<SearchSearchGetResponses, SearchSearchGetErrors, ThrowOnError>({
+    url: '/search',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * 교사 데이터
+ *
+ * 교사의 정확한 이름을 가지고 교사의 데이터를 가져옵니다.
+ */
+export const teacherGetByNameSearchTeacherUserNameGet = <ThrowOnError extends boolean = false>(options: Options<TeacherGetByNameSearchTeacherUserNameGetData, ThrowOnError>) => (options.client ?? client).get<TeacherGetByNameSearchTeacherUserNameGetResponses, TeacherGetByNameSearchTeacherUserNameGetErrors, ThrowOnError>({ url: '/search/teacher/{user_name}', ...options });
