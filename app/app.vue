@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import { client } from '@/sdk/client.gen';
+import { $fetch } from '@/composables/$fetch';
+
+if (import.meta.server) {
+    client.setConfig({
+        ofetch: $fetch,
+    });
+}
+
 const nuxtApp = useNuxtApp()
 const isPageLoading = useState('isPageLoading', () => true)
 

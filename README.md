@@ -20,6 +20,14 @@ vi .env
 yarn dev
 ```
 
+## ✨ 명령어
+---
+`http://localhost:8000/openapi.json`는 백엔드 서버의 openapi.json 파일입니다. 사용시 수정필요.
+### SDK 생성
+```bash
+npx @hey-api/openapi-ts -i http://localhost:8000/openapi.json -o app/sdk -c @hey-api/client-ofetch
+```
+
 ## 📦 프로젝트 구조
 ---
 ```

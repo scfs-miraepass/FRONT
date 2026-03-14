@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { Motion } from "motion-v"
+import {  } from "@/sdk/client"
+
+definePageMeta({
+    manualPageLoading: true
+})
+
+const typeSelect = () => {
+
+}
 </script>
 
 <template>
