@@ -103,7 +103,7 @@ const login = async () => {
             <p class="text-h6 font-bold" v-if="step1.password == true">비밀번호를<br />입력해주세요.</p>
             <p class="text-h6 font-bold" v-if="step1.password == false">비밀번호를<br />설정해주세요.</p>
             <div class="flex flex-col flex-1 gap-4 mt-15">
-                <UFormField label="학번" class="w-full" help="3학년 4반 6번 → 3046" :error="step1.error">
+                <UFormField label="학번" class="w-full" help="3학년 4반 6번 → 3406" :error="step1.error">
                     <UPinInput
                         type="number"
                         :length="4"
