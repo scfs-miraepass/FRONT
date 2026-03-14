@@ -11,7 +11,7 @@ export default defineNuxtConfig({
         ],
     },
 
-    css: ["./app/assets/styles/main.css"],
+    css: ["./app/assets/styles/main.css", "./app/assets/styles/tossface.css"],
 
     runtimeConfig: {
         public: {
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
 
     fonts: {
         families: [
-            { name: 'Pretendard', provider: 'local' },
+            { name: 'Pretendard', provider: 'local' }
         ]
     },
 })
