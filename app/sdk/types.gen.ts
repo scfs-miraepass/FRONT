@@ -19,6 +19,20 @@ export type ChangePasswordForm = {
 };
 
 /**
+ * ChangePasswordNewForm
+ */
+export type ChangePasswordNewForm = {
+    /**
+     * User
+     */
+    user: number;
+    /**
+     * Password
+     */
+    password: string;
+};
+
+/**
  * ErrorResponse
  */
 export type ErrorResponse = {
@@ -339,6 +353,39 @@ export type GetCurrentUserAuthGetResponses = {
 
 export type GetCurrentUserAuthGetResponse = GetCurrentUserAuthGetResponses[keyof GetCurrentUserAuthGetResponses];
 
+export type ChangePasswordNewAuthPasswordPostData = {
+    body: ChangePasswordNewForm;
+    path?: never;
+    query?: never;
+    url: '/auth/password';
+};
+
+export type ChangePasswordNewAuthPasswordPostErrors = {
+    /**
+     * 이미 비밀번호가 설정되어있음.
+     */
+    400: ErrorResponse;
+    /**
+     * 유저을 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ChangePasswordNewAuthPasswordPostError = ChangePasswordNewAuthPasswordPostErrors[keyof ChangePasswordNewAuthPasswordPostErrors];
+
+export type ChangePasswordNewAuthPasswordPostResponses = {
+    /**
+     * 비밀번호 변경 성공
+     */
+    204: void;
+};
+
+export type ChangePasswordNewAuthPasswordPostResponse = ChangePasswordNewAuthPasswordPostResponses[keyof ChangePasswordNewAuthPasswordPostResponses];
+
 export type ChangePasswordAuthPasswordPutData = {
     body: ChangePasswordForm;
     path?: never;
@@ -355,6 +402,10 @@ export type ChangePasswordAuthPasswordPutErrors = {
      * 세션이 만료되었거나 유효하지 않음.
      */
     401: ErrorResponse;
+    /**
+     * 초기회 되지 않은 유저.
+     */
+    404: ErrorResponse;
     /**
      * Validation Error
      */
