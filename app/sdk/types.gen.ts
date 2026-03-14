@@ -431,11 +431,20 @@ export type CheckPasswordExistsAuthPasswordExistsUserIdGetData = {
          */
         user_id: number;
     };
-    query?: never;
+    query?: {
+        /**
+         * T
+         */
+        t?: UserType | null;
+    };
     url: '/auth/password/exists/{user_id}';
 };
 
 export type CheckPasswordExistsAuthPasswordExistsUserIdGetErrors = {
+    /**
+     * 해당 유저의 타입이 지정된 타입과 일치하지 않음
+     */
+    400: ErrorResponse;
     /**
      * 유저를 찾을 수 없음
      */
