@@ -19,7 +19,7 @@ export default defineNuxtConfig({
         },
     },
 
-    modules: ['@nuxt/fonts', '@nuxtjs/device', 'motion-v/nuxt'],
+    modules: ['@nuxt/fonts', '@nuxtjs/device', 'motion-v/nuxt', '@nuxt/ui'],
 
     fonts: {
         families: [
