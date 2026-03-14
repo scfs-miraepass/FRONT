@@ -16,7 +16,7 @@ const { width: pointWidth } = useElementSize(pointContainer)
         </div>
         <div class="px-2 pb-2 mt-4">
 
-            <div class="bg-default rounded-2xl p-5">
+            <div class="light:bg-default dark:bg-muted rounded-2xl p-5">
                 <div class="text-p1 flex items-center gap-x-2 font-normal">
                     <LogoSymbol size="18" />
                     보유중인 미래 포인트
