@@ -1,67 +1,71 @@
 <script setup lang="ts">
-const nuxtApp = useNuxtApp()
-const isPageLoading = useState('isPageLoading', () => true)
+const nuxtApp = useNuxtApp();
+const isPageLoading = useState("isPageLoading", () => true);
 
-const route = useRoute()
+const route = useRoute();
 
-let showLoadingTimer: any = null
-const loadingShownTime = useState<number>('loadingShownTime.value')
+let showLoadingTimer: any = null;
+const loadingShownTime = useState<number>("loadingShownTime.value");
 
 interface metaType {
-    manualPageLoading?: boolean
-    pageLoadingMinTime?: number // 로딩바 최소 노출 시간 (기본값: 500, 단위: ms) - 이동 후 페이지에서
-    pageLoadingThreshold?: number // 로딩바 노출 전 대기 시간 (이 시간보다 짧으면 로딩바 안뜸) (기본값: 200, 단위: ms) - 이동전 페이지에서
+    manualPageLoading?: boolean;
+    pageLoadingMinTime?: number; // 로딩바 최소 노출 시간 (기본값: 500, 단위: ms) - 이동 후 페이지에서
+    pageLoadingThreshold?: number; // 로딩바 노출 전 대기 시간 (이 시간보다 짧으면 로딩바 안뜸) (기본값: 200, 단위: ms) - 이동전 페이지에서
 }
 
-nuxtApp.hook('page:start', () => {
-    const meta = route.meta as metaType
+nuxtApp.hook("page:start", () => {
+    const meta = route.meta as metaType;
 
-    if (showLoadingTimer) clearTimeout(showLoadingTimer)
+    if (showLoadingTimer) clearTimeout(showLoadingTimer);
 
-    const threshold = meta.pageLoadingThreshold ?? 200
+    const threshold = meta.pageLoadingThreshold ?? 200;
 
     if (threshold === 0) {
-        isPageLoading.value = true
-        loadingShownTime.value = Date.now()
+        isPageLoading.value = true;
+        loadingShownTime.value = Date.now();
     } else {
         showLoadingTimer = setTimeout(() => {
-            isPageLoading.value = true
-            loadingShownTime.value = Date.now()
-        }, threshold)
+            isPageLoading.value = true;
+            loadingShownTime.value = Date.now();
+        }, threshold);
     }
-})
+});
 
-nuxtApp.hook('page:finish', () => {
-    const meta = route.meta as metaType
+nuxtApp.hook("page:finish", () => {
+    const meta = route.meta as metaType;
 
     if (showLoadingTimer) {
-        clearTimeout(showLoadingTimer)
-        showLoadingTimer = null
+        clearTimeout(showLoadingTimer);
+        showLoadingTimer = null;
     }
-    if (meta.manualPageLoading) return
+    if (meta.manualPageLoading) return;
 
     if (isPageLoading.value) {
-        const elapsed = Date.now() - loadingShownTime.value
-        const pageLoadingMinTime = meta.pageLoadingMinTime ?? 500
+        const elapsed = Date.now() - loadingShownTime.value;
+        const pageLoadingMinTime = meta.pageLoadingMinTime ?? 500;
         if (elapsed < pageLoadingMinTime) {
             setTimeout(() => {
-                isPageLoading.value = false
-            }, pageLoadingMinTime - elapsed)
+                isPageLoading.value = false;
+            }, pageLoadingMinTime - elapsed);
         } else {
-            isPageLoading.value = false
+            isPageLoading.value = false;
         }
     }
-})
+});
 
 // 개발시 화이트 모드에서 만들기 위해 구성함
-const colorMode = useColorMode()
-colorMode.preference = 'light'
+const colorMode = useColorMode();
+colorMode.preference = "light";
 </script>
 
 <template>
     <UApp>
+        <NuxtPwaManifest />
         <NuxtPage v-if="$device.isMobileOrTablet" />
-        <div class="w-screen h-screen flex items-center justify-center text-p1" v-else>
+        <div
+            class="w-screen h-screen flex items-center justify-center text-p1"
+            v-else
+        >
             모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.
         </div>
     </UApp>
