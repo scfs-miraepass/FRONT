@@ -61,20 +61,18 @@ export default defineNuxtConfig({
     pwa: {
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         client: {
-            installPrompt: true,
-        },
-        workbox: {
-            navigateFallback: "/",
-            globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+            installPrompt: false,
         },
         devOptions: {
             enabled: true, // DEV Only
-            type: "classic",
+            type: "module",
         },
+        registerType: "autoUpdate",
         manifest: {
             name: "미래패스",
             short_name: "미래패스",
             lang: "ko",
+            id: "/",
             icons: [
                 {
                     src: "/pwa-192x192.png",
@@ -99,6 +97,19 @@ export default defineNuxtConfig({
                     sizes: "512x512",
                     type: "image/png",
                     purpose: "maskable",
+                },
+            ],
+            screenshots: [
+                {
+                    src: "/screenshot.png",
+                    type: "image/png",
+                    sizes: "2018x3774",
+                },
+                {
+                    src: "/screenshot.png",
+                    type: "image/png",
+                    sizes: "2018x3774",
+                    form_factor: "wide",
                 },
             ],
             start_url: "/",

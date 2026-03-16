@@ -56,12 +56,25 @@ nuxtApp.hook("page:finish", () => {
 // 개발시 화이트 모드에서 만들기 위해 구성함
 const colorMode = useColorMode();
 colorMode.preference = "light";
+
+const appInstall = async () => {
+    console.log(nuxtApp.$pwa);
+    nuxtApp.$pwa?.install();
+};
 </script>
 
 <template>
     <UApp>
         <NuxtPwaManifest />
-        <NuxtPage v-if="$device.isMobileOrTablet" />
+        <div
+            class="w-screen h-screen flex items-center justify-center text-p1"
+            v-if="!nuxtApp.$pwa?.isPWAInstalled"
+        >
+            아래의 버튼을 통해 앱을 설치해주세요!
+            {{  nuxtApp.$pwa?.showInstallPrompt  }}
+            <UButton @click="appInstall">앱 설치</UButton>
+        </div>
+        <NuxtPage v-else-if="$device.isMobileOrTablet" />
         <div
             class="w-screen h-screen flex items-center justify-center text-p1"
             v-else
