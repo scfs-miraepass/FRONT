@@ -57,36 +57,50 @@ export default defineNuxtConfig({
     },
     pwa: {
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
+        client: {
+            installPrompt: true,
+        },
+        workbox: {
+            navigateFallback: "/",
+            globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+        },
+        devOptions: {
+            enabled: true, // DEV Only
+            type: "classic",
+        },
         manifest: {
+            id: "scfs.miraepass.app",
             name: "미래패스",
             short_name: "미래패스",
+            lang: "ko",
             icons: [
                 {
-                    src: "/pwa-192x192.png",
+                    src: "pwa-192x192.png",
                     sizes: "192x192",
                     type: "image/png",
                     purpose: "any",
                 },
                 {
-                    src: "/pwa-512x512.png",
+                    src: "pwa-512x512.png",
                     sizes: "512x512",
                     type: "image/png",
                     purpose: "any",
                 },
                 {
-                    src: "/pwa-maskable-192x192.png",
+                    src: "pwa-maskable-192x192.png",
                     sizes: "192x192",
                     type: "image/png",
                     purpose: "maskable",
                 },
                 {
-                    src: "/pwa-maskable-512x512.png",
+                    src: "pwa-maskable-512x512.png",
                     sizes: "512x512",
                     type: "image/png",
                     purpose: "maskable",
                 },
             ],
             start_url: "/",
+            scope: "/",
             display: "standalone",
             background_color: "#F1F5F9",
             theme_color: "#F1F5F9",
