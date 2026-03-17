@@ -99,19 +99,6 @@ export default defineNuxtConfig({
                     purpose: "maskable",
                 },
             ],
-            screenshots: [
-                {
-                    src: "/screenshot.png",
-                    type: "image/png",
-                    sizes: "2018x3774",
-                },
-                {
-                    src: "/screenshot.png",
-                    type: "image/png",
-                    sizes: "2018x3774",
-                    form_factor: "wide",
-                },
-            ],
             start_url: "/",
             display: "standalone",
             background_color: "#F1F5F9",
