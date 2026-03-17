@@ -56,31 +56,27 @@ nuxtApp.hook("page:finish", () => {
 // 개발시 화이트 모드에서 만들기 위해 구성함
 const colorMode = useColorMode();
 colorMode.preference = "light";
-
-const appInstall = async () => {
-    console.log(nuxtApp.$pwa);
-    nuxtApp.$pwa?.install();
-};
 </script>
 
 <template>
+    <NuxtPwaManifest />
     <UApp>
-        <NuxtPwaManifest />
-        <div
-            class="w-screen h-screen flex items-center justify-center text-p1"
-            v-if="!$device.isMobileOrTablet"
-        >
-            모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.
-        </div>
-        <div
-            class="w-screen h-screen flex items-center justify-center text-p1"
-            v-else-if="!nuxtApp.$pwa?.isPWAInstalled"
-        > <!-- 개발용 구성 -->
-            ㅁㄴㅇㄹ
-            <!-- TODO: 앱 설치 방법 안내. 기종에 따라 이미지 보이도록 할것 -->
-        </div>
-        <div :class="{ 'hidden': !nuxtApp.$pwa?.isPWAInstalled || !$device.isMobileOrTablet }">
-            <NuxtPage />
+        <div>
+            <div
+                class="w-screen h-screen flex items-center justify-center"
+                v-if="!$device.isMobileOrTablet"
+            >
+                <p class="text-p1">모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.</p>
+            </div>
+            <div v-else>
+                <div class="w-screen h-screen flex items-center justify-center pwa-only-error"> <!-- 개발용 구성 -->
+                    <p class="text-p1">그아악</p>
+                    <!-- TODO: 앱 설치 방법 안내. 기종에 따라 이미지 보이도록 할것 -->
+                </div>
+                <div class="pwa-only-content">
+                    <NuxtPage />
+                </div>
+            </div>
         </div>
     </UApp>
 </template>
