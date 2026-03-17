@@ -74,8 +74,9 @@ const appInstall = async () => {
         </div>
         <div
             class="w-screen h-screen flex items-center justify-center text-p1"
-            v-else-if="!nuxtApp.$pwa?.isPWAInstalled && false"
+            v-else-if="!nuxtApp.$pwa?.isPWAInstalled"
         > <!-- 개발용 구성 -->
+            ㅁㄴㅇㄹ
             <!-- TODO: 앱 설치 방법 안내. 기종에 따라 이미지 보이도록 할것 -->
         </div>
         <div :class="{ 'hidden': !nuxtApp.$pwa?.isPWAInstalled || !$device.isMobileOrTablet }">
