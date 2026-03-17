@@ -82,9 +82,13 @@ export default defineNuxtConfig({
                     content: "#0f172b",
                     media: "(prefers-color-scheme: dark)",
                 },
+                {
+                    name: "viewport",
+                    content: "initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;",
+                }
             ],
             htmlAttrs: {
-                lang: 'ko', // Sets the <html> tag's language to English
+                lang: 'ko',
             },
         },
     },
