@@ -68,18 +68,16 @@ const appInstall = async () => {
         <NuxtPwaManifest />
         <div
             class="w-screen h-screen flex items-center justify-center text-p1"
-            v-if="!nuxtApp.$pwa?.isPWAInstalled"
-        >
-            아래의 버튼을 통해 앱을 설치해주세요!
-            {{  nuxtApp.$pwa?.showInstallPrompt  }}
-            <UButton @click="appInstall">앱 설치</UButton>
-        </div>
-        <NuxtPage v-else-if="$device.isMobileOrTablet" />
-        <div
-            class="w-screen h-screen flex items-center justify-center text-p1"
-            v-else
+            v-if="!$device.isMobileOrTablet"
         >
             모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.
         </div>
+        <div
+            class="w-screen h-screen flex items-center justify-center text-p1"
+            v-else-if="!nuxtApp.$pwa?.isPWAInstalled"
+        >
+            <!-- TODO: 앱 설치 방법 안내. 기종에 따라 이미지 보이도록 할것 -->
+        </div>
+        <NuxtPage v-else />
     </UApp>
 </template>
