@@ -24,6 +24,7 @@ const step1 = reactive<{
 })
 
 const passwordCheck = async () => {
+    (document.activeElement as HTMLElement)?.blur();
     if (!teacherName.value) return
     step1.error = undefined
 
@@ -71,6 +72,7 @@ const passwordCheck = async () => {
 }
 
 const login = async () => {
+    (document.activeElement as HTMLElement)?.blur();
     if (!teacherObj) return
     if (step1.password == false) {
         // 초기 접속하여 비밀번호 변경을 해야하는 경우
@@ -132,6 +134,7 @@ const login = async () => {
                         class="w-full"
                         :disabled="step1.password != null"
                         v-model="teacherName"
+                        @keydown.enter="step1.password == null? passwordCheck():login()"
                     />
                 </UFormField>
                 <Motion
@@ -146,14 +149,14 @@ const login = async () => {
                     v-if="step1.password != null"
                 >
                     <UFormField label="비밀번호" class="w-full" v-if="step1.password == true">
-                        <UInput type="password" class="w-full" size="xl" v-model="password" />
+                        <UInput type="password" class="w-full" size="xl" v-model="password" @keydown.enter="login()" />
                     </UFormField>
 
                     <UFormField label="비밀번호" class="w-full" v-if="step1.password == false" :error="password.length < 8 || password.length > 15? '비밀번호는 8~15자 사이여야 해요.':undefined">
-                        <UInput type="password" class="w-full" size="xl" v-model="password" />
+                        <UInput type="password" class="w-full" size="xl" v-model="password" @keydown.enter="login()" />
                     </UFormField>
                     <UFormField label="비밀번호 검증" class="w-full" v-if="step1.password == false" :error="password !== password_confirm? '비밀번호가 일치하지 않아요.':undefined">
-                        <UInput type="password" class="w-full" size="xl" v-model="password_confirm" />
+                        <UInput type="password" class="w-full" size="xl" v-model="password_confirm" @keydown.enter="login()" />
                     </UFormField>
                 </Motion>
             </div>
