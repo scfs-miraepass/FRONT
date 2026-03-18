@@ -9,6 +9,8 @@ definePageMeta({
 const [scope, animate] = useAnimate()
 
 const typeSelect = (type: UserType) => {
+    // 완전히 보였을 때 부터 선택 이벤트가 처리 되도록
+    if ((scope.value as HTMLElement).style.opacity != '1') return
     animate(
         scope.value,
         { opacity: 0 },
