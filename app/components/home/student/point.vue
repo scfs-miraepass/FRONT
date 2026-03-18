@@ -22,7 +22,7 @@ const { width: pointWidth } = useElementSize(pointContainer)
                     :animate="{ translateY: '0' }"
                     :transition="{
                         duration: 0.5,
-                        delay: index * 0.075,
+                        delay: (index * 0.075) + 0.5,
                         ease: [0, 0.71, 0.2, 1.01],
                     }"
                     v-for="(i, index) in pointStr"
@@ -34,15 +34,12 @@ const { width: pointWidth } = useElementSize(pointContainer)
                 :initial="{ opacity: 0, translateX: `-${pointWidth / 2}px` }"
                 :animate="{ opacity: 1, translateX: '0' }"
                 :transition="{
-                            duration: pointStr.length * (0.1),
-                            ease: [0, 0.71, 0.2, 1.01],
-                        }"
+                    duration: pointStr.length * (0.15),
+                    delay: 0.5,
+                    ease: [0, 0.71, 0.2, 1.01],
+                }"
                 v-if="pointWidth"
             >P</Motion>
         </div>
     </div>
 </template>
-
-<style scoped>
-
-</style>
