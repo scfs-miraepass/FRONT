@@ -1,5 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 
+// iOS 보안상 빌드해야지 PWA가 정상 작동함 Tlqkf
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
@@ -10,6 +12,14 @@ export default defineNuxtConfig({
         server: {
             allowedHosts: true, // DEV Only
         },
+        optimizeDeps: {
+            include: [
+                '@vue/devtools-core',
+                '@vue/devtools-kit',
+                'workbox-window',
+                '@vueuse/core',
+            ]
+        }
     },
 
     app: {
@@ -84,8 +94,11 @@ export default defineNuxtConfig({
                 },
                 {
                     name: "viewport",
-                    content: "initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;",
-                }
+                    content: "initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no",
+                },
+                { name: 'apple-mobile-web-app-capable', content: 'yes' },
+                { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+                { name: 'apple-mobile-web-app-title', content: '미래 패스' },
             ],
             htmlAttrs: {
                 lang: 'ko',
@@ -157,6 +170,19 @@ export default defineNuxtConfig({
             display: "standalone",
             background_color: "#F1F5F9",
             theme_color: "#F1F5F9",
+        },
+        workbox: {
+            navigateFallback: '/',
+
+            // 1. 빌드 시 실제 존재하는 파일만 캐싱하도록 필터링합니다.
+            globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+
+            // 2. 서비스 워커가 업데이트되었을 때 즉시 제어권을 갖도록 합니다. (중요!)
+            skipWaiting: true,
+            clientsClaim: true,
+
+            // 3. iOS Safari의 'Importing script...' 에러 방지를 위해 런타임을 인라인화합니다.
+            inlineWorkboxRuntime: true,
         },
     },
 });
