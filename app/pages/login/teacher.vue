@@ -6,6 +6,11 @@ import {
     type User
 } from "@/sdk"
 
+definePageMeta({
+    manualPageLoading: true,
+    layout: false
+})
+
 const toast = useToast()
 const teacherName = ref<string>('');
 const password = ref<string>('');

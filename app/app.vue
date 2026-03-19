@@ -80,7 +80,9 @@ colorMode.preference = "light";
                     <!-- TODO: 앱 설치 방법 안내. 기종에 따라 이미지 보이도록 할것 -->
                 </div>
                 <div class="pwa-only-content">
-                    <NuxtPage />
+                    <NuxtLayout>
+                        <NuxtPage />
+                    </NuxtLayout>
                 </div>
             </div>
         </div>

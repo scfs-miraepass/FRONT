@@ -2,6 +2,11 @@
 import { Motion } from "motion-v";
 import { checkPasswordExistsAuthPasswordExistsUserIdGet, changePasswordNewAuthPasswordPost, loginAuthLoginPost } from "@/sdk"
 
+definePageMeta({
+    manualPageLoading: true,
+    layout: false
+})
+
 const toast = useToast()
 const serviceId_payload = ref<number[]>([]);
 const password = ref<string>('');
