@@ -52,10 +52,6 @@ nuxtApp.hook("page:finish", () => {
         }
     }
 });
-
-// 개발시 화이트 모드에서 만들기 위해 구성함
-const colorMode = useColorMode();
-colorMode.preference = "light";
 </script>
 
 <template>
