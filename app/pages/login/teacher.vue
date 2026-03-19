@@ -28,10 +28,32 @@ const passwordCheck = async () => {
     if (!teacherName.value) return
     step1.error = undefined
 
+    // 이스터에긐ㅋㅋㅋㅋㅋㅋ
+    // 이거 3월 19일 새벽 12시 46분인데. 옆에서 서은성이랑 개같이 만듬ㅎ
+    if (teacherName.value == "임영재") {
+        step1.loading = false
+        step1.error = ""
+        toast.add({
+            title: 'ㅔ?',
+            description: '아쉽개도 개발자는 교사가 아닌 학생이랍니다..',
+            color: "error"
+        })
+        return
+    }
+    if (teacherName.value == "서은성") {
+        step1.loading = false
+        step1.error = ""
+        toast.add({
+            title: '서은성',
+            description: '멍청이',
+            color: "error"
+        })
+        return
+    }
+
     loadingTimeout = setTimeout(() => {
         step1.loading = true
     }, 100)
-
 
     const teacherGet = await teacherGetByNameSearchTeacherUserNameGet({
         path: {
