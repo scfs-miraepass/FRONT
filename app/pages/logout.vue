@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { logoutAuthLogoutPost } from "@/sdk";
 
+definePageMeta({
+    layout: false
+})
 const session = useSession()
 
 onMounted(async () => {
