@@ -7,7 +7,6 @@ import {
 } from "@/sdk"
 
 definePageMeta({
-    manualPageLoading: true,
     layout: false
 })
 

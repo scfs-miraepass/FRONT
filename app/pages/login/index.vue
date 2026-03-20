@@ -3,7 +3,6 @@ import { Motion } from "motion-v"
 import type { UserType } from "@/sdk"
 
 definePageMeta({
-    manualPageLoading: true,
     layout: false
 })
 

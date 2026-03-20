@@ -3,7 +3,6 @@ import { Motion } from "motion-v";
 import { checkPasswordExistsAuthPasswordExistsUserIdGet, changePasswordNewAuthPasswordPost, loginAuthLoginPost } from "@/sdk"
 
 definePageMeta({
-    manualPageLoading: true,
     layout: false
 })
 
