@@ -1,4 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
+import pkg from './package.json'
 
 // iOS 보안상 빌드해야지 PWA가 정상 작동함 Tlqkf
 
@@ -111,6 +112,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase: "http://localhost:8000/", // NUXT_PUBLIC_API_BASE
+            buildDate: new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 16), // NUXT_PUBLIC_BUILD_DATE
+            clientVersion: pkg.version, // NUXT_PUBLIC_CLIENT_VERSION
         },
     },
 

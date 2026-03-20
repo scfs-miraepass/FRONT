@@ -2,6 +2,7 @@
 import Section from "@/components/setting/section.vue";
 import Obj from "@/components/setting/object.vue";
 
+const config = useRuntimeConfig()
 const colorMode = useColorMode()
 
 const themeOptions = [
@@ -46,5 +47,9 @@ const handleTheme = () => {
         <Section name="계정">
             <Obj icon="i-ph-sign-out" label="로그아웃" @click="handleLogout" />
         </Section>
+        <div class="text-ui-p2 space-y-1 light:text-black/10 dark:text-white/10 text-center">
+            <p>ClientVersion: {{ config.public.clientVersion }}</p>
+            <p>BuildDate: KST {{ config.public.buildDate }}</p>
+        </div>
     </div>
 </template>
