@@ -9,6 +9,5 @@ import Obj from "./object.vue";
             <Obj :user_id="1" :changed_amount="100000000" reason="홍길동"/>
             <Obj :user_id="1" :changed_amount="-100" reason="홍길동"/>
         </Group>
-
     </div>
 </template>
