@@ -133,14 +133,7 @@ export const pointHistoryPointHistoryGet = <ThrowOnError extends boolean = false
  *
  * 유저를 이름 또는 ID(학번)으로 검색합니다.
  */
-export const searchSearchGet = <ThrowOnError extends boolean = false>(options: Options<SearchSearchGetData, ThrowOnError>) => (options.client ?? client).get<SearchSearchGetResponses, SearchSearchGetErrors, ThrowOnError>({
-    url: '/search',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
+export const searchSearchGet = <ThrowOnError extends boolean = false>(options: Options<SearchSearchGetData, ThrowOnError>) => (options.client ?? client).get<SearchSearchGetResponses, SearchSearchGetErrors, ThrowOnError>({ url: '/search', ...options });
 
 /**
  * 교사 데이터

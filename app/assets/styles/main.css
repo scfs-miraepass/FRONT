@@ -101,8 +101,8 @@ body {
 }
 @media (display-mode: standalone) {
     .pwa-only-error {
-        @apply hidden!
-    }
+             @apply hidden!
+         }
     .pwa-only-content {
         @apply block!
     }
