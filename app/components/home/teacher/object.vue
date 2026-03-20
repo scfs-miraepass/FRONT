@@ -18,6 +18,6 @@ defineProps<User>()
             </p>
             {{ grade }}학년 {{ number }}반
         </div>
-        <p class="text-p0 mt-1">{{ name }}</p>
+        <p class="text-p0 mt-1.5">{{ name }}</p>
     </button>
 </template>

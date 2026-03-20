@@ -53,7 +53,7 @@ const onSearchInput = async (event: InputEvent) => {
 
 <template>
     <div class="w-full flex items-center justify-between opacity-50 -mt-2">
-        <p class="text-ui-p1 font-medium text-black/50">{{ session!.name }} 선생님</p>
+        <p class="text-ui-p1 font-medium  light:text-black/50 dark:text-white/50">{{ session!.name }} 선생님</p>
         <NuxtLink to="/setting">
             <UButton color="neutral" variant="ghost" icon="i-ph-gear-fill" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
         </NuxtLink>
@@ -78,7 +78,7 @@ const onSearchInput = async (event: InputEvent) => {
                 </USkeleton>
             </div>
             <div class="w-full h-full flex flex-col transition-opacity duration-250" :class="{ 'max-h-0': searchResult.length > 0, 'opacity-0': hiddenResult }">
-                <p class="px-5 pt-4.5 pb-1.5 text-ui-p1">{{ searchResult.length }}명의 학생들 찾았어요.</p>
+                <p class="px-5 pt-4.5 pb-1.5 text-ui-p2 light:text-black/50 dark:text-white/50">{{ searchResult.length }}명의 학생들 찾았어요.</p>
                 <div class="w-full h-full flex flex-col items-center justify-center text-ui-p1 opacity-50" v-if="searchResult.length <= 0">
                     <UIcon :name="search.length > 0? 'i-ph-smiley-sad-thin':'i-ph-magnifying-glass-thin'" class="text-h2 mb-1.5" />
                     {{ search.length > 0? '학생을 찾지 못했어요.':'지금 학생을 찾아보세요!' }}
