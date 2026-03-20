@@ -621,16 +621,17 @@ export type PointHistoryPointHistoryGetResponses = {
 export type PointHistoryPointHistoryGetResponse = PointHistoryPointHistoryGetResponses[keyof PointHistoryPointHistoryGetResponses];
 
 export type SearchSearchGetData = {
-    /**
-     * T
-     */
-    body?: Array<UserType>;
+    body?: never;
     path?: never;
     query: {
         /**
          * Q
          */
         q: string;
+        /**
+         * T
+         */
+        t?: Array<UserType>;
     };
     url: '/search';
 };
