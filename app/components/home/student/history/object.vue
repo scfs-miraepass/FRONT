@@ -4,6 +4,12 @@ import type { PointHistory } from "@/sdk";
 const props = defineProps<PointHistory>()
 
 const amountSign = computed(() => props.changed_amount > 0 ? '+' : '')
+
+const formattedTime = computed(() => {
+    const date = new Date(props.created_at!);
+    const kstDate = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+    return kstDate.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
+})
 </script>
 
 <template>
@@ -14,7 +20,7 @@ const amountSign = computed(() => props.changed_amount > 0 ? '+' : '')
             </div>
             <div class="ml-3">
                 <p class="text-p1 mb-0.5">{{ reason }}</p>
-                <p class="text-ui-p2 light:text-black/50 dark:text-white/50">19:11</p> <!-- PointHistory에 날짜/시간 속성이 있다면 교체해 주세요 -->
+                <p class="text-ui-p2 light:text-black/50 dark:text-white/50">{{ formattedTime }}</p>
             </div>
         </div>
         <p class="text-p1" :class="{'text-primary': amountSign == '+' }">{{ amountSign }}{{ props.changed_amount.toLocaleString() }}P</p>
