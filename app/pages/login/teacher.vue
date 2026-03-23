@@ -99,6 +99,7 @@ const passwordCheck = async () => {
 
 const login = async () => {
     (document.activeElement as HTMLElement)?.blur();
+    if (step1.password == null? teacherName.value.length <= 2:(password.value.length < 8 || password.value.length > 15 || (step1.password == false && password.value !== password_confirm.value))) return
     if (!teacherObj) return
     if (step1.password == false) {
         // 초기 접속하여 비밀번호 변경을 해야하는 경우
