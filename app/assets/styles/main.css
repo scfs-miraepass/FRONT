@@ -107,10 +107,3 @@ body {
         @apply block!
     }
 }
-
-.pwa-only-error {
-    @apply hidden!
-}
-.pwa-only-content {
-    @apply block!
-}
