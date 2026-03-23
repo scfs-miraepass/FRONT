@@ -16,13 +16,13 @@ const authLog = (message: string, ...args: any[]) => {
 }
 
 export default defineNuxtRouteMiddleware(async (to) => {
-    authLog(`'${to.path}'으로 페이지 이동`)
     if (import.meta.client) {
+        authLog(`'${to.path}'으로 페이지 이동`)
         const session = useSession()
         const now = Date.now()
 
         // 공통 API 호출 및 세션 상태 업데이트 함수
-        const fetchSession: typeof getCurrentUserAuthGet = async () => {
+        const fetchSession = async () => {
             authLog('fetchSession 호출')
             // 중복 호출 방지 (요청 중일 때 기존 Promise 재사용)
             if (!fetchPromise) {
@@ -39,6 +39,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
                 authLog( 'API 성공 (session 업데이트)')
                 session.value = req.data.data
                 lastFetched = Date.now()
+                useServerVersion().value = req.response.headers.get("X-Server-Version")
             } else {
                 session.value = undefined
                 lastFetched = 0

@@ -1,0 +1,1 @@
+export const useServerVersion =  () => useState<string | undefined>("server.version", () => undefined)

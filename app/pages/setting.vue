@@ -4,6 +4,7 @@ import Obj from "@/components/setting/object.vue";
 
 const config = useRuntimeConfig()
 const colorMode = useColorMode()
+const serverVersion = useServerVersion()
 
 const themeOptions = [
     { label: '시스템', value: 'system', icon: () => colorMode.value == 'dark' ? 'i-ph-moon-fill' : 'i-ph-sun-dim' },
@@ -49,6 +50,7 @@ const handleTheme = () => {
         </Section>
         <div class="text-ui-p2 space-y-1 light:text-black/10 dark:text-white/10 text-center">
             <p>ClientVersion: {{ config.public.clientVersion }}</p>
+            <p>ServerVersion: {{ serverVersion }}</p>
             <p>BuildDate: KST {{ config.public.buildDate }}</p>
         </div>
     </div>
