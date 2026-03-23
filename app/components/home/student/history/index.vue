@@ -5,13 +5,14 @@ import type { PointHistory } from "@/sdk";
 import type { Result } from "@/schemas/response";
 
 const maxOffset = ref<number>(0)
+const dataOffset = ref<number>(1)
 const historyPayload = ref<PointHistory[]>([])
 const showLoading = ref<boolean>(false)
 let loadingTimeout: any;
 
 const historyData = computed(() => {
     return historyPayload.value.reduce((acc, item) => {
-        const date = new Date(item.created_at);
+        const date = new Date(item.created_at!);
         const key = `${date.getMonth() + 1}월 ${date.getDate()}일`;
         if (!acc[key]) acc[key] = [];
         acc[key].push(item);
@@ -60,10 +61,12 @@ watch(pending, () => {
             <USkeleton class="h-4.5 w-20 mb-1 rounded-full light:bg-elevated dark:bg-accented/50" />
         </div>
         <!-- TODO: 이거 등장 애니메이션 넣고 싶은데.. -->
+        <!-- TODO: 무한 스크롤 구현해야함 -->
+        <!-- TODO: 아이콘 어떻게 처리할지 생각좀 하고 -->
         <Group v-for="(items, date) in historyData" :key="date" :date="date" v-else-if="historyPayload.length">
-            <Obj v-for="item in items" :key="item.id" :user_id="item.user_id" :changed_amount="item.changed_amount" :reason="item.reason"/>
+            <Obj v-for="item in items" :user_id="item.user_id" :changed_amount="item.changed_amount" :reason="item.reason"/>
         </Group>
-        <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50" v-else>
+        <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50" v-else-if="!pending">
             <UIcon name="i-ph-smiley-sad-thin" class="text-h2 mb-1.5" />
             포인트 사용기록이 존재하지 않아요..
         </div>
