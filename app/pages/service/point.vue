@@ -73,7 +73,7 @@ const onButton = async () => {
             </NuxtLink>
         </div>
         <div class="flex-1 flex flex-col transition" :class="{'pointer-events-none opacity-0 -translate-x-4': isComplete}">
-            <div class="h-full flex flex-col">
+            <div class="flex-1 flex flex-col">
                 <div class="mt-10">
                     <p class="text-p0 light:text-black/70 dark:text-white/70 font-normal"><span class="font-bold light:text-black dark:text-white">{{ userData.name }}</span> 학생에게 포인트를</p>
                     <p class="text-p0 text-black/70 dark:text-white/70 font-normal">얼마나 지급할까요?</p>

@@ -69,14 +69,14 @@ const onSelect = (user: User) => {
         v-model="search"
     />
     <hr class="my-3 border-default" />
-    <div class="px-1 py-2.5 light:bg-default dark:bg-muted rounded-2xl flex-1 overflow-y-scroll relative">
+    <div class="px-1 py-2.5 light:bg-default dark:bg-muted rounded-2xl flex-1 overflow-y-scroll relative flex flex-col">
         <div class="w-full h-full flex flex-col justify-center items-center transition-opacity duration-250 absolute top-0 left-0 pointer-events-none" :class="{ 'opacity-0!': !loadingResult }">
             <USkeleton class="flex flex-col justify-center items-center bg-transparent">
                 <UIcon name="i-ph-spinner-gap" class="text-h2 mb-1.5 animate-spin" />
                 검색중..
             </USkeleton>
         </div>
-        <div class="w-full h-full flex flex-col transition-opacity duration-250" :class="{ 'max-h-0': searchResult.length > 0, 'opacity-0': hiddenResult }">
+        <div class="flex-1 flex flex-col transition-opacity duration-250" :class="{ 'max-h-0': searchResult.length > 0, 'opacity-0': hiddenResult }">
             <p class="px-5 pt-4.5 pb-1.5 text-ui-p2 light:text-black/50 dark:text-white/50">{{ searchResult.length }}명의 학생들 찾았어요.</p>
             <div class="w-full h-full flex flex-col items-center justify-center text-ui-p1 opacity-50" v-if="searchResult.length <= 0">
                 <UIcon :name="search.length > 0? 'i-ph-smiley-sad-thin':'i-ph-magnifying-glass-thin'" class="text-h2 mb-1.5" />
