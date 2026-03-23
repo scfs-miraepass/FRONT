@@ -8,6 +8,17 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: false },
 
+    future: {
+        compatibilityVersion: 4,
+    },
+    experimental: {
+        viteEnvironmentApi: true,
+    },
+    typescript: {
+        typeCheck: 'build',
+        strict: true
+    },
+
     vite: {
         plugins: [tailwindcss()],
         server: {
