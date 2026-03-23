@@ -78,7 +78,7 @@ const onSelect = (user: User) => {
         </div>
         <div class="flex-1 flex flex-col transition-opacity duration-250" :class="{ 'max-h-0': searchResult.length > 0, 'opacity-0': hiddenResult }">
             <p class="px-5 pt-4.5 pb-1.5 text-ui-p2 light:text-black/50 dark:text-white/50">{{ searchResult.length }}명의 학생들 찾았어요.</p>
-            <div class="w-full h-full flex flex-col items-center justify-center text-ui-p1 opacity-50" v-if="searchResult.length <= 0">
+            <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50" v-if="searchResult.length <= 0">
                 <UIcon :name="search.length > 0? 'i-ph-smiley-sad-thin':'i-ph-magnifying-glass-thin'" class="text-h2 mb-1.5" />
                 {{ search.length > 0? '학생을 찾지 못했어요.':'지금 학생을 찾아보세요!' }}
             </div>
