@@ -247,6 +247,10 @@ export type User = {
      * 보유 포인트
      */
     point?: number;
+    /**
+     * 해당 유저가 포인트 지급/차감시 포인트 기록 타입
+     */
+    history_type?: PointHistoryType | null;
 };
 
 /**
