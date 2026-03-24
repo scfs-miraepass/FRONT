@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
-import { type UserType, type User, grantPointsPointGrantPost } from "@/sdk"
+import { type UserType, type User, grantPointsPointGrantPost, deductPointsPointDeductPost } from "@/sdk"
 
 definePageMeta({
     middleware: [
@@ -14,18 +14,24 @@ definePageMeta({
     permissions: ['teacher', 'service'] as UserType[]
 })
 
+const session = useSession()
 const userData = useState<User>("service.point.user.data")
 const amount = ref<number>(0)
 const isConfirm = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const isComplete = ref<boolean>(false)
+const isDeduct = computed<boolean>(() => session.value?.type == "service")
+
+const pointError = ref<boolean>(false)
+const [pointScope, pointAnimate] = useAnimate()
 
 const keypad = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-const triggerVibration = () => {
+const triggerVibration = (pattern?: number) => {
     // 모바일에서 진동 함수
+    // TODO: iOS 사파리에선 API 지원 안하는데 어떻게 하실
     if (typeof window !== 'undefined' && window.navigator.vibrate) {
-        window.navigator.vibrate(10)
+        window.navigator.vibrate(pattern ?? 10)
     }
 }
 
@@ -35,7 +41,20 @@ const onInput = (val: string) => {
     if (currentStr.length >= 6) return // 최대 6자리 제한
 
     // 초기값이 0이면 새 숫자로 교체, 아니면 뒤에 추가
-    amount.value = amount.value === 0 ? Number(val) : Number(currentStr + val)
+    const _new = amount.value === 0 ? Number(val) : Number(currentStr + val)
+    if (isDeduct.value && _new > userData.value.point!) {
+        if (typeof window !== 'undefined' && window.navigator.vibrate) {
+            // TODO: 이거 나중에 맞춰
+            window.navigator.vibrate(20)
+            setTimeout(() => window.navigator.vibrate(100), 100)
+        }
+        pointError.value = true
+        pointAnimate(pointScope.value, { translate: "20px" }, { type: "spring", stiffness: 700, damping: 3, mass: 0.5 })
+        setTimeout(() => pointAnimate(pointScope.value, { translate: '0' }, { type: "spring", stiffness: 700, damping: 3, mass: 0.5 }), 25)
+        return
+    }
+    pointError.value = false
+    amount.value = _new
 }
 
 const onDelete = () => {
@@ -46,17 +65,30 @@ const onDelete = () => {
     } else {
         amount.value = Number(currentStr.slice(0, -1))
     }
+    pointError.value = false
 }
 
 const onButton = async () => {
     isLoading.value = true
 
-    const req = await grantPointsPointGrantPost({
-        body: {
-            target_user_id: userData.value.id!,
-            amount: amount.value
-        }
-    })
+    let req
+    if (isDeduct.value) {
+        // 차감 처리
+        req = await deductPointsPointDeductPost({
+            body: {
+                target_user_id: userData.value.id!,
+                amount: amount.value
+            }
+        })
+    } else {
+        // 지급 처리
+        req = await grantPointsPointGrantPost({
+            body: {
+                target_user_id: userData.value.id!,
+                amount: amount.value
+            }
+        })
+    }
     if (req.error) {
         // TODO: 에러처리
         return
@@ -74,23 +106,40 @@ const onButton = async () => {
         </div>
         <div class="flex-1 flex flex-col transition" :class="{'pointer-events-none opacity-0 -translate-x-4': isComplete}">
             <div class="flex-1 flex flex-col">
-                <div class="mt-10">
+                <!-- 상단 타이틀 -->
+                <div class="mt-10" v-if="isDeduct">
+                    <p class="text-p0 light:text-black/70 dark:text-white/70 font-normal"><span class="font-bold light:text-black dark:text-white">{{ userData.name }}</span> 학생의 포인트에서</p>
+                    <p class="text-p0 text-black/70 dark:text-white/70 font-normal">얼마나 결제할까요?</p>
+                </div>
+                <div class="mt-10" v-else>
                     <p class="text-p0 light:text-black/70 dark:text-white/70 font-normal"><span class="font-bold light:text-black dark:text-white">{{ userData.name }}</span> 학생에게 포인트를</p>
                     <p class="text-p0 text-black/70 dark:text-white/70 font-normal">얼마나 지급할까요?</p>
                 </div>
-                <div class="flex items-center justify-center flex-1 mb-11.5">
-                    <span class="text-h2 font-bold">{{ amount.toLocaleString() }}</span>
-                    <span class="text-h4">P</span>
+
+                <!-- 지급/차감할 포인트 UI -->
+                <div class="flex flex-col items-center justify-center flex-1 mb-11.5">
+                    <div class="flex items-center">
+                        <span class="text-h2 font-bold">{{ amount.toLocaleString() }}</span>
+                        <span class="text-h4">P</span>
+                    </div>
+                    <p
+                        class="text-ui-p2 mt-2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40 transition-colors"
+                        :class="{ 'text-error!': pointError }"
+                        v-if="isDeduct"
+                        ref="pointScope"
+                    >
+                        {{ userData.point!.toLocaleString() }} 포인트 사용가능
+                    </p>
                 </div>
             </div>
             <p class="text-ui-p2 mb-5 flex items-center justify-center light:text-black/50 dark:text-white/50 transition-opacity" :class="[isConfirm? 'opacity-100':'opacity-0']">
                 <UIcon name="i-ph-warning" class="mr-1" />
-                지급된 이후에는 회수할 수 없어요.
+                {{ isDeduct? '결제가 진행된 이후에는 취소할 수 없어요.':'지급된 이후에는 회수할 수 없어요.' }}
             </p>
             <div class="flex gap-3">
                 <UButton
                     class="rounded-2xl justify-center flex py-4.5 transition-opacity mb-3 w-full"
-                    :disabled="amount <= 0"
+                    :disabled="amount <= 0 || pointError"
                     @click="isConfirm = true"
                     v-if="!isConfirm"
                 >
@@ -103,7 +152,7 @@ const onButton = async () => {
                     @click="onButton"
                     v-else
                 >
-                    <p class="text-p0">{{ !isLoading? '지급하기':'처리중..' }}</p>
+                    <p class="text-p0">{{ !isLoading? (isDeduct? '결제하기':'지급하기'):'처리중..' }}</p>
                 </UButton>
                 <Motion
                     class="aspect-square mb-3"
@@ -158,7 +207,7 @@ const onButton = async () => {
         <div class="pt-10 h-full w-full flex flex-col items-center justify-center absolute transition" :class="{'pointer-events-none opacity-0 translate-x-4': !isComplete}">
             <div class="h-full flex flex-col justify-center items-center text-ui-p1 opacity-50">
                 <UIcon name="i-ph-check-circle" class="text-h2 mb-1.5" />
-                정상적으로 지급되었어요.
+                {{ isDeduct? '결제가 정상적으로 되었어요.':'정상적으로 지급되었어요.' }}
             </div>
             <NuxtLink to="/" v-slot="{ navigate }" custom>
                 <UButton

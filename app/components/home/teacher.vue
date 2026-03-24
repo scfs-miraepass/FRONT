@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Search from "../search/index.vue";
+import Search from "./search/index.vue";
 
 const session = useSession();
 </script>
