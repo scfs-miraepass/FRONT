@@ -49,7 +49,6 @@ const onInput = (val: string) => {
     const _new = amount.value === 0 ? Number(val) : Number(currentStr + val)
     if (isDeduct.value && _new > userData.value.point!) {
         if (typeof window !== 'undefined' && window.navigator.vibrate) {
-            // TODO: 이거 나중에 맞춰
             window.navigator.vibrate(20)
             setTimeout(() => window.navigator.vibrate(100), 100)
         }
