@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
-import { type UserType, type User, grantPointsPointGrantPost, deductPointsPointDeductPost } from "@/sdk"
+import {
+    type UserType,
+    type User,
+    grantPointsPointGrantPost,
+    deductPointsPointDeductPost
+} from "@/sdk"
 
 definePageMeta({
     middleware: [
@@ -77,7 +82,8 @@ const onButton = async () => {
         req = await deductPointsPointDeductPost({
             body: {
                 target_user_id: userData.value.id!,
-                amount: amount.value
+                amount: amount.value,
+                change_type: userData.value.history_type
             }
         })
     } else {
@@ -85,7 +91,8 @@ const onButton = async () => {
         req = await grantPointsPointGrantPost({
             body: {
                 target_user_id: userData.value.id!,
-                amount: amount.value
+                amount: amount.value,
+                change_type: userData.value.history_type || "teacher"
             }
         })
     }
