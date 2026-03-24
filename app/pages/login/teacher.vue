@@ -147,6 +147,11 @@ const login = async () => {
         }"
         ref="scope"
     >
+        <div class="flex items-center mb-4">
+            <NuxtLink to="/login?disableOpening=true" v-slot="{ navigate }" custom replace>
+                <UButton @click="navigate()" color="neutral" variant="ghost" icon="i-ph-caret-left-bold" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
+            </NuxtLink>
+        </div>
         <div class="flex-1 flex flex-col py-20">
             <p class="text-h6 font-bold" v-if="step1.password == null">이름을<br />입력해주세요.</p>
             <p class="text-h6 font-bold" v-if="step1.password == true">비밀번호를<br />입력해주세요.</p>
