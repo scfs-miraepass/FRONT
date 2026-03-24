@@ -136,9 +136,9 @@ const onButton = async () => {
                 <UIcon name="i-ph-warning" class="mr-1" />
                 {{ isDeduct? '결제가 진행된 이후에는 취소할 수 없어요.':'지급된 이후에는 회수할 수 없어요.' }}
             </p>
-            <div class="flex gap-3">
+            <div class="flex gap-3 mb-3">
                 <UButton
-                    class="rounded-2xl justify-center flex py-4.5 transition-opacity mb-3 w-full"
+                    class="rounded-2xl justify-center flex py-4.5 transition-opacity w-full"
                     :disabled="amount <= 0 || pointError"
                     @click="isConfirm = true"
                     v-if="!isConfirm"
@@ -146,7 +146,7 @@ const onButton = async () => {
                     <p class="text-p0">다음</p>
                 </UButton>
                 <UButton
-                    class="rounded-2xl justify-center flex py-4.5 transition-opacity mb-3 w-full"
+                    class="rounded-2xl justify-center flex py-4.5 transition-opacity w-full"
                     :disabled="isLoading"
                     :loading="isLoading"
                     @click="onButton"
@@ -155,7 +155,7 @@ const onButton = async () => {
                     <p class="text-p0">{{ !isLoading? (isDeduct? '결제하기':'지급하기'):'처리중..' }}</p>
                 </UButton>
                 <Motion
-                    class="aspect-square mb-3"
+                    class="h-auto aspect-square"
                     :initial="{ marginRight: '-100%' }"
                     :animate="{ marginRight: (!isConfirm || isLoading) ? '-100%' : 0 }"
                     :transition="{
@@ -167,7 +167,7 @@ const onButton = async () => {
                     <UButton
                         color="error"
                         variant="soft"
-                        class="rounded-2xl justify-center flex py-4.5 transition-opacity text-nowrap w-full"
+                        class="rounded-2xl justify-center flex py-4.5 transition-opacity text-nowrap w-full h-full"
                         :disabled="isLoading"
                         @click="isConfirm = false"
                     >

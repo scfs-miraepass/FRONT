@@ -3,7 +3,7 @@ import type { UserType } from "@/sdk"
 const consoleLog = (message: string, ...args: any[]) => {
     console.log(
         `%cPermissions Middleware%c ${message}`,
-        'background: oklch(48.8% 0.243 264.376); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;',
+        'background: oklch(82.8% 0.189 84.429); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;',
         'color: inherit;',
         ...args
     )
