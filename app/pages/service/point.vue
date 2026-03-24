@@ -82,7 +82,7 @@ const onButton = async () => {
             body: {
                 target_user_id: userData.value.id!,
                 amount: amount.value,
-                change_type: userData.value.history_type
+                change_type: session.value!.history_type
             }
         })
     } else {
@@ -91,7 +91,7 @@ const onButton = async () => {
             body: {
                 target_user_id: userData.value.id!,
                 amount: amount.value,
-                change_type: userData.value.history_type || "teacher"
+                change_type: session.value!.history_type || "teacher"
             }
         })
     }
