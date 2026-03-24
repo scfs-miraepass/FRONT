@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Group from "./days.vue";
 import Obj from "./object.vue";
+import { Motion } from "motion-v"
 import type { PointHistory } from "@/sdk";
 import type { Result } from "@/schemas/response";
 
@@ -21,8 +22,15 @@ const historyData = computed(() => {
     }, {} as Record<string, PointHistory[]>);
 });
 
+const queryParams = computed(() => ({
+    limit: 20,
+    offset: (dataOffset.value - 1) * 20
+}))
+
+
 const { pending } = await useAPI<Result<PointHistory[]>>("/point/history", {
     method: "GET",
+    query: queryParams,
     onResponse({ response }) {
         maxOffset.value = Number(response.headers.get("X-MAX-PAGE"))
         if (!response._data?.success) return
@@ -45,6 +53,18 @@ watch(pending, () => {
         showLoading.value = false
     }
 }, { immediate: true })
+
+const { scrollYProgress } = useScroll()
+
+useMotionValueEvent(scrollYProgress, 'change', (current) => {
+    if (current >= 0.9) {
+        if (pending.value || dataOffset.value >= maxOffset.value) {
+            return
+        }
+        dataOffset.value++
+    }
+})
+
 </script>
 
 <template>
@@ -61,12 +81,24 @@ watch(pending, () => {
             </div>
             <USkeleton class="h-4.5 w-20 mb-1 rounded-full light:bg-elevated dark:bg-accented/50" />
         </div>
-        <!-- TODO: 이거 등장 애니메이션 넣고 싶은데.. -->
-        <!-- TODO: 무한 스크롤 구현해야함 -->
         <!-- TODO: 아이콘 어떻게 처리할지 생각좀 하고 -->
-        <Group v-for="(items, date) in historyData" :key="date" :date="date" v-else-if="historyPayload.length">
-            <Obj v-for="item in items" v-bind="item" />
-        </Group>
+        <Motion
+            as="div"
+            v-for="(items, date) in historyData"
+            v-else-if="historyPayload.length"
+
+            :initial="{ opacity: 0, translateY: '20px' }"
+            :animate="{ opacity: 1, translateY: '0' }"
+            :transition="{
+                duration: 1,
+                delay: 0.5,
+                ease: [0, 0.71, 0.2, 1.01],
+            }"
+        >
+            <Group :key="date" :date="date" >
+                <Obj v-for="item in items" v-bind="item" />
+            </Group>
+        </Motion>
         <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50" v-else-if="!pending">
             <UIcon name="i-ph-smiley-sad-thin" class="text-h2 mb-1.5" />
             포인트 사용기록이 존재하지 않아요..
