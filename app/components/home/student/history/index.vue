@@ -81,7 +81,6 @@ useMotionValueEvent(scrollYProgress, 'change', (current) => {
             </div>
             <USkeleton class="h-4.5 w-20 mb-1 rounded-full light:bg-elevated dark:bg-accented/50" />
         </div>
-        <!-- TODO: 아이콘 어떻게 처리할지 생각좀 하고 -->
         <Motion
             as="div"
             v-for="(items, date) in historyData"

@@ -36,6 +36,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
+            title: "미래패스",
             link: [
                 { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
                 { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
@@ -142,7 +143,7 @@ export default defineNuxtConfig({
     pwa: {
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         client: {
-            installPrompt: false,
+            installPrompt: true,
         },
         devOptions: {
             enabled: true, // DEV Only
@@ -184,6 +185,8 @@ export default defineNuxtConfig({
             display: "standalone",
             background_color: "#F1F5F9",
             theme_color: "#F1F5F9",
+            description: "순천미래과학고등학교의 교내전용 포인트 시스템 전용 앱",
+            orientation: "portrait"
         },
         workbox: {
             navigateFallback: '/',
