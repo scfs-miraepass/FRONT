@@ -97,10 +97,19 @@ export type PointHistory = {
      */
     reason: string;
     /**
+     * 기록 종류
+     */
+    type?: PointHistoryType | null;
+    /**
      * Created At
      */
     created_at?: string;
 };
+
+/**
+ * PointHistoryType
+ */
+export type PointHistoryType = 'teacher' | 'cafe' | 'food';
 
 /**
  * PointOperation
@@ -113,9 +122,13 @@ export type PointOperation = {
     /**
      * Amount
      *
-     * Amount of points
+     * 처리할 포인트
      */
     amount: number;
+    /**
+     * 포인트를 처리하는 이유의 종류
+     */
+    change_type?: PointHistoryType | null;
 };
 
 /**
@@ -234,6 +247,10 @@ export type User = {
      * 보유 포인트
      */
     point?: number;
+    /**
+     * 해당 유저가 포인트 지급/차감시 포인트 기록 타입
+     */
+    history_type?: PointHistoryType | null;
 };
 
 /**
@@ -548,40 +565,6 @@ export type DeductPointsPointDeductPostResponses = {
 
 export type DeductPointsPointDeductPostResponse = DeductPointsPointDeductPostResponses[keyof DeductPointsPointDeductPostResponses];
 
-export type GetPointBalancePointTargetUserIdGetData = {
-    body?: never;
-    path: {
-        /**
-         * Target User Id
-         */
-        target_user_id: number;
-    };
-    query?: never;
-    url: '/point/{target_user_id}';
-};
-
-export type GetPointBalancePointTargetUserIdGetErrors = {
-    /**
-     * 유저를 찾을 수 없음
-     */
-    404: ErrorResponse;
-    /**
-     * Validation Error
-     */
-    422: HttpValidationError;
-};
-
-export type GetPointBalancePointTargetUserIdGetError = GetPointBalancePointTargetUserIdGetErrors[keyof GetPointBalancePointTargetUserIdGetErrors];
-
-export type GetPointBalancePointTargetUserIdGetResponses = {
-    /**
-     * 정상 처리
-     */
-    200: ResponseModelInt;
-};
-
-export type GetPointBalancePointTargetUserIdGetResponse = GetPointBalancePointTargetUserIdGetResponses[keyof GetPointBalancePointTargetUserIdGetResponses];
-
 export type PointHistoryPointHistoryGetData = {
     body?: never;
     path?: never;
@@ -619,6 +602,40 @@ export type PointHistoryPointHistoryGetResponses = {
 };
 
 export type PointHistoryPointHistoryGetResponse = PointHistoryPointHistoryGetResponses[keyof PointHistoryPointHistoryGetResponses];
+
+export type GetPointBalancePointTargetUserIdGetData = {
+    body?: never;
+    path: {
+        /**
+         * Target User Id
+         */
+        target_user_id: number;
+    };
+    query?: never;
+    url: '/point/{target_user_id}';
+};
+
+export type GetPointBalancePointTargetUserIdGetErrors = {
+    /**
+     * 유저를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetPointBalancePointTargetUserIdGetError = GetPointBalancePointTargetUserIdGetErrors[keyof GetPointBalancePointTargetUserIdGetErrors];
+
+export type GetPointBalancePointTargetUserIdGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelInt;
+};
+
+export type GetPointBalancePointTargetUserIdGetResponse = GetPointBalancePointTargetUserIdGetResponses[keyof GetPointBalancePointTargetUserIdGetResponses];
 
 export type SearchSearchGetData = {
     body?: never;

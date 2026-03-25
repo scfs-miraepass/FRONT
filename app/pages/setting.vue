@@ -4,6 +4,7 @@ import Obj from "@/components/setting/object.vue";
 
 const config = useRuntimeConfig()
 const colorMode = useColorMode()
+const serverVersion = useServerVersion()
 
 const themeOptions = [
     { label: '시스템', value: 'system', icon: () => colorMode.value == 'dark' ? 'i-ph-moon-fill' : 'i-ph-sun-dim' },
@@ -34,8 +35,8 @@ const handleTheme = () => {
 
 <template>
     <div class="flex items-center mb-4">
-        <NuxtLink to="/">
-            <UButton color="neutral" variant="ghost" icon="i-ph-caret-left-bold" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
+        <NuxtLink to="/" v-slot="{ navigate }" custom>
+            <UButton @click="navigate()" color="neutral" variant="ghost" icon="i-ph-caret-left-bold" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
         </NuxtLink>
         <p class="text-2xl font-bold text-gray-900 dark:text-white ml-1">설정</p>
     </div>
@@ -49,6 +50,7 @@ const handleTheme = () => {
         </Section>
         <div class="text-ui-p2 space-y-1 light:text-black/10 dark:text-white/10 text-center">
             <p>ClientVersion: {{ config.public.clientVersion }}</p>
+            <p>ServerVersion: {{ serverVersion }}</p>
             <p>BuildDate: KST {{ config.public.buildDate }}</p>
         </div>
     </div>
