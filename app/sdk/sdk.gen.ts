@@ -115,18 +115,18 @@ export const deductPointsPointDeductPost = <ThrowOnError extends boolean = false
 });
 
 /**
- * 포인트 조회
- *
- * 특정 유저의 현재 포인트를 조회합니다.
- */
-export const getPointBalancePointTargetUserIdGet = <ThrowOnError extends boolean = false>(options: Options<GetPointBalancePointTargetUserIdGetData, ThrowOnError>) => (options.client ?? client).get<GetPointBalancePointTargetUserIdGetResponses, GetPointBalancePointTargetUserIdGetErrors, ThrowOnError>({ url: '/point/{target_user_id}', ...options });
-
-/**
  * 포인트 기록
  *
  * 현재 로그인한 자기자신의 포인트 기록을 조회합니다.
  */
 export const pointHistoryPointHistoryGet = <ThrowOnError extends boolean = false>(options?: Options<PointHistoryPointHistoryGetData, ThrowOnError>) => (options?.client ?? client).get<PointHistoryPointHistoryGetResponses, PointHistoryPointHistoryGetErrors, ThrowOnError>({ url: '/point/history', ...options });
+
+/**
+ * 포인트 조회
+ *
+ * 특정 유저의 현재 포인트를 조회합니다.
+ */
+export const getPointBalancePointTargetUserIdGet = <ThrowOnError extends boolean = false>(options: Options<GetPointBalancePointTargetUserIdGetData, ThrowOnError>) => (options.client ?? client).get<GetPointBalancePointTargetUserIdGetResponses, GetPointBalancePointTargetUserIdGetErrors, ThrowOnError>({ url: '/point/{target_user_id}', ...options });
 
 /**
  * 유저 검색

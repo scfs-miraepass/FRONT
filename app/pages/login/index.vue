@@ -7,10 +7,12 @@ definePageMeta({
 })
 
 const [scope, animate] = useAnimate()
+const route = useRoute()
+const disableOpening = route.query.disableOpening === "true"
 
 const typeSelect = (type: UserType) => {
     // 완전히 보였을 때 부터 선택 이벤트가 처리 되도록
-    if (Number((scope.value as HTMLElement).style.opacity) < 0.8) return
+    if (scope.value && Number(window.getComputedStyle(scope.value).opacity) < 0.8) return
     animate(
         scope.value,
         { opacity: 0 },
@@ -34,6 +36,7 @@ const typeSelect = (type: UserType) => {
             delay: 2.5,
             ease: [0, 0.71, 0.2, 1.01],
         }"
+        v-if="!disableOpening"
     >
         <Motion
             as="p"
@@ -71,7 +74,7 @@ const typeSelect = (type: UserType) => {
         :animate="{ opacity: 1 }"
         :transition="{
             duration: 1,
-            delay: 2.5,
+            delay: disableOpening? 0:2.5,
             ease: [0, 0.71, 0.2, 1.01],
         }"
         ref="scope"

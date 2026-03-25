@@ -8,6 +8,17 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: false },
 
+    future: {
+        compatibilityVersion: 4,
+    },
+    experimental: {
+        viteEnvironmentApi: true,
+    },
+    typescript: {
+        typeCheck: 'build',
+        strict: true
+    },
+
     vite: {
         plugins: [tailwindcss()],
         server: {
@@ -25,6 +36,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
+            title: "미래패스",
             link: [
                 { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
                 { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
@@ -97,7 +109,7 @@ export default defineNuxtConfig({
                     name: "viewport",
                     content: "initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no",
                 },
-                { name: 'apple-mobile-web-app-capable', content: 'yes' },
+                { name: 'mobile-web-app-capable', content: 'yes' },
                 { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
                 { name: 'apple-mobile-web-app-title', content: '미래 패스' },
             ],
@@ -131,7 +143,7 @@ export default defineNuxtConfig({
     pwa: {
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         client: {
-            installPrompt: false,
+            installPrompt: true,
         },
         devOptions: {
             enabled: true, // DEV Only
@@ -173,6 +185,8 @@ export default defineNuxtConfig({
             display: "standalone",
             background_color: "#F1F5F9",
             theme_color: "#F1F5F9",
+            description: "순천미래과학고등학교의 교내전용 포인트 시스템 전용 앱",
+            orientation: "portrait"
         },
         workbox: {
             navigateFallback: '/',
