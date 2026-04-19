@@ -1,0 +1,22 @@
+docker-build:
+  image: docker:cli
+  stage: build
+  services:
+    - docker:dind
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - APP_VERSION=$(grep -m 1 '"version"' package.json | cut -d '"' -f 4)
+    - echo "APP VERSION '$APP_VERSION'"
+    - docker build --pull --provenance=false -t "$DOCKER_IMAGE_NAME:latest" -t "$CI_REGISTRY_IMAGE:$APP_VERSION" .
+    - docker push "$DOCKER_IMAGE_NAME:latest"
+    - docker push "$CI_REGISTRY_IMAGE:$APP_VERSION"
+  after_script:
+    - docker logout
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      exists:
+        - Dockerfile
