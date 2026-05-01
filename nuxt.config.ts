@@ -122,7 +122,7 @@ export default defineNuxtConfig({
     css: ["./app/assets/styles/main.css", "./app/assets/styles/tossface.css"],
 
     routeRules: {
-        '/api/**': {
+        '/ser/api/**': {
             proxy: process.env.NODE_ENV === 'production' ? 'http://backend:8000/**' : 'http://localhost:8000/**',
         },
     },

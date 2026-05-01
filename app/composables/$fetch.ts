@@ -1,19 +1,13 @@
-import { ofetch, type FetchOptions } from 'ofetch'
-import type { Config } from "@/sdk/client";
+import { ofetch } from 'ofetch'
 
-// SDK, Fetch 인스터스 공통 옵션
-export const fetchOption: FetchOptions & Config = {
+export const $fetch = ofetch.create({
     credentials: "include",
     async onRequest({options}) {
         if (import.meta.env.SSR) {
             const {origin} = useRequestURL()
-            options.baseURL = `${origin}/api`
+            options.baseURL = `${origin}/ser/api/`
         } else {
-            options.baseURL = '/api'
+            options.baseURL = '/ser/api/'
         }
     }
-}
-
-export const $fetch = ofetch.create({
-    ...fetchOption
 })
