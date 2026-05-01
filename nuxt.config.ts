@@ -121,9 +121,14 @@ export default defineNuxtConfig({
 
     css: ["./app/assets/styles/main.css", "./app/assets/styles/tossface.css"],
 
+    routeRules: {
+        '/api/**': {
+            proxy: process.env.NODE_ENV === 'production' ? 'http://backend:8000/**' : 'http://localhost:8000/**',
+        },
+    },
+
     runtimeConfig: {
         public: {
-            apiBase: "http://localhost:8000/", // NUXT_PUBLIC_API_BASE
             buildDate: new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 16), // NUXT_PUBLIC_BUILD_DATE
             clientVersion: pkg.version, // NUXT_PUBLIC_CLIENT_VERSION
         },
