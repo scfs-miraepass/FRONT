@@ -16,6 +16,12 @@
         "message": "chore(release): ${nextRelease.version} [skip ci]"
       }
     ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "echo \"NEW_VERSION=${nextRelease.version}\" >> build.env"
+      }
+    ],
     "@semantic-release/gitlab"
   ]
 }

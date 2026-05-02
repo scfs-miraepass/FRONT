@@ -4,14 +4,18 @@ stages:
 
 semantic-release:
   stage: release
-  image: node:24
+  image: node:24-slim
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_COMMIT_BRANCH == "dev"
+  before_script:
+    - apt-get update && apt-get install -y git
   script:
-    - npm install @semantic-release/changelog @semantic-release/git @semantic-release/gitlab @semantic-release/npm @semantic-release/commit-analyzer @semantic-release/release-notes-generator -D
+    - npm install @semantic-release/changelog @semantic-release/git @semantic-release/gitlab @semantic-release/exec @semantic-release/npm @semantic-release/commit-analyzer @semantic-release/release-notes-generator -D
     - npx semantic-release
   artifacts:
+    reports:
+      dotenv: build.env
     paths:
       - package.json
       - pyproject.toml
@@ -25,16 +29,19 @@ docker-build:
     DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
+  needs:
+    - job: semantic-release
+      artifacts: true
+  rules:
+    - if: $NEW_VERSION
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull --provenance=false -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
-    - if [[ "$CI_COMMIT_TAG" != *"-dev"* ]]; then
-        docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG $CI_REGISTRY_IMAGE:latest
+    - docker build --pull --provenance=false -t "$CI_REGISTRY_IMAGE:$NEW_VERSION" .
+    - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
+    - if [[ "$NEW_VERSION" != *"-dev"* ]]; then
+        docker tag $CI_REGISTRY_IMAGE:$NEW_VERSION $CI_REGISTRY_IMAGE:latest
         docker push $CI_REGISTRY_IMAGE:latest
       fi
   after_script:
     - docker logout
-  rules:
-    - if: $CI_COMMIT_TAG
