@@ -1,3 +1,10 @@
+## [1.0.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.1...v1.0.2) (2026-05-02)
+
+
+### Bug Fixes
+
+* **ci/cd:** 릴리즈가 되었음에도 도커 빌드가 안되는 현상 해결2 [skip ci] ([159ccfc](https://git.rldn.xyz/scfs.miraepass/front/commit/159ccfcdfe148fe5035f74e731354459d66d93cf))
+
 ## [1.0.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.0...v1.0.1) (2026-05-02)
 
 
