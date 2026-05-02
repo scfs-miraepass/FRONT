@@ -25,6 +25,11 @@
     "vue-router": "^5.0.3"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/gitlab": "^13.3.2",
+    "@semantic-release/npm": "^13.1.5",
+    "semantic-release": "^25.0.3",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.6"
   }
