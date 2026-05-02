@@ -1,3 +1,10 @@
+## [1.0.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.2...v1.0.3) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deploy:** `if [[ "$NEW_VERSION" != *"-dev"* ]]; then` 파트 에러 해결 ([78229ba](https://git.rldn.xyz/scfs.miraepass/front/commit/78229ba64f311c9f5a630e169c466789ce04ba82))
+
 ## [1.0.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.1...v1.0.2) (2026-05-02)
 
 
