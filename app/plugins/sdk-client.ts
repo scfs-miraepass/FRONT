@@ -4,6 +4,6 @@ import { client } from '@/sdk/client.gen'
 export default defineNuxtPlugin((nuxtApp) => {
     client.setConfig({
         credentials: "include",
-        baseUrl: "/ser/api/",
+        baseUrl: "/api/",
     })
 })

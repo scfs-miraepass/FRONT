@@ -98,7 +98,6 @@ const isPwaReady = computed(() => !$pwa?.isPWAInstalled || _load.value)
                                 </div>
                             </UCarousel>
                         </div>
-                        <!-- TODO: 앱 설치 방법 안내. 기종에 따라 이미지 보이도록 할것 -->
                     </div>
                 </div>
                 <div class="pwa-only-content">
