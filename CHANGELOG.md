@@ -1,3 +1,10 @@
+# [1.1.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.3...v1.1.0-dev.1) (2026-05-03)
+
+
+### Features
+
+* 대시보드 접근을 위한 /admin 프록시 구성 ([8d9933a](https://git.rldn.xyz/scfs.miraepass/front/commit/8d9933a15b6b16850f835b3678b0762c9dda2031))
+
 ## [1.0.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.2...v1.0.3) (2026-05-02)
 
 
