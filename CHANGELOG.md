@@ -1,3 +1,10 @@
+# [1.1.0-dev.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0-dev.1...v1.1.0-dev.2) (2026-05-03)
+
+
+### Bug Fixes
+
+* 대시보드(/admin) 포트가 잘못되어 있던거 해결 ([1f35ea7](https://git.rldn.xyz/scfs.miraepass/front/commit/1f35ea78ce83ed87358d64e57225f1dd8223f5bd))
+
 # [1.1.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.3...v1.1.0-dev.1) (2026-05-03)
 
 
