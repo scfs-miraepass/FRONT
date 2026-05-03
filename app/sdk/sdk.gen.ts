@@ -2,9 +2,9 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses } from './types.gen';
+import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GetStudentsAdminStudentGetData, GetStudentsAdminStudentGetErrors, GetStudentsAdminStudentGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses, UpdateStudentsPointAdminPointPostData, UpdateStudentsPointAdminPointPostErrors, UpdateStudentsPointAdminPointPostResponses } from './types.gen';
 
-export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
      * individual options. This might be also useful if you want to implement a
@@ -89,7 +89,7 @@ export const checkPasswordExistsAuthPasswordExistsUserIdGet = <ThrowOnError exte
 /**
  * 포인트 지급
  *
- * 특정 유저에게 포인트를 지급합니다. (교사 전용)
+ * 특정 유저에게 포인트를 지급합니다. (교사 또는 관리자 전용)
  */
 export const grantPointsPointGrantPost = <ThrowOnError extends boolean = false>(options: Options<GrantPointsPointGrantPostData, ThrowOnError>) => (options.client ?? client).post<GrantPointsPointGrantPostResponses, GrantPointsPointGrantPostErrors, ThrowOnError>({
     url: '/point/grant',
@@ -103,7 +103,7 @@ export const grantPointsPointGrantPost = <ThrowOnError extends boolean = false>(
 /**
  * 포인트 차감
  *
- * 특정 유저의 포인트를 차감합니다. (서비스 유저 전용)
+ * 특정 유저의 포인트를 차감합니다. (서비스 유저 또는 관리자 전용)
  */
 export const deductPointsPointDeductPost = <ThrowOnError extends boolean = false>(options: Options<DeductPointsPointDeductPostData, ThrowOnError>) => (options.client ?? client).post<DeductPointsPointDeductPostResponses, DeductPointsPointDeductPostErrors, ThrowOnError>({
     url: '/point/deduct',
@@ -141,3 +141,24 @@ export const searchSearchGet = <ThrowOnError extends boolean = false>(options: O
  * 교사의 정확한 이름을 가지고 교사의 데이터를 가져옵니다.
  */
 export const teacherGetByNameSearchTeacherUserNameGet = <ThrowOnError extends boolean = false>(options: Options<TeacherGetByNameSearchTeacherUserNameGetData, ThrowOnError>) => (options.client ?? client).get<TeacherGetByNameSearchTeacherUserNameGetResponses, TeacherGetByNameSearchTeacherUserNameGetErrors, ThrowOnError>({ url: '/search/teacher/{user_name}', ...options });
+
+/**
+ * 학생 목록
+ *
+ * 전체 학생 목록을 조회합니다.
+ */
+export const getStudentsAdminStudentGet = <ThrowOnError extends boolean = false>(options?: Options<GetStudentsAdminStudentGetData, ThrowOnError>) => (options?.client ?? client).get<GetStudentsAdminStudentGetResponses, GetStudentsAdminStudentGetErrors, ThrowOnError>({ url: '/admin/student', ...options });
+
+/**
+ * 포인트 일괄 처리
+ *
+ * 일괄적으로 포인트를 지급하거나 차감합니다.
+ */
+export const updateStudentsPointAdminPointPost = <ThrowOnError extends boolean = false>(options: Options<UpdateStudentsPointAdminPointPostData, ThrowOnError>) => (options.client ?? client).post<UpdateStudentsPointAdminPointPostResponses, UpdateStudentsPointAdminPointPostErrors, ThrowOnError>({
+    url: '/admin/point',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

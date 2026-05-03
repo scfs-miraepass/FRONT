@@ -4,10 +4,10 @@ export const $fetch = ofetch.create({
     credentials: "include",
     async onRequest({options}) {
         if (import.meta.env.SSR) {
-            const {origin} = useRequestURL()
-            options.baseURL = `${origin}/ser/api/`
+            const { origin } = useRequestURL()
+            options.baseURL = `${origin}/api/`
         } else {
-            options.baseURL = '/ser/api/'
+            options.baseURL = '/api/'
         }
     }
 })

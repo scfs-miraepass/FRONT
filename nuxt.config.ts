@@ -34,6 +34,10 @@ export default defineNuxtConfig({
         }
     },
 
+    icon: {
+        localApiEndpoint: "/_icon/api"
+    },
+
     app: {
         head: {
             title: "미래패스",
@@ -122,7 +126,7 @@ export default defineNuxtConfig({
     css: ["./app/assets/styles/main.css", "./app/assets/styles/tossface.css"],
 
     routeRules: {
-        '/ser/api/**': {
+        '/api/**': {
             proxy: process.env.NODE_ENV === 'production' ? 'http://backend:8000/**' : 'http://localhost:8000/**',
         },
     },
