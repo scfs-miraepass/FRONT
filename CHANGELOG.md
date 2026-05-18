@@ -1,3 +1,10 @@
+# [1.1.0-dev.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0-dev.2...v1.1.0-dev.3) (2026-05-18)
+
+
+### Features
+
+* **ui:** 선생님 포인트 기록및 포인트 추가 ([12f4b90](https://git.rldn.xyz/scfs.miraepass/front/commit/12f4b90f3da01a878c3ccc83e5bac61da6d55d09))
+
 # [1.1.0-dev.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0-dev.1...v1.1.0-dev.2) (2026-05-03)
 
 
