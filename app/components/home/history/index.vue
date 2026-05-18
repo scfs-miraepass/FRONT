@@ -94,7 +94,7 @@ useMotionValueEvent(scrollYProgress, 'change', (current) => {
                 ease: [0, 0.71, 0.2, 1.01],
             }"
         >
-            <Group :key="date" :date="date" >
+            <Group :key="date" :date="date">
                 <Obj v-for="item in items" v-bind="item" />
             </Group>
         </Motion>

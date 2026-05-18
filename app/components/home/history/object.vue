@@ -31,6 +31,14 @@ const icon = computed(() => {
             icon: "🥐",
             color: "#a191ff"
         },
+        "etc": {
+            icon: "🧊",
+            color: "#586475"
+        },
+        "grant": {
+            icon: "🧑‍🎓",
+            color: "#586475"
+        },
     }[props.type]
 })
 </script>
