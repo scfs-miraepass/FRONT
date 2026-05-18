@@ -21,7 +21,7 @@ const session = useSession();
                 <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" />
             </NuxtLink>
         </Section>
-        <hr class="my-3 border-default" />
+        <hr class="my-3 border-default " />
         <History />
     </div>
 </template>
