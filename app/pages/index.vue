@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Student from "@/components/home/student/index.vue";
+import Student from "@/components/home/student.vue";
 import Teacher from "@/components/home/teacher.vue";
 import Service from "@/components/home/service.vue";
 
