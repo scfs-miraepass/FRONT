@@ -52,6 +52,7 @@ const isPwaReady = computed(() => !$pwa?.isPWAInstalled || _load.value)
                     <div class="flex flex-col items-center justify-center">
                         <p class="text-p1">미래패스 앱 설치 안내</p>
                         <p class="text-p2 light:text-black/50 dark:text-white/50 mt-1">미래 패스는 앱을 설치하셔야 사용 하실 수 있습니다.</p>
+                        <p class="text-p2 light:text-black/50 dark:text-white/50 mt-1" v-if="$device.isAndroid">'크롬(Chrome)' 브라우저 사용을 권장드립니다.</p>
 
                         <div class="w-full mt-7" v-if="$pwa?.showInstallPrompt">
                             <p class="text-p2 light:text-black/50 dark:text-white/50 mt-1 text-center mb-3">아래의 버튼을 눌러 설치하세요!</p>
