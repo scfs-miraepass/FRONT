@@ -1,3 +1,11 @@
+# [1.2.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0...v1.2.0) (2026-05-19)
+
+
+### Features
+
+* 페이지 이동 트렌지션과 로딩 인디케이터 ([0a80485](https://git.rldn.xyz/scfs.miraepass/front/commit/0a804853fb0e08e287816b4d4e25d9e227e4fd0a)), closes [#12](https://git.rldn.xyz/scfs.miraepass/front/issues/12)
+* 페이지 이동 트렌지션과 로딩 인디케이터 ([5caa63b](https://git.rldn.xyz/scfs.miraepass/front/commit/5caa63b1122400a64eac94b6e9f7794bfd1b0660)), closes [#12](https://git.rldn.xyz/scfs.miraepass/front/issues/12)
+
 # [1.1.0-dev.4](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0-dev.3...v1.1.0-dev.4) (2026-05-19)
 
 
