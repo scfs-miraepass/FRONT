@@ -1,15 +1,9 @@
-# [1.1.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.0.3...v1.1.0) (2026-05-19)
-
-
-### Bug Fixes
-
-* 대시보드(/admin) 포트가 잘못되어 있던거 해결 ([1f35ea7](https://git.rldn.xyz/scfs.miraepass/front/commit/1f35ea78ce83ed87358d64e57225f1dd8223f5bd))
+# [1.1.0-dev.4](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0-dev.3...v1.1.0-dev.4) (2026-05-19)
 
 
 ### Features
 
-* **ui:** 선생님 포인트 기록및 포인트 추가 ([12f4b90](https://git.rldn.xyz/scfs.miraepass/front/commit/12f4b90f3da01a878c3ccc83e5bac61da6d55d09))
-* 대시보드 접근을 위한 /admin 프록시 구성 ([8d9933a](https://git.rldn.xyz/scfs.miraepass/front/commit/8d9933a15b6b16850f835b3678b0762c9dda2031))
+* 페이지 이동 트렌지션과 로딩 인디케이터 ([5caa63b](https://git.rldn.xyz/scfs.miraepass/front/commit/5caa63b1122400a64eac94b6e9f7794bfd1b0660)), closes [#12](https://git.rldn.xyz/scfs.miraepass/front/issues/12)
 
 # [1.1.0-dev.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0-dev.2...v1.1.0-dev.3) (2026-05-18)
 
