@@ -13,15 +13,7 @@ const disableOpening = route.query.disableOpening === "true"
 const typeSelect = (type: UserType) => {
     // 완전히 보였을 때 부터 선택 이벤트가 처리 되도록
     if (scope.value && Number(window.getComputedStyle(scope.value).opacity) < 0.8) return
-    animate(
-        scope.value,
-        { opacity: 0 },
-        {
-            duration: 0.8,
-            ease: [0, 0.71, 0.2, 1.01],
-        }
-    )
-    setTimeout(() => { navigateTo(`/login/${type}`, { replace: true })}, 800)
+    navigateTo(`/login/${type}`, { replace: true })
 }
 </script>
 

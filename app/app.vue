@@ -1,11 +1,36 @@
 <script setup lang="ts">
 const { add: addToast } = useToast()
-const { $pwa } = useNuxtApp()
+const nuxtApp = useNuxtApp()
 const _load = ref<boolean>(true)
+const showLoading = ref<boolean>(false)
+const isTransition = useState('isTransition', () => true)
+const [scope, animate] = useAnimate()
+let showLoadingTimeout;
+
+nuxtApp.hook('page:loading:end', () => {
+    isTransition.value = false
+})
+
+watch(isTransition, (value) => {
+    animate(
+        scope.value,
+        { opacity: value? 0:1 },
+        {
+            duration: 0.45,
+            ease: [0, 0.71, 0.2, 1.01],
+        }
+    )
+    if (value) {
+        showLoadingTimeout = setTimeout(() => showLoading.value = true, 1000)
+    } else {
+        showLoading.value = false
+        clearTimeout(showLoadingTimeout)
+    }
+})
 
 onMounted(() => {
     setTimeout(() => _load.value = false, 500)
-    if ($pwa?.offlineReady) {
+    if (nuxtApp.$pwa?.offlineReady) {
         addToast({
             description: '오프라인 상태입니다.',
             color: "warning"
@@ -28,7 +53,7 @@ const IOS_GUIDE = [
     { id: '5', text: '"웹 앱으로 열기"를 활성화 하고. "추가"를 클릭합니다.' },
 ]
 
-const isPwaReady = computed(() => !$pwa?.isPWAInstalled || _load.value)
+const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled || _load.value)
 </script>
 
 <template>
@@ -101,7 +126,8 @@ const isPwaReady = computed(() => !$pwa?.isPWAInstalled || _load.value)
                         </div>
                     </div>
                 </div>
-                <div class="pwa-only-content">
+                <NuxtLoadingIndicator color="var(--ui-primary)" errorColor="var(--ui-error)" class="ease-[cubic-bezier(0,0.71,0.2,1.01)]" :class="{ 'opacity-0!': !showLoading }" />
+                <div class="pwa-only-content" ref="scope">
                     <NuxtLayout>
                         <NuxtPage />
                     </NuxtLayout>
