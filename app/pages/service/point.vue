@@ -106,9 +106,7 @@ const onButton = async () => {
 <template>
     <div class="flex-1 overflow-hidden flex flex-col relative">
         <div class="flex items-center mb-4 z-10">
-            <NuxtLink to="/" v-slot="{ navigate }" custom>
-                <UButton :disabled="isConfirm" @click="navigate()" color="neutral" variant="ghost" icon="i-ph-caret-left-bold" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
-            </NuxtLink>
+            <UButton :disabled="isConfirm" @click="$router.back()" color="neutral" variant="ghost" icon="i-ph-caret-left-bold" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
         </div>
         <div class="flex-1 flex flex-col transition" :class="{'pointer-events-none opacity-0 -translate-x-4': isComplete}">
             <div class="flex-1 flex flex-col">

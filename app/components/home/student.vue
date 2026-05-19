@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Point from "./point.vue";
-import History from "./history/index.vue";
+import Point from "@/components/home/point.vue";
+import History from "@/components/home/history/index.vue";
 
 const session = useSession()
 </script>

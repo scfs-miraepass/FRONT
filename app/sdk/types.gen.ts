@@ -5,6 +5,36 @@ export type ClientOptions = {
 };
 
 /**
+ * AdminPointRequest
+ */
+export type AdminPointRequest = {
+    /**
+     * User Ids
+     *
+     * 포인트를 지급/차감할 학생 ID 목록. 전체 학생 대상일 경우 생략하거나 null/빈 리스트 전달
+     */
+    user_ids?: Array<number> | null;
+    /**
+     * Amount
+     *
+     * 변동될 포인트 (양수는 지급, 음수는 차감)
+     */
+    amount: number;
+    /**
+     * Reason
+     *
+     * 포인트 변동 사유
+     */
+    reason: string;
+    /**
+     * Is All Students
+     *
+     * 전체 학생 대상 여부. true일 경우 user_ids는 무시됩니다.
+     */
+    is_all_students?: boolean;
+};
+
+/**
  * ChangePasswordForm
  */
 export type ChangePasswordForm = {
@@ -247,6 +277,12 @@ export type User = {
      * 보유 포인트
      */
     point?: number;
+    /**
+     * Is Admin
+     *
+     * 관리자 여부
+     */
+    is_admin?: boolean;
     /**
      * 해당 유저가 포인트 지급/차감시 포인트 기록 타입
      */
@@ -712,3 +748,74 @@ export type TeacherGetByNameSearchTeacherUserNameGetResponses = {
 };
 
 export type TeacherGetByNameSearchTeacherUserNameGetResponse = TeacherGetByNameSearchTeacherUserNameGetResponses[keyof TeacherGetByNameSearchTeacherUserNameGetResponses];
+
+export type GetStudentsAdminStudentGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Page
+         *
+         * 페이지 번호
+         */
+        page?: number;
+        /**
+         * Size
+         *
+         * 페이지 당 유저 데이터 갯수 (최대 100)
+         */
+        size?: number;
+    };
+    url: '/admin/student';
+};
+
+export type GetStudentsAdminStudentGetErrors = {
+    /**
+     * 권한 거부
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetStudentsAdminStudentGetError = GetStudentsAdminStudentGetErrors[keyof GetStudentsAdminStudentGetErrors];
+
+export type GetStudentsAdminStudentGetResponses = {
+    /**
+     * 정상적으로 처리 됨
+     */
+    200: ResponseModelListUser;
+};
+
+export type GetStudentsAdminStudentGetResponse = GetStudentsAdminStudentGetResponses[keyof GetStudentsAdminStudentGetResponses];
+
+export type UpdateStudentsPointAdminPointPostData = {
+    body: AdminPointRequest;
+    path?: never;
+    query?: never;
+    url: '/admin/point';
+};
+
+export type UpdateStudentsPointAdminPointPostErrors = {
+    /**
+     * 권한 거부
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type UpdateStudentsPointAdminPointPostError = UpdateStudentsPointAdminPointPostErrors[keyof UpdateStudentsPointAdminPointPostErrors];
+
+export type UpdateStudentsPointAdminPointPostResponses = {
+    /**
+     * 정상 처리
+     */
+    204: void;
+};
+
+export type UpdateStudentsPointAdminPointPostResponse = UpdateStudentsPointAdminPointPostResponses[keyof UpdateStudentsPointAdminPointPostResponses];

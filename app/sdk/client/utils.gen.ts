@@ -235,7 +235,7 @@ export const mergeHeaders = (
           mergedHeaders.append(key, v as string);
         }
       } else if (value !== undefined) {
-        // assume object headers are meant to be JSON stringified, i.e. their
+        // assume object headers are meant to be JSON stringified, i.e., their
         // content value in OpenAPI specification is 'application/json'
         mergedHeaders.set(
           key,
@@ -279,7 +279,7 @@ export const wrapDataReturn = <T>(
  */
 export const wrapErrorReturn = <E>(
   error: E,
-  result: { request: Request; response: Response },
+  result: { request: Request | undefined; response: Response | undefined },
   responseStyle: ResponseStyle | undefined,
 ):
   | undefined
@@ -407,8 +407,10 @@ export const parseError = async (response: Response): Promise<unknown> => {
 
 type ErrInterceptor<Err, Res, Req, Options> = (
   error: Err,
-  response: Res,
-  request: Req,
+  /** response may be undefined due to a network error where no response object is produced */
+  response: Res | undefined,
+  /** request may be undefined, because error may be from building the request object itself */
+  request: Req | undefined,
   options: Options,
 ) => Err | Promise<Err>;
 
