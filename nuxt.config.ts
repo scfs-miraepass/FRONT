@@ -138,6 +138,8 @@ export default defineNuxtConfig({
         public: {
             buildDate: new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 16), // NUXT_PUBLIC_BUILD_DATE
             clientVersion: pkg.version, // NUXT_PUBLIC_CLIENT_VERSION
+            umamiServer: '', // NUXT_PUBLIC_UMAMI_SERVER
+            umamiId: '', // NUXT_PUBLIC_UMAMI_ID
         },
     },
 

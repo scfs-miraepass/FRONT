@@ -5,7 +5,18 @@ const _load = ref<boolean>(true)
 const showLoading = ref<boolean>(false)
 const isTransition = useState('isTransition', () => true)
 const [scope, animate] = useAnimate()
-let showLoadingTimeout;
+let showLoadingTimeout: ReturnType<typeof setTimeout> | undefined;
+
+const config = useRuntimeConfig()
+
+useHead({
+    script: [
+        {
+            src: `${config.public.umamiServer}/script.js`,
+            'data-website-id': config.public.umamiId
+        }
+    ]
+})
 
 nuxtApp.hook('page:loading:end', () => {
     isTransition.value = false
@@ -16,12 +27,12 @@ watch(isTransition, (value) => {
         scope.value,
         { opacity: value? 0:1 },
         {
-            duration: 0.45,
+            duration: 0.3,
             ease: [0, 0.71, 0.2, 1.01],
         }
     )
     if (value) {
-        showLoadingTimeout = setTimeout(() => showLoading.value = true, 1000)
+        showLoadingTimeout = setTimeout(() => showLoading.value = true, 500)
     } else {
         showLoading.value = false
         clearTimeout(showLoadingTimeout)
@@ -37,6 +48,8 @@ onMounted(() => {
         })
     }
 })
+
+
 
 const ANDROID_GUIDE = [
     { id: '1', text: '브라우저 메뉴를 엽니다.' },
@@ -54,6 +67,12 @@ const IOS_GUIDE = [
 ]
 
 const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled || _load.value)
+const isMacIpad = computed<boolean>(() => {
+    if (import.meta.client) {
+        return /Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1
+    }
+    return false
+})
 </script>
 
 <template>
@@ -62,7 +81,7 @@ const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled || _load.value)
         <div>
             <div
                 class="w-screen h-screen flex items-center justify-center"
-                v-if="!$device.isMobileOrTablet"
+                v-if="!$device.isMobileOrTablet && !isMacIpad"
             >
                 <p class="text-p1">모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.</p>
             </div>
