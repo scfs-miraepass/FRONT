@@ -3,6 +3,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
         const isTransition = useState('isTransition', () => true)
         isTransition.value = true
 
-        return new Promise((resolve) => setTimeout(resolve, 300))
+        return new Promise((resolve) => setTimeout(resolve, 250))
     }
 })

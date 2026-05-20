@@ -139,7 +139,7 @@ export type PointHistory = {
 /**
  * PointHistoryType
  */
-export type PointHistoryType = 'teacher' | 'cafe' | 'food';
+export type PointHistoryType = 'teacher' | 'cafe' | 'food' | 'etc' | 'grant';
 
 /**
  * PointOperation
@@ -277,6 +277,12 @@ export type User = {
      * 보유 포인트
      */
     point?: number;
+    /**
+     * Total Point
+     *
+     * 누적 포인트
+     */
+    total_point?: number;
     /**
      * Is Admin
      *
@@ -519,6 +525,35 @@ export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponses = {
 
 export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponse = CheckPasswordExistsAuthPasswordExistsUserIdGetResponses[keyof CheckPasswordExistsAuthPasswordExistsUserIdGetResponses];
 
+export type GetLimitPointLimitGetData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/point/limit';
+};
+
+export type GetLimitPointLimitGetErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+};
+
+export type GetLimitPointLimitGetError = GetLimitPointLimitGetErrors[keyof GetLimitPointLimitGetErrors];
+
+export type GetLimitPointLimitGetResponses = {
+    /**
+     * 정상적으로 처리됨
+     */
+    200: ResponseModelInt;
+};
+
+export type GetLimitPointLimitGetResponse = GetLimitPointLimitGetResponses[keyof GetLimitPointLimitGetResponses];
+
 export type GrantPointsPointGrantPostData = {
     body: PointOperation;
     path?: never;
@@ -543,6 +578,10 @@ export type GrantPointsPointGrantPostErrors = {
      * Validation Error
      */
     422: HttpValidationError;
+    /**
+     * 주간 포인트 지급 한도를 초과할 경우 발생합니다. 관리자 계정의 경우 한도가 적용되지 않습니다.
+     */
+    429: ErrorResponse;
 };
 
 export type GrantPointsPointGrantPostError = GrantPointsPointGrantPostErrors[keyof GrantPointsPointGrantPostErrors];
