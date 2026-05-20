@@ -1,3 +1,15 @@
+# [1.3.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.2.0...v1.3.0-dev.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* 아이패드에서 접근이 불가능한 현상 수정 ([6bde3bd](https://git.rldn.xyz/scfs.miraepass/front/commit/6bde3bd4e8a4025e0e4824cb3ff761f3c3ec49fa))
+
+
+### Features
+
+* 서비스 사용 통계를 위한 umami 스크립트 구성 기능 추가 ([744ae14](https://git.rldn.xyz/scfs.miraepass/front/commit/744ae14ce9511caef12481d0a1c6ae3d9f38ed42))
+
 # [1.2.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.1.0...v1.2.0) (2026-05-19)
 
 
