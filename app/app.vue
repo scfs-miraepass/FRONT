@@ -27,12 +27,12 @@ watch(isTransition, (value) => {
         scope.value,
         { opacity: value? 0:1 },
         {
-            duration: 0.45,
+            duration: 0.3,
             ease: [0, 0.71, 0.2, 1.01],
         }
     )
     if (value) {
-        showLoadingTimeout = setTimeout(() => showLoading.value = true, 1000)
+        showLoadingTimeout = setTimeout(() => showLoading.value = true, 500)
     } else {
         showLoading.value = false
         clearTimeout(showLoadingTimeout)
