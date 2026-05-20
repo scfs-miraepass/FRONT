@@ -5,7 +5,7 @@ const _load = ref<boolean>(true)
 const showLoading = ref<boolean>(false)
 const isTransition = useState('isTransition', () => true)
 const [scope, animate] = useAnimate()
-let showLoadingTimeout;
+let showLoadingTimeout: ReturnType<typeof setTimeout> | undefined;
 
 nuxtApp.hook('page:loading:end', () => {
     isTransition.value = false
@@ -54,6 +54,12 @@ const IOS_GUIDE = [
 ]
 
 const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled || _load.value)
+const isMacIpad = computed<boolean>(() => {
+    if (import.meta.client) {
+        return /Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1
+    }
+    return false
+})
 </script>
 
 <template>
@@ -62,7 +68,7 @@ const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled || _load.value)
         <div>
             <div
                 class="w-screen h-screen flex items-center justify-center"
-                v-if="!$device.isMobileOrTablet"
+                v-if="!$device.isMobileOrTablet && !isMacIpad"
             >
                 <p class="text-p1">모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.</p>
             </div>
