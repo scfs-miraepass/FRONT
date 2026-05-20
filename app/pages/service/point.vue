@@ -4,7 +4,8 @@ import {
     type UserType,
     type User,
     grantPointsPointGrantPost,
-    deductPointsPointDeductPost
+    deductPointsPointDeductPost,
+    getLimitPointLimitGet
 } from "@/sdk"
 
 definePageMeta({
@@ -26,11 +27,23 @@ const isConfirm = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const isComplete = ref<boolean>(false)
 const isDeduct = computed<boolean>(() => session.value?.type == "service")
+const pointLimit = ref<number | undefined>(undefined)
 
 const pointError = ref<boolean>(false)
 const [pointScope, pointAnimate] = useAnimate()
 
 const keypad = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+if (import.meta.client) {
+    if (!isDeduct.value) {
+        const req = await getLimitPointLimitGet()
+        if (req.error) {
+            // TODO: 에러 처리
+        } else {
+            pointLimit.value = req.data.data
+        }
+    }
+}
 
 const triggerVibration = (pattern?: number) => {
     // 모바일에서 진동 함수
@@ -46,12 +59,12 @@ const onInput = (val: string) => {
     if (currentStr.length >= 6) return // 최대 6자리 제한
 
     // 초기값이 0이면 새 숫자로 교체, 아니면 뒤에 추가
-    const _new = amount.value === 0 ? Number(val) : Number(currentStr + val)
-    if (isDeduct.value && _new > userData.value.point!) {
-        if (typeof window !== 'undefined' && window.navigator.vibrate) {
-            window.navigator.vibrate(20)
-            setTimeout(() => window.navigator.vibrate(100), 100)
-        }
+    const _new = Number(amount.value === 0 ? val : currentStr + val)
+    const limit = isDeduct.value ? userData.value.point! : pointLimit.value!
+    if (_new > limit) {
+        triggerVibration(20)
+        setTimeout(() => triggerVibration(100), 100)
+
         pointError.value = true
         pointAnimate(pointScope.value, { translate: "20px" }, { type: "spring", stiffness: 700, damping: 3, mass: 0.5 })
         setTimeout(() => pointAnimate(pointScope.value, { translate: '0' }, { type: "spring", stiffness: 700, damping: 3, mass: 0.5 }), 25)
@@ -129,10 +142,14 @@ const onButton = async () => {
                     <p
                         class="text-ui-p2 mt-2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40 transition-colors"
                         :class="{ 'text-error!': pointError }"
-                        v-if="isDeduct"
                         ref="pointScope"
                     >
-                        {{ userData.point!.toLocaleString() }} 포인트 사용가능
+                        <template v-if="isDeduct">
+                            {{ userData.point!.toLocaleString() }} 포인트 사용가능
+                        </template>
+                        <template v-else>
+                            {{ pointLimit }} 포인트 지급가능
+                        </template>
                     </p>
                 </div>
             </div>
@@ -213,7 +230,7 @@ const onButton = async () => {
                 <UIcon name="i-ph-check-circle" class="text-h2 mb-1.5" />
                 {{ isDeduct? '결제가 정상적으로 되었어요.':'정상적으로 지급되었어요.' }}
             </div>
-            <NuxtLink to="/" v-slot="{ navigate }" custom>
+            <NuxtLink :to="isDeduct? '/':'/only/teacher/grant'" v-slot="{ navigate }" custom>
                 <UButton
                     class="rounded-2xl justify-center flex py-4.5 transition-opacity mb-3 w-full"
                     @click="navigate()"
