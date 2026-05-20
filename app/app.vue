@@ -7,6 +7,17 @@ const isTransition = useState('isTransition', () => true)
 const [scope, animate] = useAnimate()
 let showLoadingTimeout: ReturnType<typeof setTimeout> | undefined;
 
+const config = useRuntimeConfig()
+
+useHead({
+    script: [
+        {
+            src: `${config.public.umamiServer}/script.js`,
+            'data-website-id': config.public.umamiId
+        }
+    ]
+})
+
 nuxtApp.hook('page:loading:end', () => {
     isTransition.value = false
 })
@@ -37,6 +48,8 @@ onMounted(() => {
         })
     }
 })
+
+
 
 const ANDROID_GUIDE = [
     { id: '1', text: '브라우저 메뉴를 엽니다.' },
