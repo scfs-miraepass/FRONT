@@ -5,7 +5,8 @@ import {
     type User,
     grantPointsPointGrantPost,
     deductPointsPointDeductPost,
-    getLimitPointLimitGet
+    getLimitPointLimitTargetUserIdGet,
+    GetLimitResponse
 } from "@/sdk"
 
 definePageMeta({
@@ -27,7 +28,7 @@ const isConfirm = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const isComplete = ref<boolean>(false)
 const isDeduct = computed<boolean>(() => session.value?.type == "service")
-const pointLimit = ref<number | undefined>(undefined)
+const pointLimit = ref<GetLimitResponse | undefined>(undefined)
 
 const pointError = ref<boolean>(false)
 const [pointScope, pointAnimate] = useAnimate()
@@ -36,7 +37,11 @@ const keypad = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 if (import.meta.client) {
     if (!isDeduct.value) {
-        const req = await getLimitPointLimitGet()
+        const req = await getLimitPointLimitTargetUserIdGet({
+            path: {
+                target_user_id: userData.value.id!
+            }
+        })
         if (req.error) {
             // TODO: 에러 처리
         } else {
@@ -60,7 +65,7 @@ const onInput = (val: string) => {
 
     // 초기값이 0이면 새 숫자로 교체, 아니면 뒤에 추가
     const _new = Number(amount.value === 0 ? val : currentStr + val)
-    const limit = isDeduct.value ? userData.value.point! : pointLimit.value!
+    const limit = isDeduct.value ? userData.value.point! : Math.min(pointLimit.value.target_limit, pointLimit.value.limit)!
     if (_new > limit) {
         triggerVibration(20)
         setTimeout(() => triggerVibration(100), 100)
@@ -148,7 +153,7 @@ const onButton = async () => {
                             {{ userData.point!.toLocaleString() }} 포인트 사용가능
                         </template>
                         <template v-else>
-                            {{ pointLimit }} 포인트 지급가능
+                            {{ Math.min(pointLimit.target_limit, pointLimit.limit).toLocaleString() }} 포인트 지급가능
                         </template>
                     </p>
                 </div>

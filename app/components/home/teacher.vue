@@ -5,6 +5,31 @@ import PageButton from "@/components/setting/object.vue";
 import Section from "@/components/setting/section.vue";
 
 const session = useSession();
+
+const { pending, data: limitResult } = await useAPI<Result<number>>("/point/limit", {
+    method: "GET",
+    key: 'teacher_point_limit',
+    transform(data) {
+        return {
+            ...data,
+            expiresAt: Date.now() + 10 * 1000
+        }
+    },
+    getCachedData(key, nuxtApp) {
+        const cachedData = nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+        if (cachedData && cachedData.expiresAt >= Date.now()) {
+            return cachedData;
+        }
+        return undefined;
+    }
+})
+
+const pointLimit = computed<number>(() => {
+    if (limitResult.value?.success) {
+        return limitResult.value.data;
+    }
+    return 0;
+});
 </script>
 
 <template>
@@ -18,7 +43,16 @@ const session = useSession();
         <Point />
         <Section class="mt-3">
             <NuxtLink to="/only/teacher/grant" v-slot="{ navigate }" custom>
-                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" />
+                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0">
+                    <template #value>
+                        <USkeleton class="blur-xs" v-if="pending">
+                            500 포인트 남음
+                        </USkeleton>
+                        <template v-else>
+                            {{ pointLimit }} 포인트 남음
+                        </template>
+                    </template>
+                </PageButton>
             </NuxtLink>
         </Section>
         <hr class="my-3 border-default " />
