@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetLimitPointLimitGetData, GetLimitPointLimitGetErrors, GetLimitPointLimitGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GetStudentsAdminStudentGetData, GetStudentsAdminStudentGetErrors, GetStudentsAdminStudentGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses, UpdateStudentsPointAdminPointPostData, UpdateStudentsPointAdminPointPostErrors, UpdateStudentsPointAdminPointPostResponses } from './types.gen';
+import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetLimitPointLimitTargetUserIdGetData, GetLimitPointLimitTargetUserIdGetErrors, GetLimitPointLimitTargetUserIdGetResponses, GetLimitSessionPointLimitGetData, GetLimitSessionPointLimitGetErrors, GetLimitSessionPointLimitGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GetStudentRankingPointRankingStudentGetData, GetStudentRankingPointRankingStudentGetErrors, GetStudentRankingPointRankingStudentGetResponses, GetStudentsAdminStudentGetData, GetStudentsAdminStudentGetErrors, GetStudentsAdminStudentGetResponses, GetTeacherRankingPointRankingTeacherGetData, GetTeacherRankingPointRankingTeacherGetErrors, GetTeacherRankingPointRankingTeacherGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses, UpdateStudentsPointAdminPointPostData, UpdateStudentsPointAdminPointPostErrors, UpdateStudentsPointAdminPointPostResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -89,9 +89,16 @@ export const checkPasswordExistsAuthPasswordExistsUserIdGet = <ThrowOnError exte
 /**
  * 포인트 지급 한도 조회
  *
+ * 현재 로그인한 자기자신의과 지급하려는 대상의 포인트 지급 한도를 조회합니다.
+ */
+export const getLimitPointLimitTargetUserIdGet = <ThrowOnError extends boolean = false>(options: Options<GetLimitPointLimitTargetUserIdGetData, ThrowOnError>) => (options.client ?? client).get<GetLimitPointLimitTargetUserIdGetResponses, GetLimitPointLimitTargetUserIdGetErrors, ThrowOnError>({ url: '/point/limit/{target_user_id}', ...options });
+
+/**
+ * 포인트 지급 본인 한도 조회
+ *
  * 현재 로그인한 자기자신의 포인트 지급 한도를 조회합니다.
  */
-export const getLimitPointLimitGet = <ThrowOnError extends boolean = false>(options?: Options<GetLimitPointLimitGetData, ThrowOnError>) => (options?.client ?? client).get<GetLimitPointLimitGetResponses, GetLimitPointLimitGetErrors, ThrowOnError>({ url: '/point/limit', ...options });
+export const getLimitSessionPointLimitGet = <ThrowOnError extends boolean = false>(options?: Options<GetLimitSessionPointLimitGetData, ThrowOnError>) => (options?.client ?? client).get<GetLimitSessionPointLimitGetResponses, GetLimitSessionPointLimitGetErrors, ThrowOnError>({ url: '/point/limit', ...options });
 
 /**
  * 포인트 지급
@@ -127,6 +134,20 @@ export const deductPointsPointDeductPost = <ThrowOnError extends boolean = false
  * 현재 로그인한 자기자신의 포인트 기록을 조회합니다.
  */
 export const pointHistoryPointHistoryGet = <ThrowOnError extends boolean = false>(options?: Options<PointHistoryPointHistoryGetData, ThrowOnError>) => (options?.client ?? client).get<PointHistoryPointHistoryGetResponses, PointHistoryPointHistoryGetErrors, ThrowOnError>({ url: '/point/history', ...options });
+
+/**
+ * 학생 포인트 랭킹 조회
+ *
+ * 학생들의 누적 포인트를 기준으로 랭킹을 조회합니다.
+ */
+export const getStudentRankingPointRankingStudentGet = <ThrowOnError extends boolean = false>(options?: Options<GetStudentRankingPointRankingStudentGetData, ThrowOnError>) => (options?.client ?? client).get<GetStudentRankingPointRankingStudentGetResponses, GetStudentRankingPointRankingStudentGetErrors, ThrowOnError>({ url: '/point/ranking/student', ...options });
+
+/**
+ * 교사 포인트 랭킹 조회
+ *
+ * 교사들의 누적 포인트를 기준으로 랭킹을 조회합니다.
+ */
+export const getTeacherRankingPointRankingTeacherGet = <ThrowOnError extends boolean = false>(options?: Options<GetTeacherRankingPointRankingTeacherGetData, ThrowOnError>) => (options?.client ?? client).get<GetTeacherRankingPointRankingTeacherGetResponses, GetTeacherRankingPointRankingTeacherGetErrors, ThrowOnError>({ url: '/point/ranking/teacher', ...options });
 
 /**
  * 포인트 조회

@@ -7,10 +7,12 @@
 
 
 ### Features
-
+* 학생 하루 포인트 지급 한도 UI 표기및 시스템 적용 ([0320a8f](https://git.rldn.xyz/scfs.miraepass/front/commit/0320a8fa689a94a7ddf6c0dc29bfa47e708e196a)), closes [#18](https://git.rldn.xyz/scfs.miraepass/front/issues/18)
+=======
 * **SDK:** 백엔드 1.3.0-dev.3 버전에 맞게 SDK 생성 ([eed3986](https://git.rldn.xyz/scfs.miraepass/front/commit/eed3986cc8aa6229592c040045a75535834ec027))
 * **UI:** 교사 지급 가능한 포인트 표기 ([791d1d9](https://git.rldn.xyz/scfs.miraepass/front/commit/791d1d95c092a951bddc611019ec54fa95e7f668))
 * 서비스 사용 통계를 위한 umami 스크립트 구성 기능 추가 ([744ae14](https://git.rldn.xyz/scfs.miraepass/front/commit/744ae14ce9511caef12481d0a1c6ae3d9f38ed42))
+
 
 # [1.3.0-dev.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-05-20)
 
