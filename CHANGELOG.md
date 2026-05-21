@@ -1,3 +1,10 @@
+# [1.3.0-dev.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.3.0-dev.2...v1.3.0-dev.3) (2026-05-21)
+
+
+### Features
+
+* 학생 하루 포인트 지급 한도 UI 표기및 시스템 적용 ([0320a8f](https://git.rldn.xyz/scfs.miraepass/front/commit/0320a8fa689a94a7ddf6c0dc29bfa47e708e196a)), closes [#18](https://git.rldn.xyz/scfs.miraepass/front/issues/18)
+
 # [1.3.0-dev.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-05-20)
 
 
