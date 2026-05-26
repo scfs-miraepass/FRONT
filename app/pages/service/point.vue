@@ -65,7 +65,7 @@ const onInput = (val: string) => {
 
     // 초기값이 0이면 새 숫자로 교체, 아니면 뒤에 추가
     const _new = Number(amount.value === 0 ? val : currentStr + val)
-    const limit = isDeduct.value ? userData.value.point! : Math.min(pointLimit.value.target_limit, pointLimit.value.limit)!
+    const limit = isDeduct.value ? userData.value.point! : Math.min(pointLimit.value!.target_limit, pointLimit.value!.limit)!
     if (_new > limit) {
         triggerVibration(20)
         setTimeout(() => triggerVibration(100), 100)
