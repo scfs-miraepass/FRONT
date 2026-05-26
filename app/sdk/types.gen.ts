@@ -79,6 +79,20 @@ export type ErrorResponse = {
 };
 
 /**
+ * GetLimitResponse
+ */
+export type GetLimitResponse = {
+    /**
+     * Limit
+     */
+    limit: number;
+    /**
+     * Target Limit
+     */
+    target_limit: number;
+};
+
+/**
  * HTTPValidationError
  */
 export type HttpValidationError = {
@@ -139,7 +153,7 @@ export type PointHistory = {
 /**
  * PointHistoryType
  */
-export type PointHistoryType = 'teacher' | 'cafe' | 'food';
+export type PointHistoryType = 'teacher' | 'cafe' | 'food' | 'etc' | 'grant';
 
 /**
  * PointOperation
@@ -159,6 +173,38 @@ export type PointOperation = {
      * 포인트를 처리하는 이유의 종류
      */
     change_type?: PointHistoryType | null;
+};
+
+/**
+ * RankingResponse
+ */
+export type RankingResponse = {
+    /**
+     * Id
+     */
+    id: number;
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Total Point
+     */
+    total_point: number;
+};
+
+/**
+ * ResponseModel[GetLimitResponse]
+ */
+export type ResponseModelGetLimitResponse = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * 응답 데이터
+     */
+    data: GetLimitResponse;
 };
 
 /**
@@ -240,6 +286,22 @@ export type ResponseModelListPointHistory = {
 };
 
 /**
+ * ResponseModel[list[RankingResponse]]
+ */
+export type ResponseModelListRankingResponse = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * Data
+     *
+     * 응답 데이터
+     */
+    data: Array<RankingResponse>;
+};
+
+/**
  * User
  */
 export type User = {
@@ -277,6 +339,12 @@ export type User = {
      * 보유 포인트
      */
     point?: number;
+    /**
+     * Total Point
+     *
+     * 누적 포인트
+     */
+    total_point?: number;
     /**
      * Is Admin
      *
@@ -519,6 +587,73 @@ export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponses = {
 
 export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponse = CheckPasswordExistsAuthPasswordExistsUserIdGetResponses[keyof CheckPasswordExistsAuthPasswordExistsUserIdGetResponses];
 
+export type GetLimitPointLimitTargetUserIdGetData = {
+    body?: never;
+    path: {
+        /**
+         * Target User Id
+         */
+        target_user_id: number;
+    };
+    query?: never;
+    url: '/point/limit/{target_user_id}';
+};
+
+export type GetLimitPointLimitTargetUserIdGetErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetLimitPointLimitTargetUserIdGetError = GetLimitPointLimitTargetUserIdGetErrors[keyof GetLimitPointLimitTargetUserIdGetErrors];
+
+export type GetLimitPointLimitTargetUserIdGetResponses = {
+    /**
+     * 정상적으로 처리됨
+     */
+    200: ResponseModelGetLimitResponse;
+};
+
+export type GetLimitPointLimitTargetUserIdGetResponse = GetLimitPointLimitTargetUserIdGetResponses[keyof GetLimitPointLimitTargetUserIdGetResponses];
+
+export type GetLimitSessionPointLimitGetData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/point/limit';
+};
+
+export type GetLimitSessionPointLimitGetErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+};
+
+export type GetLimitSessionPointLimitGetError = GetLimitSessionPointLimitGetErrors[keyof GetLimitSessionPointLimitGetErrors];
+
+export type GetLimitSessionPointLimitGetResponses = {
+    /**
+     * 정상적으로 처리됨
+     */
+    200: ResponseModelInt;
+};
+
+export type GetLimitSessionPointLimitGetResponse = GetLimitSessionPointLimitGetResponses[keyof GetLimitSessionPointLimitGetResponses];
+
 export type GrantPointsPointGrantPostData = {
     body: PointOperation;
     path?: never;
@@ -543,6 +678,10 @@ export type GrantPointsPointGrantPostErrors = {
      * Validation Error
      */
     422: HttpValidationError;
+    /**
+     * 주간 포인트 지급 한도를 초과할 경우 발생합니다. 관리자 계정의 경우 한도가 적용되지 않습니다.
+     */
+    429: ErrorResponse;
 };
 
 export type GrantPointsPointGrantPostError = GrantPointsPointGrantPostErrors[keyof GrantPointsPointGrantPostErrors];
@@ -639,6 +778,74 @@ export type PointHistoryPointHistoryGetResponses = {
 
 export type PointHistoryPointHistoryGetResponse = PointHistoryPointHistoryGetResponses[keyof PointHistoryPointHistoryGetResponses];
 
+export type GetStudentRankingPointRankingStudentGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking/student';
+};
+
+export type GetStudentRankingPointRankingStudentGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetStudentRankingPointRankingStudentGetError = GetStudentRankingPointRankingStudentGetErrors[keyof GetStudentRankingPointRankingStudentGetErrors];
+
+export type GetStudentRankingPointRankingStudentGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetStudentRankingPointRankingStudentGetResponse = GetStudentRankingPointRankingStudentGetResponses[keyof GetStudentRankingPointRankingStudentGetResponses];
+
+export type GetTeacherRankingPointRankingTeacherGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking/teacher';
+};
+
+export type GetTeacherRankingPointRankingTeacherGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetTeacherRankingPointRankingTeacherGetError = GetTeacherRankingPointRankingTeacherGetErrors[keyof GetTeacherRankingPointRankingTeacherGetErrors];
+
+export type GetTeacherRankingPointRankingTeacherGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetTeacherRankingPointRankingTeacherGetResponse = GetTeacherRankingPointRankingTeacherGetResponses[keyof GetTeacherRankingPointRankingTeacherGetResponses];
+
 export type GetPointBalancePointTargetUserIdGetData = {
     body?: never;
     path: {
@@ -652,6 +859,10 @@ export type GetPointBalancePointTargetUserIdGetData = {
 };
 
 export type GetPointBalancePointTargetUserIdGetErrors = {
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
     /**
      * 유저를 찾을 수 없음
      */
