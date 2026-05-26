@@ -2,6 +2,7 @@
 import Obj from "./object.vue";
 import { searchSearchGet, type User } from "@/sdk";
 
+const session = useSession()
 const search = ref<string>("");
 const searchResult = ref<User[]>([]);
 const hiddenResult = ref<boolean>(false);
@@ -30,7 +31,7 @@ const userSearch = async () => {
     const req = await searchSearchGet({
         query: {
             q: _search,
-            t: ["student"]
+            t: session.value?.type == "teacher" ? ["student"] : ["student", "teacher"]
         }
     })
     if (req.error) {
