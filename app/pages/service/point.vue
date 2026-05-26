@@ -3,10 +3,10 @@ import { Motion } from "motion-v";
 import {
     type UserType,
     type User,
+    type GetLimitResponse,
     grantPointsPointGrantPost,
     deductPointsPointDeductPost,
-    getLimitPointLimitTargetUserIdGet,
-    GetLimitResponse
+    getLimitPointLimitTargetUserIdGet
 } from "@/sdk"
 
 definePageMeta({
