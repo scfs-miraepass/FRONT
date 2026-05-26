@@ -1,3 +1,10 @@
+# [1.6.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.5.1...v1.6.0-dev.1) (2026-05-26)
+
+
+### Features
+
+* **ui:** 미래패스 설치 카카오톡 브라우저 접속 안내 추가 ([ec8f069](https://git.rldn.xyz/scfs.miraepass/front/commit/ec8f0694f39ce07db86f7ea15df84703bccaff1b))
+
 ## [1.5.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.5.0...v1.5.1) (2026-05-26)
 
 
