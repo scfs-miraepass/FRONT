@@ -1,3 +1,10 @@
+# [1.5.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.4.0...v1.5.0) (2026-05-26)
+
+
+### Features
+
+* 포인트 지급/차감시 유저 검색을 교사는 학생 타겟, 서비스는 교사와 학생 타겟으로 수정 ([8b3013e](https://git.rldn.xyz/scfs.miraepass/front/commit/8b3013e12f76a2ffd63483bcc15152f87ca932e0))
+
 # [1.4.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.3.0...v1.4.0) (2026-05-21)
 
 
