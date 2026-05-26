@@ -1,3 +1,11 @@
+## [1.5.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.5.0...v1.5.1) (2026-05-26)
+
+
+### Bug Fixes
+
+* 검색에서 교사 분리해서 안나오는 현상 해결 ([34c05de](https://git.rldn.xyz/scfs.miraepass/front/commit/34c05de0a140d2f98b4bc41290609faf4374d751))
+* 포인트 차감(결제)시 교사임에도 학생으로 표기되는 현상 해결 ([6a55dae](https://git.rldn.xyz/scfs.miraepass/front/commit/6a55dae6f8b960223f727bf3571af648c7a9d1fe))
+
 # [1.5.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.4.0...v1.5.0) (2026-05-26)
 
 
