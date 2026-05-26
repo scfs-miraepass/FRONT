@@ -130,7 +130,7 @@ const onButton = async () => {
             <div class="flex-1 flex flex-col">
                 <!-- 상단 타이틀 -->
                 <div class="mt-10" v-if="isDeduct">
-                    <p class="text-p0 light:text-black/70 dark:text-white/70 font-normal"><span class="font-bold light:text-black dark:text-white">{{ userData.name }}</span> 학생의 포인트에서</p>
+                    <p class="text-p0 light:text-black/70 dark:text-white/70 font-normal"><span class="font-bold light:text-black dark:text-white">{{ userData.name }}</span> {{ userData.type == 'student'? '학생':'선생님' }}의 포인트에서</p>
                     <p class="text-p0 text-black/70 dark:text-white/70 font-normal">얼마나 결제할까요?</p>
                 </div>
                 <div class="mt-10" v-else>
