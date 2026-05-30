@@ -1,12 +1,10 @@
 import { getCurrentUserAuthGet } from "@/sdk"
 
-// 클라이언트 캐싱 및 중복 요청 방지를 위한 상태
-let fetchPromise: Promise<any> | null = null
 const LOGIN_CACHE_TTL = 1000 * 60 * 5 // 5분 (로그인 상태에서 세션에 대한 캐시 TTL)
 const UNAUTH_CACHE_TTL = 60 * 60 * 24 * 1 * 1000 // 1일 (비 로그인 상태에서 세션에 대한 캐시 TTL)
 
 // 브라우저 콘솔 로그를 예쁘게 출력하기 위한 헬퍼 함수
-const authLog = (message: string, ...args: any[]) => {
+export const authLog = (message: string, ...args: any[]) => {
     console.log(
         `%cAuth Middleware%c ${message}`,
         'background: oklch(48.8% 0.243 264.376); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;',
@@ -21,32 +19,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const session = useSession()
         const { lastFetched } = useAuth()
         const now = Date.now()
-
-        // 공통 API 호출 및 세션 상태 업데이트 함수
-        const fetchSession = async () => {
-            authLog('fetchSession 호출')
-            // 중복 호출 방지 (요청 중일 때 기존 Promise 재사용)
-            if (!fetchPromise) {
-                authLog('새로운 API 요청 시작')
-                fetchPromise = getCurrentUserAuthGet().finally(() => {
-                    fetchPromise = null
-                })
-            } else {
-                authLog('기존 API 요청 대기')
-            }
-            
-            const req = await fetchPromise
-            if (!req.error) {
-                authLog( 'API 성공 (session 업데이트)')
-                session.value = req.data.data
-                lastFetched.value = Date.now()
-                useServerVersion().value = req.response.headers.get("X-Server-Version")
-            } else {
-                session.value = undefined
-                lastFetched.value = Date.now() // 미인증 상태도 캐싱하기 위해 업데이트
-            }
-            return req
-        }
 
         // 이미 세션 정보가 있는 경우
         if (session.value) {
