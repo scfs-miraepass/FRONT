@@ -5,11 +5,13 @@ definePageMeta({
     layout: false
 })
 const session = useSession()
+const { lastFetched } = useAuth()
 
 onMounted(async () => {
     const req = await logoutAuthLogoutPost()
     if (!req.error) {
         session.value = undefined
+        lastFetched.value = Date.now()
         await navigateTo("/login", { replace: true })
     }
 })
