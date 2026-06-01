@@ -44,7 +44,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         }
 
         // 미인증 상태(로그아웃 상태) 캐싱
-        // 비로그인 사용자가 /login 하위 페이지들을 이동할 때 불필요한 서버 API 호출을 방지합니다.
         const isUnauthCached = lastFetched.value > 0 && (now - lastFetched.value <= UNAUTH_CACHE_TTL)
         if (isUnauthCached && to.path.startsWith("/login")) {
             authLog(`미인증 상태 캐시 유효. ${(UNAUTH_CACHE_TTL - (now - lastFetched.value))/1000}초 후 만료됨.`)
