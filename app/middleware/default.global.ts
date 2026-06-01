@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-    if (import.meta.client) {
+    if (import.meta.client && !to.path.startsWith("/login")) {
         const isTransition = useState('isTransition', () => true)
         isTransition.value = true
 
