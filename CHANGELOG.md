@@ -1,3 +1,10 @@
+## [1.7.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.1...v1.7.2) (2026-06-01)
+
+
+### Bug Fixes
+
+* 강제 릴리즈 및 빌드 ([67743c3](https://git.rldn.xyz/scfs.miraepass/front/commit/67743c38a9c468b204c97f62b781861bea3b2825))
+
 ## [1.7.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.0...v1.7.1) (2026-06-01)
 
 
