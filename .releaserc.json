@@ -22,8 +22,8 @@
       }
     ],
     "@semantic-release/gitlab",
-    ["@saithodev/semantic-release-backmerge", {
+    "@saithodev/semantic-release-backmerge", {
       "branches": [{"from": "master", "to": "dev"}]
-    }]
+    }
   ]
 }
