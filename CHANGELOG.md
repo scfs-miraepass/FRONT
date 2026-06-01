@@ -1,3 +1,19 @@
+# [1.7.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.6.0...v1.7.0) (2026-06-01)
+
+
+### Bug Fixes
+
+* 백엔드 서버 버전이 표기 안되던 현상 해결 ([be5f0d4](https://git.rldn.xyz/scfs.miraepass/front/commit/be5f0d4590550df0b87f77fb9ecaaddba80ae50c))
+
+
+### Features
+
+* **ui:** 로그인 페이지이동 트렌지션 작동하지 않도록 ([ce9862f](https://git.rldn.xyz/scfs.miraepass/front/commit/ce9862f940db9e64becf90d1d9f21a0bacc9d5ab))
+* **ui:** 포인트 변경 애니메이션 P 텍스트 이동 애니메이션 ([5c52193](https://git.rldn.xyz/scfs.miraepass/front/commit/5c52193addd1201e94181813d44e6cff6630d110))
+* **ui:** 포인트 변경시 애니메이션 추가 ([d945f2b](https://git.rldn.xyz/scfs.miraepass/front/commit/d945f2b819cda66b91c6ddd51916bd31f146e935))
+* 인증 미들웨어 로직 수정 ([20717f6](https://git.rldn.xyz/scfs.miraepass/front/commit/20717f63a8f37d1f0156862011e89d70f080d49a))
+* 포인트 변동시 캐시 상관 없이 세션 업데이트 ([5b21bdc](https://git.rldn.xyz/scfs.miraepass/front/commit/5b21bdce31338ab4dc9e7962369be8059bc8da16))
+
 # [1.6.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.5.1...v1.6.0) (2026-05-26)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "scfs-miraepass-front",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -26,6 +26,7 @@
     "vue-router": "^5.0.3"
   },
   "devDependencies": {
+    "@saithodev/semantic-release-backmerge": "^4.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",
