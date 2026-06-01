@@ -18,7 +18,6 @@
     "@nuxtjs/device": "4.0.0",
     "@tailwindcss/vite": "^4.2.1",
     "@vite-pwa/nuxt": "1.1.1",
-    "@vueuse/core": "^14.3.0",
     "motion-v": "^2.0.0",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.1",

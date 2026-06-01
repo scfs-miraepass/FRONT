@@ -11,7 +11,6 @@ definePageMeta({
 })
 
 const toast = useToast()
-const { resetLastFetched } = useAuth()
 const teacherName = ref<string>('');
 const password = ref<string>('');
 const password_confirm = ref<string>('');
@@ -132,7 +131,6 @@ const login = async () => {
         }
         return
     }
-    resetLastFetched()
     await navigateTo("/", { replace: true })
 }
 </script>

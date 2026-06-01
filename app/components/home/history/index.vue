@@ -31,17 +31,11 @@ const queryParams = computed(() => ({
 const { pending } = await useAPI<Result<PointHistory[]>>("/point/history", {
     method: "GET",
     query: queryParams,
-    async onResponse({ response }) {
+    onResponse({ response }) {
         maxOffset.value = Number(response.headers.get("X-MAX-PAGE"))
         if (!response._data?.success) return
 
         if (dataOffset.value === 1) {
-            const cached = response.headers.get("X-CACHED") === "true"
-            if (!cached) {
-                // 포인트 지급또는 차감시, 히스토리 추가되고 캐싱을 삭제함으로 = 캐싱이 안된 데이터가 응답한다면 포인트가 변했다는 소리겠지오..
-                console.log("기록의 캐시가 없습니다. 강제로 세션을 업데이트 합니다.")
-                await fetchSession()
-            }
             historyPayload.value = response._data.data;
         } else {
             historyPayload.value.push(...response._data.data);

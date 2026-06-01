@@ -7,7 +7,6 @@ definePageMeta({
 })
 
 const toast = useToast()
-const { resetLastFetched } = useAuth()
 const serviceId_payload = ref<number[]>([]);
 const password = ref<string>('');
 const password_confirm = ref<string>('');
@@ -93,9 +92,6 @@ const login = async () => {
         }
         return
     }
-
-    // 로그인 성공 시 lastFetched 초기화하여 미들웨어에서 새로 세션을 검증하도록 함
-    resetLastFetched()
     await navigateTo("/", { replace: true })
 }
 </script>
