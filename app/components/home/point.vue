@@ -23,9 +23,7 @@ watch(pointBefore, (value) => {
     setTimeout(() => {
         pointNow.value = value
         pointChangeAnimate.value = false
-    }, ((pointNow.value.length * 0.15) + 0.4) * 1000)
-
-    // TODO: 애니메이션 만들어라 개놈아
+    }, (pointNow.value.length * 0.075 + 0.2) * 1000)
 })
 
 onMounted(() => {
@@ -41,7 +39,18 @@ onMounted(() => {
         </div>
         <div class="mt-2 text-p0 flex items-center -mb-1">
 
-            <span ref="pointContainer" class="text-h5/10 tracking-tight mr-0.5 flex items-center overflow-y-hidden">
+            <Motion
+                :initial="{ opacity: 0, translateX: '0' }"
+                :animate="{ opacity: 1, translateX: pointChangeAnimate? '0':`${pointWidth + 4}px` }"
+                :transition="{
+                    duration: pointNow.length * (0.15),
+                    delay: pointChangeAnimate? (pointNow.length - 1) * 0.0725:0.5,
+                    ease: [0, 0.71, 0.2, 1.01],
+                }"
+                class="absolute mt-2.5"
+                v-if="pointWidth"
+            >P</Motion>
+            <span ref="pointContainer" class="text-h5/10 tracking-tight flex items-center overflow-y-hidden">
                 <template v-for="(i, index) in pointNow" v-if="pointNow != null">
                     <Motion
                         as="span"
@@ -49,7 +58,7 @@ onMounted(() => {
                         :animate="{ y: pointChangeAnimate? '100%':'0%' }"
                         :transition="{
                             duration: 0.5,
-                            delay: (index * 0.075) + 0.5,
+                            delay: pointChangeAnimate? ((pointNow.length - 1) * 0.075 - index * 0.075):(index * 0.075) + 0.5,
                             ease: [0, 0.71, 0.2, 1.01],
                         }"
                     >
@@ -57,17 +66,7 @@ onMounted(() => {
                     </Motion>
                 </template>
             </span>
-            <!-- TODO: 값 변경될때 P 애니메이션 이상함 -->
-            <Motion
-                :initial="{ opacity: 0, translateX: `-${pointWidth / 2}px` }"
-                :animate="{ opacity: 1, translateX: pointChangeAnimate? `-${pointWidth / 2}px`:'0' }"
-                :transition="{
-                    duration: pointNow.length * (0.15),
-                    delay: 0.5,
-                    ease: [0, 0.71, 0.2, 1.01],
-                }"
-                v-if="pointWidth"
-            >P</Motion>
+
         </div>
     </div>
 </template>
