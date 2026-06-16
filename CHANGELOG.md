@@ -1,3 +1,10 @@
+## [1.7.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.2...v1.7.3) (2026-06-16)
+
+
+### Bug Fixes
+
+* **ui:** 아이패드에서 로그인 페이지가 이상하게 표시되던 형상 해결 ([01b9d07](https://git.rldn.xyz/scfs.miraepass/front/commit/01b9d07faded92a47dfde451c47557b34d4e7acc)), closes [#14](https://git.rldn.xyz/scfs.miraepass/front/issues/14)
+
 ## [1.7.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.1...v1.7.2) (2026-06-01)
 
 
