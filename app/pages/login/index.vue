@@ -20,7 +20,7 @@ const typeSelect = (type: UserType) => {
 <template>
     <Motion
         as="div"
-        class="w-screen h-screen p-7 flex flex-col justify-center items-center absolute"
+        class="w-screen h-screen p-7 flex flex-col justify-center items-center absolute top-0 left-0"
         :initial="{ opacity: 1 }"
         :animate="{ opacity: 0 }"
         :transition="{
@@ -61,7 +61,7 @@ const typeSelect = (type: UserType) => {
 
     <Motion
         as="div"
-        class="w-screen h-screen p-7 flex flex-col absolute"
+        class="w-screen h-screen p-7 flex flex-col absolute top-0 left-0"
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"
         :transition="{

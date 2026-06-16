@@ -140,7 +140,7 @@ const login = async () => {
 <template>
     <Motion
         as="div"
-        class="w-screen h-screen p-7 flex flex-col absolute"
+        class="w-screen h-screen p-7 flex flex-col absolute top-0 left-0"
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"
         :transition="{
