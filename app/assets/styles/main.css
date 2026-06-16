@@ -92,6 +92,10 @@ body {
     overflow-x: hidden;
 }
 
+.tossface {
+    font-family: Tossface, emoji;
+}
+
 .pwa-only-content {
     @apply hidden
 }
