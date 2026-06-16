@@ -123,7 +123,7 @@ export default defineNuxtConfig({
         },
     },
 
-    css: ["./app/assets/styles/main.css"],
+    css: ["./app/assets/styles/main.css", "./app/assets/styles/tossface.css"],
 
     routeRules: {
         '/api/**': {
