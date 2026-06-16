@@ -82,7 +82,7 @@ const isMacIpad = computed<boolean>(() => {
     <UApp>
         <div>
             <div
-                class="w-screen h-screen flex items-center justify-center"
+                class="w-screen min-h-screen flex items-center justify-center"
                 v-if="!$device.isMobileOrTablet && !isMacIpad"
             >
                 <p class="text-p1">모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.</p>
