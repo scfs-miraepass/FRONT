@@ -1,3 +1,20 @@
+# [1.8.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.3...v1.8.0) (2026-06-16)
+
+
+### Bug Fixes
+
+* **ui:** 태블릿 기기에서 overflow 현상 해결 ([7904c17](https://git.rldn.xyz/scfs.miraepass/front/commit/7904c17da2458af91eded41e5b21c0484ecbb59d))
+
+
+### Features
+
+* **ui:** 로그인 종류 페이지 리디자인 ([ebceaaf](https://git.rldn.xyz/scfs.miraepass/front/commit/ebceaaf36d62400f7a894a202abc3023f3c4c01d))
+
+
+### Performance Improvements
+
+* **ui:** 아이패드에서 접속시 모바일 기기 전용 안내 뜨는 현상 수정 ([2659f1b](https://git.rldn.xyz/scfs.miraepass/front/commit/2659f1bce4c276391c12e7db320cb13b103666c6))
+
 ## [1.7.3](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.2...v1.7.3) (2026-06-16)
 
 
