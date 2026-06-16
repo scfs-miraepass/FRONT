@@ -55,7 +55,7 @@ const typeSelect = (type: UserType) => {
             }"
         >
             <LogoSymbol size="20px" />
-            <span class="text-primary ml-1">미래 패스</span>에 오신걸 환영해요
+            <span class="text-primary ml-1">미래패스</span>에 오신걸 환영해요
         </Motion>
     </Motion>
 
@@ -71,23 +71,17 @@ const typeSelect = (type: UserType) => {
         }"
         ref="scope"
     >
-        <div class="flex-1 flex flex-col py-20">
-            <p class="text-h6 font-bold">먼저 선택해주세요.</p>
-            <div class="flex-1 flex flex-col items-center justify-center gap-3">
-                <div class="flex items-center justify-center gap-3 w-full">
-                    <UButton color="neutral" variant="outline" class="w-full aspect-square flex flex-col rounded-2xl" block @click="typeSelect('student')">
-                        <p class="text-h1 tossface">🧑‍🎓</p>
-                        <p class="text-h5 mt-2">학생</p>
+        <div class="flex-1 flex flex-col py-34">
+            <p class="text-h6 font-bold">지금,</p>
+            <p class="text-h6 font-bold mt-2">미래패스를 시작해보세요</p>
+            <div class="flex-1 flex flex-col items-center justify-end gap-4">
+                    <UButton icon="i-hugeicons-student" color="neutral" variant="soft" class="w-full rounded-full text-p0! py-4.5 font-semibold" block @click="typeSelect('student')">
+                        학생으로 로그인하기
                     </UButton>
-                    <UButton color="neutral" variant="outline" class="w-full aspect-square flex flex-col rounded-2xl" block @click="typeSelect('teacher')">
-                        <p class="text-h1 tossface">🧑‍🏫</p>
-                        <p class="text-h5 mt-2">교사</p>
+                    <UButton icon="i-hugeicons-teaching" color="neutral" variant="soft" size="xl" class="w-full rounded-full text-p0! py-4.5 font-semibold" block @click="typeSelect('teacher')">
+                        선생님으로 로그인하기
                     </UButton>
-                </div>
-                <UButton color="neutral" variant="outline" class="w-full flex rounded-2xl py-5" block @click="typeSelect('service')">
-                    <p class="text-h6 tossface">💼</p>
-                    <p class="text-h6">서비스</p>
-                </UButton>
+                <UButton class="cursor-pointer" variant="link" color="neutral" @click="typeSelect('service')">서비스로 로그인</UButton>
             </div>
         </div>
     </Motion>
