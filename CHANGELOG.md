@@ -1,3 +1,15 @@
+## [1.8.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.8.0...v1.8.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **ui:** 로그인페이지 화이트테마에서 선택 버튼이 안보이는 현상 해결 ([8776c38](https://git.rldn.xyz/scfs.miraepass/front/commit/8776c38ccdaee6c8f5d73b385dc38cabfcd79675))
+
+
+### Performance Improvements
+
+* **ui:** 토스페이스 삭제 ([ce63880](https://git.rldn.xyz/scfs.miraepass/front/commit/ce638804b015cbe23aa53925cc63b559e30833bf))
+
 # [1.8.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.3...v1.8.0) (2026-06-16)
 
 
