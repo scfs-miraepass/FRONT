@@ -6,6 +6,8 @@ semantic-release:
   stage: release
   image: node:24-slim
   rules:
+    - if: '$MANUAL_VERSION'
+      when: never
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_COMMIT_BRANCH == "dev"
   before_script:
@@ -38,7 +40,6 @@ docker-build:
     - if: $CI_COMMIT_BRANCH == "dev"
     - if: $CI_PIPELINE_SOURCE == "web"
   before_script:
-    # MANUAL_VERSION이 있으면 사용하고, 없으면 NEW_VERSION을 사용하는 로직이에요.
     - export FINAL_VERSION="${MANUAL_VERSION:-$NEW_VERSION}"
     - echo "Build Version is $FINAL_VERSION"
     - if [ -z "$FINAL_VERSION" ]; then echo "No version to build."; exit 0; fi
