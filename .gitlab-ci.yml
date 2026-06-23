@@ -43,10 +43,10 @@ docker-build:
     - docker build --pull --provenance=false -t "$CI_REGISTRY_IMAGE:$NEW_VERSION" .
     - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
     - |
-      if [[ "$NEW_VERSION" != *"-dev"* ]]; then
+      if [[ "$CI_COMMIT_BRANCH" == "master" ]]; then
         docker tag $CI_REGISTRY_IMAGE:$NEW_VERSION $CI_REGISTRY_IMAGE:latest
         docker push $CI_REGISTRY_IMAGE:latest
-      else
+      elif [[ "$CI_COMMIT_BRANCH" == "dev" ]]; then
         docker tag $CI_REGISTRY_IMAGE:$NEW_VERSION $CI_REGISTRY_IMAGE:dev
         docker push $CI_REGISTRY_IMAGE:dev
       fi
