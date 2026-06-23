@@ -1,5 +1,7 @@
-# [1.8.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.2...v1.8.0-dev.1) (2026-06-23)
+## [1.8.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.8.1...v1.8.2) (2026-06-16)
+### Reverts
 
+* Revert "perf(ui): 토스페이스 삭제" ([4a4b218](https://git.rldn.xyz/scfs.miraepass/front/commit/4a4b218a65c8c831c548ca193091064fa3e3b73e))
 
 ### Bug Fixes
 
