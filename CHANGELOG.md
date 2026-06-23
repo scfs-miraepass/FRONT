@@ -1,3 +1,11 @@
+# [1.9.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.8.2...v1.9.0) (2026-06-23)
+
+
+### Features
+
+* ranking ([73f3a12](https://git.rldn.xyz/scfs.miraepass/front/commit/73f3a1287ef050530f412dcd0b72f20df8cbfdcf)), closes [#17](https://git.rldn.xyz/scfs.miraepass/front/issues/17)
+* 관리자 계정 제한없음 텍스트 추가 ([b3ec854](https://git.rldn.xyz/scfs.miraepass/front/commit/b3ec854cedf727b32ed6e0e1e009bcc2da92003a))
+
 ## [1.8.2](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.8.1...v1.8.2) (2026-06-16)
 ### Reverts
 
