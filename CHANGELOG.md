@@ -1,3 +1,24 @@
+# [1.8.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.7.2...v1.8.0-dev.1) (2026-06-23)
+
+
+### Bug Fixes
+
+* **ui:** 로그인페이지 화이트테마에서 선택 버튼이 안보이는 현상 해결 ([8776c38](https://git.rldn.xyz/scfs.miraepass/front/commit/8776c38ccdaee6c8f5d73b385dc38cabfcd79675))
+* **ui:** 아이패드에서 로그인 페이지가 이상하게 표시되던 형상 해결 ([01b9d07](https://git.rldn.xyz/scfs.miraepass/front/commit/01b9d07faded92a47dfde451c47557b34d4e7acc)), closes [#14](https://git.rldn.xyz/scfs.miraepass/front/issues/14)
+* **ui:** 태블릿 기기에서 overflow 현상 해결 ([7904c17](https://git.rldn.xyz/scfs.miraepass/front/commit/7904c17da2458af91eded41e5b21c0484ecbb59d))
+
+
+### Features
+
+* ranking ([73f3a12](https://git.rldn.xyz/scfs.miraepass/front/commit/73f3a1287ef050530f412dcd0b72f20df8cbfdcf)), closes [#17](https://git.rldn.xyz/scfs.miraepass/front/issues/17)
+* **ui:** 로그인 종류 페이지 리디자인 ([ebceaaf](https://git.rldn.xyz/scfs.miraepass/front/commit/ebceaaf36d62400f7a894a202abc3023f3c4c01d))
+* 관리자 계정 제한없음 텍스트 추가 ([b3ec854](https://git.rldn.xyz/scfs.miraepass/front/commit/b3ec854cedf727b32ed6e0e1e009bcc2da92003a))
+
+
+### Performance Improvements
+
+* **ui:** 아이패드에서 접속시 모바일 기기 전용 안내 뜨는 현상 수정 ([2659f1b](https://git.rldn.xyz/scfs.miraepass/front/commit/2659f1bce4c276391c12e7db320cb13b103666c6))
+
 ## [1.8.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.8.0...v1.8.1) (2026-06-16)
 
 
