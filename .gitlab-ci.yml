@@ -37,7 +37,7 @@ docker-build:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_COMMIT_BRANCH == "dev"
     - if: $CI_PIPELINE_SOURCE == "web"
-before_script:
+  before_script:
     # MANUAL_VERSION이 있으면 사용하고, 없으면 NEW_VERSION을 사용하는 로직이에요.
     - export FINAL_VERSION="${MANUAL_VERSION:-$NEW_VERSION}"
     - echo "Build Version is $FINAL_VERSION"
