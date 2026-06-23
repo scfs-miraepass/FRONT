@@ -43,11 +43,14 @@ const pointLimit = computed<number>(() => {
         <Point />
         <Section class="mt-3">
             <NuxtLink to="/only/teacher/grant" v-slot="{ navigate }" custom>
-                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0">
+                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0 && !session.is_admin">
                     <template #value>
                         <USkeleton class="blur-xs" v-if="pending">
-                            500 포인트 남음
+                            1000 포인트 남음
                         </USkeleton>
+                        <template v-else-if="session.is_admin">
+                            제한 없음
+                        </template>
                         <template v-else>
                             {{ pointLimit }} 포인트 남음
                         </template>
