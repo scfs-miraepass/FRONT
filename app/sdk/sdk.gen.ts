@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, CreatePostPostsPostData, CreatePostPostsPostErrors, CreatePostPostsPostResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, DeletePostPostsPostIdDeleteData, DeletePostPostsPostIdDeleteErrors, DeletePostPostsPostIdDeleteResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetLimitPointLimitTargetUserIdGetData, GetLimitPointLimitTargetUserIdGetErrors, GetLimitPointLimitTargetUserIdGetResponses, GetLimitSessionPointLimitGetData, GetLimitSessionPointLimitGetErrors, GetLimitSessionPointLimitGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GetPostPostsPostIdGetData, GetPostPostsPostIdGetErrors, GetPostPostsPostIdGetResponses, GetPostsPostsGetData, GetPostsPostsGetErrors, GetPostsPostsGetResponses, GetStudentRankingPointRankingStudentGetData, GetStudentRankingPointRankingStudentGetErrors, GetStudentRankingPointRankingStudentGetResponses, GetStudentsAdminStudentGetData, GetStudentsAdminStudentGetErrors, GetStudentsAdminStudentGetResponses, GetTeacherRankingPointRankingTeacherGetData, GetTeacherRankingPointRankingTeacherGetErrors, GetTeacherRankingPointRankingTeacherGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses, UpdatePostPostsPostIdPatchData, UpdatePostPostsPostIdPatchErrors, UpdatePostPostsPostIdPatchResponses, UpdateStudentsPointAdminPointPostData, UpdateStudentsPointAdminPointPostErrors, UpdateStudentsPointAdminPointPostResponses } from './types.gen';
+import type { ChangePasswordAuthPasswordPutData, ChangePasswordAuthPasswordPutErrors, ChangePasswordAuthPasswordPutResponses, ChangePasswordNewAuthPasswordPostData, ChangePasswordNewAuthPasswordPostErrors, ChangePasswordNewAuthPasswordPostResponses, CheckPasswordExistsAuthPasswordExistsUserIdGetData, CheckPasswordExistsAuthPasswordExistsUserIdGetErrors, CheckPasswordExistsAuthPasswordExistsUserIdGetResponses, CompleteQuestQuestQuestIdCompletePostData, CompleteQuestQuestQuestIdCompletePostErrors, CompleteQuestQuestQuestIdCompletePostResponses, CreatePostPostsPostData, CreatePostPostsPostErrors, CreatePostPostsPostResponses, CreateQuestQuestCreatePostData, CreateQuestQuestCreatePostErrors, CreateQuestQuestCreatePostResponses, DeductPointsPointDeductPostData, DeductPointsPointDeductPostErrors, DeductPointsPointDeductPostResponses, DeletePostPostsPostIdDeleteData, DeletePostPostsPostIdDeleteErrors, DeletePostPostsPostIdDeleteResponses, DeleteQuestQuestQuestIdDeleteData, DeleteQuestQuestQuestIdDeleteErrors, DeleteQuestQuestQuestIdDeleteResponses, GetCurrentUserAuthGetData, GetCurrentUserAuthGetErrors, GetCurrentUserAuthGetResponses, GetLimitPointLimitTargetUserIdGetData, GetLimitPointLimitTargetUserIdGetErrors, GetLimitPointLimitTargetUserIdGetResponses, GetLimitSessionPointLimitGetData, GetLimitSessionPointLimitGetErrors, GetLimitSessionPointLimitGetResponses, GetPointBalancePointTargetUserIdGetData, GetPointBalancePointTargetUserIdGetErrors, GetPointBalancePointTargetUserIdGetResponses, GetPostPostsPostIdGetData, GetPostPostsPostIdGetErrors, GetPostPostsPostIdGetResponses, GetPostsPostsGetData, GetPostsPostsGetErrors, GetPostsPostsGetResponses, GetQuestQuestQuestIdGetData, GetQuestQuestQuestIdGetErrors, GetQuestQuestQuestIdGetResponses, GetStudentRankingPointRankingStudentGetData, GetStudentRankingPointRankingStudentGetErrors, GetStudentRankingPointRankingStudentGetResponses, GetStudentsAdminStudentGetData, GetStudentsAdminStudentGetErrors, GetStudentsAdminStudentGetResponses, GetTeacherRankingPointRankingTeacherGetData, GetTeacherRankingPointRankingTeacherGetErrors, GetTeacherRankingPointRankingTeacherGetResponses, GrantPointsPointGrantPostData, GrantPointsPointGrantPostErrors, GrantPointsPointGrantPostResponses, ListQuestsQuestGetData, ListQuestsQuestGetErrors, ListQuestsQuestGetResponses, LoginAuthLoginPostData, LoginAuthLoginPostErrors, LoginAuthLoginPostResponses, LogoutAuthLogoutPostData, LogoutAuthLogoutPostResponses, PointHistoryPointHistoryGetData, PointHistoryPointHistoryGetErrors, PointHistoryPointHistoryGetResponses, ReadRootGetData, ReadRootGetResponses, SearchSearchGetData, SearchSearchGetErrors, SearchSearchGetResponses, TeacherGetByNameSearchTeacherUserNameGetData, TeacherGetByNameSearchTeacherUserNameGetErrors, TeacherGetByNameSearchTeacherUserNameGetResponses, UpdatePostPostsPostIdPatchData, UpdatePostPostsPostIdPatchErrors, UpdatePostPostsPostIdPatchResponses, UpdateQuestQuestQuestIdPutData, UpdateQuestQuestQuestIdPutErrors, UpdateQuestQuestQuestIdPutResponses, UpdateStudentsPointAdminPointPostData, UpdateStudentsPointAdminPointPostErrors, UpdateStudentsPointAdminPointPostResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -190,6 +190,62 @@ export const updateStudentsPointAdminPointPost = <ThrowOnError extends boolean =
         ...options.headers
     }
 });
+
+/**
+ * 퀘스트 생성
+ *
+ * 퀘스트를 생성합니다. (교사 또는 관리자 전용)
+ */
+export const createQuestQuestCreatePost = <ThrowOnError extends boolean = false>(options: Options<CreateQuestQuestCreatePostData, ThrowOnError>): RequestResult<CreateQuestQuestCreatePostResponses, CreateQuestQuestCreatePostErrors, ThrowOnError> => (options.client ?? client).post<CreateQuestQuestCreatePostResponses, CreateQuestQuestCreatePostErrors, ThrowOnError>({
+    url: '/quest/create',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * 퀘스트 목록 조회
+ *
+ * 모든 퀘스트 목록을 조회합니다.
+ */
+export const listQuestsQuestGet = <ThrowOnError extends boolean = false>(options?: Options<ListQuestsQuestGetData, ThrowOnError>): RequestResult<ListQuestsQuestGetResponses, ListQuestsQuestGetErrors, ThrowOnError> => (options?.client ?? client).get<ListQuestsQuestGetResponses, ListQuestsQuestGetErrors, ThrowOnError>({ url: '/quest', ...options });
+
+/**
+ * 퀘스트 삭제
+ *
+ * 퀘스트를 삭제합니다. (생성한 교사 또는 관리자 전용)
+ */
+export const deleteQuestQuestQuestIdDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteQuestQuestQuestIdDeleteData, ThrowOnError>): RequestResult<DeleteQuestQuestQuestIdDeleteResponses, DeleteQuestQuestQuestIdDeleteErrors, ThrowOnError> => (options.client ?? client).delete<DeleteQuestQuestQuestIdDeleteResponses, DeleteQuestQuestQuestIdDeleteErrors, ThrowOnError>({ url: '/quest/{quest_id}', ...options });
+
+/**
+ * 퀘스트 조회
+ *
+ * 퀘스트 상세 정보를 조회합니다.
+ */
+export const getQuestQuestQuestIdGet = <ThrowOnError extends boolean = false>(options: Options<GetQuestQuestQuestIdGetData, ThrowOnError>): RequestResult<GetQuestQuestQuestIdGetResponses, GetQuestQuestQuestIdGetErrors, ThrowOnError> => (options.client ?? client).get<GetQuestQuestQuestIdGetResponses, GetQuestQuestQuestIdGetErrors, ThrowOnError>({ url: '/quest/{quest_id}', ...options });
+
+/**
+ * 퀘스트 수정
+ *
+ * 퀘스트 정보를 수정합니다. (생성한 교사 또는 관리자 전용)
+ */
+export const updateQuestQuestQuestIdPut = <ThrowOnError extends boolean = false>(options: Options<UpdateQuestQuestQuestIdPutData, ThrowOnError>): RequestResult<UpdateQuestQuestQuestIdPutResponses, UpdateQuestQuestQuestIdPutErrors, ThrowOnError> => (options.client ?? client).put<UpdateQuestQuestQuestIdPutResponses, UpdateQuestQuestQuestIdPutErrors, ThrowOnError>({
+    url: '/quest/{quest_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * 퀘스트 완료
+ *
+ * 학생이 퀘스트를 완료합니다. 완료 시 보상이 지급됩니다.
+ */
+export const completeQuestQuestQuestIdCompletePost = <ThrowOnError extends boolean = false>(options: Options<CompleteQuestQuestQuestIdCompletePostData, ThrowOnError>): RequestResult<CompleteQuestQuestQuestIdCompletePostResponses, CompleteQuestQuestQuestIdCompletePostErrors, ThrowOnError> => (options.client ?? client).post<CompleteQuestQuestQuestIdCompletePostResponses, CompleteQuestQuestQuestIdCompletePostErrors, ThrowOnError>({ url: '/quest/{quest_id}/complete', ...options });
 
 /**
  * 게시글 목록 조회

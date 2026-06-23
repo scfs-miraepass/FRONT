@@ -3,6 +3,7 @@ import Point from "@/components/home/point.vue";
 import History from "@/components/home/history/index.vue";
 import PageButton from "@/components/setting/object.vue";
 import Section from "@/components/setting/section.vue";
+import PageBUtton from "@/components/setting/object.vue";
 
 const session = useSession()
 </script>
@@ -19,6 +20,9 @@ const session = useSession()
         <Section class="mt-3">
             <NuxtLink to="/ranking" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-ranking" label="포인트 순위" />
+            </NuxtLink>
+            <NuxtLink to="/quest" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="i-ph-ranking" label="퀘스트" :value="'학생용 퀘스트 보기'" />
             </NuxtLink>
         </Section>
         <hr class="my-3 border-default" />

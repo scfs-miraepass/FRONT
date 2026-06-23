@@ -2,6 +2,7 @@
 const { add: addToast } = useToast()
 const { userAgent } = useDevice()
 const nuxtApp = useNuxtApp()
+const pwa = computed(() => nuxtApp.$pwa)
 const _load = ref<boolean>(true)
 const showLoading = ref<boolean>(false)
 const isTransition = useState('isTransition', () => true)
@@ -12,12 +13,12 @@ const isKakao = computed<boolean>(() =>  /kakaotalk/i.test(userAgent || ''))
 const config = useRuntimeConfig()
 
 useHead({
-    script: [
+    script: config.public.umamiServer && config.public.umamiId ? [
         {
             src: `${config.public.umamiServer}/script.js`,
             'data-website-id': config.public.umamiId
         }
-    ]
+    ] : []
 })
 
 nuxtApp.hook('page:loading:end', () => {
@@ -43,7 +44,7 @@ watch(isTransition, (value) => {
 
 onMounted(() => {
     setTimeout(() => _load.value = false, 500)
-    if (nuxtApp.$pwa?.offlineReady) {
+    if (pwa.value?.offlineReady) {
         addToast({
             description: '오프라인 상태입니다.',
             color: "warning"
@@ -68,7 +69,7 @@ const IOS_GUIDE = [
     { id: '5', text: '"웹 앱으로 열기"를 활성화 하고. "추가"를 클릭합니다.' },
 ]
 
-const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled && !_load.value)
+const isPwaReady = computed(() => !pwa.value?.isPWAInstalled && !_load.value)
 const isMacIpad = computed<boolean>(() => {
     if (import.meta.client) {
         return /Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1
@@ -83,14 +84,14 @@ const isMacIpad = computed<boolean>(() => {
         <div>
             <div
                 class="w-screen min-h-screen flex items-center justify-center"
-                v-if="!$device.isMobileOrTablet && !isMacIpad && !_load"
+                v-if="$device.isMobileOrTablet && isMacIpad && _load"
             >
                 <p class="text-p1">모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.</p>
             </div>
             <div v-else>
-                <div v-show="$pwa?.needRefresh" class="fixed top-0 left-0 light:bg-black/80 dark:bg-white/80 w-dvw h-dvh flex flex-col items-center justify-center">
+                <div v-show="pwa?.needRefresh" class="fixed top-0 left-0 light:bg-black/80 dark:bg-white/80 w-dvw h-dvh flex flex-col items-center justify-center">
                     <p class="text-p2 light:text-white dark:text-black mb-4">새로운 컨텐츠가 있어요. 아래의 버튼눌러 새로고침 해주세요.</p>
-                    <UButton size="xl" @click="$pwa?.updateServiceWorker()">
+                    <UButton size="xl" @click="pwa?.updateServiceWorker()">
                         새로고침
                     </UButton>
                 </div>
@@ -102,9 +103,9 @@ const isMacIpad = computed<boolean>(() => {
                             <p class="text-p2 light:text-black/50 dark:text-white/50 mt-2">미래 패스는 앱을 설치하셔야 사용 하실 수 있습니다.</p>
                             <p class="text-p2 light:text-black/50 dark:text-white/50 mt-1">'크롬(Chrome)' 브라우저 사용을 권장드립니다.</p>
 
-                            <div class="w-full mt-7" v-if="$pwa?.showInstallPrompt">
+                            <div class="w-full mt-7" v-if="pwa?.showInstallPrompt">
                                 <p class="text-p2 light:text-black/50 dark:text-white/50 mt-1 text-center mb-3">아래의 버튼을 눌러 설치하세요!</p>
-                                <UButton class="rounded-2xl justify-center flex py-3 w-full" @click="$pwa?.install()">
+                                <UButton class="rounded-2xl justify-center flex py-3 w-full" @click="pwa?.install()">
                                     <p class="text-p1">설치하기</p>
                                 </UButton>
                             </div>
