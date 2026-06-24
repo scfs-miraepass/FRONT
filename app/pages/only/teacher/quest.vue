@@ -175,7 +175,7 @@ onMounted(() => {
                 </Motion>
             </template>
 
-            <Section name="새 퀘스트 만들기">
+            <Section name="새 퀘스트 만들기" class="px-4 py-4">
                 <div class="grid gap-5 md:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.9fr)] xl:grid-cols-[minmax(0,1.45fr)_minmax(360px,0.9fr)]">
                     <div class="min-w-0 space-y-4 md:min-h-full md:flex md:flex-col">
                         <Motion
@@ -231,7 +231,7 @@ onMounted(() => {
                 </div>
             </Section>
 
-            <Section name="등록된 퀘스트">
+            <Section name="등록된 퀘스트" class="px-4 py-4">
                 <div class="space-y-3">
                     <template v-if="isLoading">
                         <div class="space-y-3 rounded-3xl border border-default bg-default/80 p-4">

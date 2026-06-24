@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import type { Quest } from "@/schemas/quest";
-import { $fetch } from "@/composables/$fetch";
+import { useAPI } from "@/composables/useAPI";
 
 interface ResponseModel<T> {
     success: boolean;
@@ -12,18 +12,28 @@ export const useQuest = () => {
     const isLoading = ref(false);
     const error = ref<string | null>(null);
 
+    const requestQuest = async <T>(url: string, options?: Parameters<typeof useAPI>[1]) => {
+        const req = await useAPI<T>(url, options);
+
+        if (req.error.value) {
+            throw req.error.value;
+        }
+
+        return req;
+    };
+
     const fetchQuests = async () => {
         isLoading.value = true;
         error.value = null;
 
         try {
-            const req = await $fetch<ResponseModel<Quest[]>>("/quest", {
+            const req = await requestQuest<ResponseModel<Quest[]>>("/quest", {
                 method: "GET",
             });
-            if (!req || !req.success) {
+            if (!req.data.value || !req.data.value.success) {
                 throw new Error("퀘스트 목록을 불러오지 못했습니다.");
             }
-            quests.value = req.data;
+            quests.value = req.data.value.data;
         } catch (err) {
             error.value = err instanceof Error ? err.message : String(err);
         } finally {
@@ -41,18 +51,15 @@ export const useQuest = () => {
         error.value = null;
 
         try {
-            const requestBody = {
-                ...payload,
-            };
-            const req = await $fetch<ResponseModel<Quest>>("/quest/create", {
+            const req = await requestQuest<ResponseModel<Quest>>("/quest/create", {
                 method: "POST",
-                body: requestBody,
+                body: payload,
             });
-            if (!req || !req.success) {
+            if (!req.data.value || !req.data.value.success) {
                 throw new Error("퀘스트 생성에 실패했습니다.");
             }
-            quests.value.unshift(req.data);
-            return req.data;
+            quests.value.unshift(req.data.value.data);
+            return req.data.value.data;
         } catch (err) {
             error.value = err instanceof Error ? err.message : String(err);
             return null;
@@ -66,7 +73,7 @@ export const useQuest = () => {
         error.value = null;
 
         try {
-            await $fetch<void>(`/quest/${questId}`, {
+            await requestQuest<void>(`/quest/${questId}`, {
                 method: "DELETE",
             });
             quests.value = quests.value.filter((item: Quest) => item.id !== questId);
@@ -84,13 +91,13 @@ export const useQuest = () => {
         error.value = null;
 
         try {
-            const req = await $fetch<ResponseModel<number>>(`/quest/${questId}/complete`, {
+            const req = await requestQuest<ResponseModel<number>>(`/quest/${questId}/complete`, {
                 method: "POST",
             });
-            if (!req || !req.success) {
+            if (!req.data.value || !req.data.value.success) {
                 throw new Error("퀘스트 완료 처리에 실패했습니다.");
             }
-            return req.data;
+            return req.data.value.data;
         } catch (err) {
             error.value = err instanceof Error ? err.message : String(err);
             return null;
