@@ -60,6 +60,13 @@ const pointLimit = computed<number>(() => {
             <NuxtLink to="/ranking" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-ranking" label="포인트 순위" />
             </NuxtLink>
+            <NuxtLink to="/only/teacher/quest" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="i-ph-scroll" label="퀘스트 관리">
+                    <template #value>
+                        퀘스트 등록 및 수정
+                    </template>
+                </PageButton>
+            </NuxtLink>
         </Section>
         <hr class="my-3 border-default " />
         <History />
