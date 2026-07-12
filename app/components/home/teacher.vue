@@ -42,7 +42,7 @@ const pointLimit = computed<number>(() => {
     <div class="pb-2 mt-2.5 flex-1 flex flex-col">
         <Point />
         <Section class="mt-3">
-            <NuxtLink to="/only/teacher/grant" v-slot="{ navigate }" custom>
+            <NuxtLink to="/teacher/grant" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0 && !session.is_admin">
                     <template #value>
                         <USkeleton class="blur-xs" v-if="pending">

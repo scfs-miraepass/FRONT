@@ -235,7 +235,7 @@ const onButton = async () => {
                 <UIcon name="i-ph-check-circle" class="text-h2 mb-1.5" />
                 {{ isDeduct? '결제가 정상적으로 되었어요.':'정상적으로 지급되었어요.' }}
             </div>
-            <NuxtLink :to="isDeduct? '/':'/only/teacher/grant'" v-slot="{ navigate }" custom>
+            <NuxtLink :to="isDeduct? '/':'/teacher/grant'" v-slot="{ navigate }" custom>
                 <UButton
                     class="rounded-2xl justify-center flex py-4.5 transition-opacity mb-3 w-full"
                     @click="navigate()"
