@@ -57,7 +57,7 @@ const pointLimit = computed<number>(() => {
                     </template>
                 </PageButton>
             </NuxtLink>
-            <NuxtLink to="/ranking" v-slot="{ navigate }" custom>
+            <NuxtLink to="/system/ranking" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-ranking" label="포인트 순위" />
             </NuxtLink>
         </Section>

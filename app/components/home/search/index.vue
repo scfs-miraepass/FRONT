@@ -54,7 +54,7 @@ const onSelect = (user: User) => {
     const userData = useState<User | undefined>("service.point.user.data", () => undefined)
     userData.value = user
 
-    navigateTo("/service/point")
+    navigateTo("/system/point-processing")
 }
 </script>
 
