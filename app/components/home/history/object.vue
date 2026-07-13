@@ -39,6 +39,19 @@ const icon = computed(() => {
             icon: "🧑‍🎓",
             color: "#586475"
         },
+        "quest": {
+            icon: "", // TODO
+            color: ""
+        },
+        "stamp": {
+            icon: "🌲",
+            color: "#C7678C"
+        },
+        "stamp_bonus": {
+            icon: "🎄",
+            color: "#a191ff"
+        },
+
     }[props.type]
 })
 </script>
