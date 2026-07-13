@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import Search from "./search/index.vue";
+import Section from "~/components/setting/section.vue";
+import Point from "~/components/home/point.vue";
+import PageButton from "~/components/setting/object.vue";
+import History from "~/components/home/history/index.vue";
 
 const session = useSession();
 </script>
@@ -12,6 +15,13 @@ const session = useSession();
         </NuxtLink>
     </div>
     <div class="pb-2 mt-2.5 flex-1 flex flex-col">
-        <Search />
+        <Section class="mt-3">
+            <NuxtLink to="/system/user-select?a=point" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 결제" />
+            </NuxtLink>
+            <NuxtLink to="/system/user-select?a=service-stamp" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="material-symbols-light:festival-rounded" label="'탄소중립 동아리 페스티벌' 스탬프 지급" />
+            </NuxtLink>
+        </Section>
     </div>
 </template>
