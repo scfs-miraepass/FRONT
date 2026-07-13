@@ -1,4 +1,5 @@
 import type { UserType } from "@/sdk"
+import type { RouteLocationNormalized } from "#vue-router";
 
 const consoleLog = (message: string, ...args: any[]) => {
     console.log(
@@ -9,11 +10,16 @@ const consoleLog = (message: string, ...args: any[]) => {
     )
 }
 
-
-export default defineNuxtRouteMiddleware((to, from) => {
+export const permissionsMiddleware = (to: RouteLocationNormalized, from: RouteLocationNormalized, permissions?: UserType[]) => {
     if (import.meta.client) {
         const session = useSession()
-        const requiredPermissions = to.meta.permissions as UserType[]
+        const requiredPermissions = permissions ?? to.meta.permissions as UserType[]
+
+        console.debug(
+            `%cPermissions Middleware%c ${requiredPermissions}`,
+            'background: oklch(82.8% 0.189 84.429); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;',
+            'color: inherit;',
+        )
 
         // 페이지에 필요한 역할이 정의되지 않았으면 통과
         if (!requiredPermissions || requiredPermissions.length <= 0) {
@@ -34,4 +40,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
         }
         // 세션이 없는 경우는 auth.global.ts 에서 처리하므로 여기서는 다루지 않음.
     }
-})
+}
+
+export default defineNuxtRouteMiddleware(permissionsMiddleware)
