@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import Section from "~/components/setting/section.vue";
-import Point from "~/components/home/point.vue";
 import PageButton from "~/components/setting/object.vue";
-import History from "~/components/home/history/index.vue";
 
 const session = useSession();
 </script>
@@ -15,7 +13,7 @@ const session = useSession();
         </NuxtLink>
     </div>
     <div class="pb-2 mt-2.5 flex-1 flex flex-col">
-        <Section class="mt-3">
+        <Section>
             <NuxtLink to="/system/user-select?a=point" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 결제" />
             </NuxtLink>
