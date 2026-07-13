@@ -3,6 +3,7 @@ import Section from "~/components/setting/section.vue";
 import PageButton from "~/components/setting/object.vue";
 
 const session = useSession();
+const stampType = useStampType();
 </script>
 
 <template>
@@ -17,7 +18,7 @@ const session = useSession();
             <NuxtLink to="/system/user-select?a=point" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 결제" />
             </NuxtLink>
-            <NuxtLink to="/system/user-select?a=service-stamp" v-slot="{ navigate }" custom>
+            <NuxtLink :to="stampType? '/system/user-select?a=service-stamp':'/service/stamp_setup'" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="material-symbols-light:festival-rounded" label="'탄소중립 동아리 페스티벌' 스탬프 지급" />
             </NuxtLink>
         </Section>
