@@ -12,7 +12,7 @@ import {
 definePageMeta({
     middleware: [
         (to, from) => {
-            const userData = useState<User | undefined>("service.point.user.data")
+            const userData = useState<User | undefined>("system.user-select.uesr")
             if (!userData.value) {
                 return navigateTo("/", { replace: true })
             }
@@ -22,13 +22,16 @@ definePageMeta({
 })
 
 const session = useSession()
-const userData = useState<User>("service.point.user.data")
+const userData = useState<User>("system.user-select.uesr")
 const amount = ref<number>(0)
 const isConfirm = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const isComplete = ref<boolean>(false)
 const isDeduct = computed<boolean>(() => session.value?.type == "service")
-const pointLimit = ref<GetLimitResponse | undefined>(undefined)
+const pointLimit = ref<GetLimitResponse>({
+    limit: 0,
+    target_limit: 0
+})
 
 const pointError = ref<boolean>(false)
 const [pointScope, pointAnimate] = useAnimate()
@@ -235,7 +238,7 @@ const onButton = async () => {
                 <UIcon name="i-ph-check-circle" class="text-h2 mb-1.5" />
                 {{ isDeduct? '결제가 정상적으로 되었어요.':'정상적으로 지급되었어요.' }}
             </div>
-            <NuxtLink :to="isDeduct? '/':'/only/teacher/grant'" v-slot="{ navigate }" custom>
+            <NuxtLink to="/system/user-select?a=point" v-slot="{ navigate }" custom>
                 <UButton
                     class="rounded-2xl justify-center flex py-4.5 transition-opacity mb-3 w-full"
                     @click="navigate()"
