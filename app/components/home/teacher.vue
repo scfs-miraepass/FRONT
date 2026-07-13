@@ -3,8 +3,10 @@ import Point from "@/components/home/point.vue";
 import History from "@/components/home/history/index.vue";
 import PageButton from "@/components/setting/object.vue";
 import Section from "@/components/setting/section.vue";
+import type { Result } from "~/schemas/response";
 
-const session = useSession();
+
+const session = useSession()
 
 const { pending, data: limitResult } = await useAPI<Result<number>>("/point/limit", {
     method: "GET",
@@ -42,13 +44,13 @@ const pointLimit = computed<number>(() => {
     <div class="pb-2 mt-2.5 flex-1 flex flex-col">
         <Point />
         <Section class="mt-3">
-            <NuxtLink to="/teacher/grant" v-slot="{ navigate }" custom>
-                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0 && !session.is_admin">
+            <NuxtLink to="/system/user-select?a=point" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0 && !session!.is_admin">
                     <template #value>
                         <USkeleton class="blur-xs" v-if="pending">
                             1000 포인트 남음
                         </USkeleton>
-                        <template v-else-if="session.is_admin">
+                        <template v-else-if="session!.is_admin">
                             제한 없음
                         </template>
                         <template v-else>
@@ -59,6 +61,9 @@ const pointLimit = computed<number>(() => {
             </NuxtLink>
             <NuxtLink to="/system/ranking" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="i-ph-ranking" label="포인트 순위" />
+            </NuxtLink>
+            <NuxtLink to="/system/stamp" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="material-symbols-light:festival-rounded" label="'탄소중립 동아리 페스티벌' 스탬프" />
             </NuxtLink>
         </Section>
         <hr class="my-3 border-default " />
