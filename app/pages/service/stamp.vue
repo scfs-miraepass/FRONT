@@ -2,6 +2,7 @@
 import {
     type UserType,
     type User,
+    createStampStampPost
 } from "@/sdk"
 import Icon from "~/components/stamp/icon.vue";
 
@@ -17,8 +18,45 @@ definePageMeta({
     permissions: ['service'] as UserType[]
 })
 
+const stampType = useStampType()
 const userData = useState<User>("system.user-select.uesr")
 const isLoading = ref<boolean>(false)
+const toast = useToast()
+
+const giveStamp = async () => {
+    isLoading.value = true
+
+    const req = await createStampStampPost(
+        {
+            body: {
+                user_id: userData.value.id!,
+                stamp_type: stampType.value!
+            }
+        }
+    )
+    if (req.error) {
+        if (req.response!.status == 409) {
+            toast.add({
+                title: '지급 실패',
+                description: '이미 스탬프를 획득한 사용자 입니다.',
+                color: "error"
+            })
+        } else {
+            toast.add({
+                title: '지급 실패',
+                description: '알 수 없는 이유로 지급에 실패했습니다. 관리자에게 문의하세요.',
+                color: "error"
+            })
+        }
+    } else {
+        toast.add({
+            title: '지급 완료',
+            description: `${userData.value!.name}님에게 스탬프를 지급했습니다.`,
+            color: "success"
+        })
+    }
+    navigateTo("/system/user-select?a=service-stamp", { replace: true })
+}
 </script>
 
 <template>
@@ -31,7 +69,7 @@ const isLoading = ref<boolean>(false)
                 </div>
                 <div class="flex flex-col items-center mt-25">
                     <Icon enable class="w-25 h-25" />
-                    <p class="text-p0 mt-2">제기찰겨? 날찰겨?</p>
+                    <p class="text-p0 mt-2">{{ stampType }}</p>
                 </div>
             </div>
             <p class="text-ui-p2 mb-5 flex items-center justify-center light:text-black/50 dark:text-white/50">
@@ -41,6 +79,7 @@ const isLoading = ref<boolean>(false)
             <div class="space-y-3 mb-3">
                 <UButton
                     class="rounded-2xl justify-center flex py-4.5 transition-opacity w-full"
+                    @click="giveStamp"
                     :disabled="isLoading"
                     :loading="isLoading"
                 >
