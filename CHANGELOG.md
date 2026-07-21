@@ -1,3 +1,11 @@
+# [1.10.0](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.9.0...v1.10.0) (2026-07-21)
+
+
+### Features
+
+* 스탬프 시스템 ([5f6a4bf](https://git.rldn.xyz/scfs.miraepass/front/commit/5f6a4bf74b4e060b340e2695552f3286c9bd8f2b))
+* 스템프 시스템 ([145cdb9](https://git.rldn.xyz/scfs.miraepass/front/commit/145cdb9731d50f847933ca1c5e1525db2976a73b))
+
 # [1.10.0-dev.1](https://git.rldn.xyz/scfs.miraepass/front/compare/v1.9.0...v1.10.0-dev.1) (2026-07-13)
 
 <<<<<<< HEAD
