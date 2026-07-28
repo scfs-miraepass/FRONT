@@ -1,0 +1,109 @@
+name: Docker Image Release
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  workflow_dispatch:
+    inputs:
+      manual_version:
+        description: 'Manual Version (MANUAL_VERSION에 해당)'
+        required: false
+        type: string
+
+jobs:
+  semantic-release:
+    runs-on: ubuntu-latest
+    # MANUAL_VERSION이 입력되었을 때는 semantic-release 스킵
+    if: ${{ github.event.inputs.manual_version == '' }}
+    outputs:
+      new_version: ${{ steps.extract.outputs.NEW_VERSION }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 전체 커밋 기록 가져오기
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: |
+          npm install @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/exec @semantic-release/npm @semantic-release/commit-analyzer @semantic-release/release-notes-generator -D
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          touch build.env
+          npx semantic-release
+
+      - name: Export version variable
+        id: extract
+        run: |
+          if [ -f build.env ]; then
+            source build.env
+            echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload package.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-json
+          path: package.json
+          if-no-files-found: ignore
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [semantic-release]
+    # semantic-release가 스킵되더라도(수동 실행 등) 이 작업이 진행되도록
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download package.json artifact
+        if: ${{ needs.semantic-release.result == 'success' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json
+          path: .
+        continue-on-error: true
+
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.CI_REGISTRY }}
+          username: ${{ secrets.CI_REGISTRY_USER }}
+          password: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+      - name: Build and Push Docker image
+        run: |
+          # manual_version을 우선시 사용하고, 아님 semantic-release 자동 버전 사용
+          MANUAL_VERSION="${{ github.event.inputs.manual_version }}"
+          NEW_VERSION="${{ needs.semantic-release.outputs.new_version }}"
+          export FINAL_VERSION="${MANUAL_VERSION:-$NEW_VERSION}"
+          
+          echo "Build Version is $FINAL_VERSION"
+          if [ -z "$FINAL_VERSION" ]; then 
+            echo "No version to build."
+            exit 0
+          fi
+          
+          IMAGE="${{ secrets.CI_REGISTRY_IMAGE }}"
+          
+          docker build --pull --provenance=false -t "$IMAGE:$FINAL_VERSION" .
+          docker push "$IMAGE:$FINAL_VERSION"
+          
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            # Master라면 latest도 같이 push
+            docker tag "$IMAGE:$FINAL_VERSION" "$IMAGE:latest"
+            docker push "$IMAGE:latest"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            # Dev 라면 dev도 같이 push
+            docker tag "$IMAGE:$FINAL_VERSION" "$IMAGE:dev"
+            docker push "$IMAGE:dev"
+          fi
