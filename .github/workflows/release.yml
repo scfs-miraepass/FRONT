@@ -19,6 +19,9 @@ env:
 jobs:
   semantic-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     if: ${{ github.event.inputs.manual_version == '' }}
     outputs:
       new_version: ${{ steps.extract.outputs.NEW_VERSION }}
@@ -63,6 +66,10 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
     needs: [semantic-release]
     if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     steps:
@@ -84,8 +91,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.CI_REGISTRY_USER }}
-          password: ${{ secrets.CI_REGISTRY_PASSWORD }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare Docker Metadata
         id: meta-prepare
@@ -113,7 +120,6 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=raw,value=dev,enable=${{ github.ref == 'refs/heads/dev' }}
 
-      # 3. 실제로 빌드하고 푸시하는 스텝이에요
       - name: Build and Push Docker image
         if: steps.prep.outputs.skip_build != 'true'
         uses: docker/build-push-action@v6
