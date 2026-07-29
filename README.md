@@ -1,9 +1,7 @@
 # MIRAE PASS FRONT
----
 미래 패스 서비스의 프론트 시스템
 
 ## 🔒 개발 환경설정
----
 ```bash
 # Git clone
 git clone https://git.rldn.xyz/scfs.miraepass/front.git
@@ -21,7 +19,6 @@ yarn dev
 ```
 
 ## ✨ 명령어 및 개발 가이드
----
 `http://localhost:8000/openapi.json`는 백엔드 서버의 openapi.json 파일입니다. 개발시 주소가 다를 경우 주소를 수정해주세요.
 ### SDK 생성
 ```bash
@@ -66,14 +63,12 @@ Major.Minor.Patch
 - ui: 프론트 화면, 컴포넌트 관련
 
 ## 📦 프로젝트 구조
----
 ```
 ...
 ```
 
 
 ## 🛠 기술 스택
----
 - Framework: Nuxt.js
 - CSS Framework: TailwindCSS
 - Nuxt Modules: @nuxt/fonts, @nuxtjs/device, motion-v/nuxt, @nuxt/ui, @vite-pwa/nuxt
