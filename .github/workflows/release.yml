@@ -47,8 +47,8 @@ jobs:
         run: |
           touch build.env
           npx semantic-release
-
       - name: Export version variable
+
         id: extract
         run: |
           if [ -f build.env ]; then
@@ -121,7 +121,7 @@ jobs:
             type=raw,value=dev,enable=${{ github.ref == 'refs/heads/dev' }}
 
       - name: Build and Push Docker image
-        if: steps.prep.outputs.skip_build != 'true'
+        if: steps.meta-prepare.outputs.skip_build != 'true'
         uses: docker/build-push-action@v6
         with:
           context: .
