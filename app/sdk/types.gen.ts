@@ -297,12 +297,36 @@ export type QuestOperation = {
      * 퀘스트 종료 날짜
      */
     end_date: string;
+};
+
+/**
+ * QuestResponse
+ */
+export type QuestResponse = {
     /**
-     * Max Repeat
-     *
-     * 퀘스트 반복 가능 횟수
+     * Id
      */
-    max_repeat: number;
+    id: number;
+    /**
+     * Title
+     */
+    title: string;
+    /**
+     * Description
+     */
+    description: string;
+    /**
+     * Reward
+     */
+    reward: number;
+    /**
+     * End Date
+     */
+    end_date: string;
+    /**
+     * Author Id
+     */
+    author_id: number;
 };
 
 /**
@@ -333,66 +357,6 @@ export type QuestUpdate = {
      * 퀘스트 종료 날짜
      */
     end_date?: string | null;
-    /**
-     * Max Repeat
-     *
-     * 퀘스트 반복 가능 횟수
-     */
-    max_repeat?: number | null;
-};
-
-/**
- * Quests
- */
-export type Quests = {
-    /**
-     * Id
-     *
-     * 퀘스트 고유 ID
-     */
-    id?: number | null;
-    /**
-     * Title
-     *
-     * 퀘스트 제목
-     */
-    title: string;
-    /**
-     * Description
-     *
-     * 퀘스트 내용
-     */
-    description: string;
-    /**
-     * Reward
-     *
-     * 퀘스트 보상 포인트
-     */
-    reward: number;
-    /**
-     * End Date
-     *
-     * 퀘스트 종료 날짜
-     */
-    end_date: string;
-    /**
-     * Max Repeat
-     *
-     * 학생 당 최대 반복 완료 횟수
-     */
-    max_repeat?: number;
-    /**
-     * Created At
-     *
-     * 퀘스트를 작성한 시간
-     */
-    created_at?: string;
-    /**
-     * Author Id
-     *
-     * 퀘스트 생성 유저의 고유 ID
-     */
-    author_id: number;
 };
 
 /**
@@ -468,9 +432,9 @@ export type ResponseModelListPosts = {
 };
 
 /**
- * ResponseModel[List[Quests]]
+ * ResponseModel[List[QuestResponse]]
  */
-export type ResponseModelListQuests = {
+export type ResponseModelListQuestResponse = {
     /**
      * Success
      */
@@ -480,7 +444,7 @@ export type ResponseModelListQuests = {
      *
      * 응답 데이터
      */
-    data: Array<Quests>;
+    data: Array<QuestResponse>;
 };
 
 /**
@@ -500,6 +464,40 @@ export type ResponseModelListUser = {
 };
 
 /**
+ * ResponseModel[List[dict]]
+ */
+export type ResponseModelListDict = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * Data
+     *
+     * 응답 데이터
+     */
+    data: Array<{
+        [key: string]: unknown;
+    }>;
+};
+
+/**
+ * ResponseModel[NoneType]
+ */
+export type ResponseModelNoneType = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * Data
+     *
+     * 응답 데이터
+     */
+    data: null;
+};
+
+/**
  * ResponseModel[Posts]
  */
 export type ResponseModelPosts = {
@@ -514,9 +512,9 @@ export type ResponseModelPosts = {
 };
 
 /**
- * ResponseModel[Quests]
+ * ResponseModel[QuestResponse]
  */
-export type ResponseModelQuests = {
+export type ResponseModelQuestResponse = {
     /**
      * Success
      */
@@ -524,7 +522,7 @@ export type ResponseModelQuests = {
     /**
      * 응답 데이터
      */
-    data: Quests;
+    data: QuestResponse;
 };
 
 /**
@@ -941,7 +939,7 @@ export type CheckPasswordExistsAuthPasswordExistsUserIdGetError = CheckPasswordE
 
 export type CheckPasswordExistsAuthPasswordExistsUserIdGetResponses = {
     /**
-     * Successful Response
+     * 정상 조회
      */
     200: ResponseModelBool;
 };
@@ -1424,7 +1422,7 @@ export type CreateQuestQuestCreatePostResponses = {
     /**
      * 퀘스트 생성 성공
      */
-    201: ResponseModelQuests;
+    201: ResponseModelQuestResponse;
 };
 
 export type CreateQuestQuestCreatePostResponse = CreateQuestQuestCreatePostResponses[keyof CreateQuestQuestCreatePostResponses];
@@ -1462,7 +1460,7 @@ export type ListQuestsQuestGetResponses = {
     /**
      * 퀘스트 목록 조회 성공
      */
-    200: ResponseModelListQuests;
+    200: ResponseModelListQuestResponse;
 };
 
 export type ListQuestsQuestGetResponse = ListQuestsQuestGetResponses[keyof ListQuestsQuestGetResponses];
@@ -1542,7 +1540,7 @@ export type GetQuestQuestQuestIdGetResponses = {
     /**
      * 퀘스트 조회 성공
      */
-    200: ResponseModelQuests;
+    200: ResponseModelQuestResponse;
 };
 
 export type GetQuestQuestQuestIdGetResponse = GetQuestQuestQuestIdGetResponses[keyof GetQuestQuestQuestIdGetResponses];
@@ -1588,7 +1586,7 @@ export type UpdateQuestQuestQuestIdPutResponses = {
     /**
      * 퀘스트 수정 성공
      */
-    200: ResponseModelQuests;
+    200: ResponseModelQuestResponse;
 };
 
 export type UpdateQuestQuestQuestIdPutResponse = UpdateQuestQuestQuestIdPutResponses[keyof UpdateQuestQuestQuestIdPutResponses];
@@ -1642,6 +1640,170 @@ export type CompleteQuestQuestQuestIdCompletePostResponses = {
 };
 
 export type CompleteQuestQuestQuestIdCompletePostResponse = CompleteQuestQuestQuestIdCompletePostResponses[keyof CompleteQuestQuestQuestIdCompletePostResponses];
+
+export type CancelAcceptQuestQuestIdAcceptDeleteData = {
+    body?: never;
+    path: {
+        /**
+         * Quest Id
+         */
+        quest_id: number;
+    };
+    query?: never;
+    url: '/quest/{quest_id}/accept';
+};
+
+export type CancelAcceptQuestQuestIdAcceptDeleteErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * 퀘스트를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CancelAcceptQuestQuestIdAcceptDeleteError = CancelAcceptQuestQuestIdAcceptDeleteErrors[keyof CancelAcceptQuestQuestIdAcceptDeleteErrors];
+
+export type CancelAcceptQuestQuestIdAcceptDeleteResponses = {
+    /**
+     * 수락 취소 성공
+     */
+    200: ResponseModelNoneType;
+};
+
+export type CancelAcceptQuestQuestIdAcceptDeleteResponse = CancelAcceptQuestQuestIdAcceptDeleteResponses[keyof CancelAcceptQuestQuestIdAcceptDeleteResponses];
+
+export type MyAcceptStatusQuestQuestIdAcceptGetData = {
+    body?: never;
+    path: {
+        /**
+         * Quest Id
+         */
+        quest_id: number;
+    };
+    query?: never;
+    url: '/quest/{quest_id}/accept';
+};
+
+export type MyAcceptStatusQuestQuestIdAcceptGetErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 퀘스트를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type MyAcceptStatusQuestQuestIdAcceptGetError = MyAcceptStatusQuestQuestIdAcceptGetErrors[keyof MyAcceptStatusQuestQuestIdAcceptGetErrors];
+
+export type MyAcceptStatusQuestQuestIdAcceptGetResponses = {
+    /**
+     * 현재 유저의 수락 여부 반환
+     */
+    200: ResponseModelBool;
+};
+
+export type MyAcceptStatusQuestQuestIdAcceptGetResponse = MyAcceptStatusQuestQuestIdAcceptGetResponses[keyof MyAcceptStatusQuestQuestIdAcceptGetResponses];
+
+export type AcceptQuestQuestQuestIdAcceptPostData = {
+    body?: never;
+    path: {
+        /**
+         * Quest Id
+         */
+        quest_id: number;
+    };
+    query?: never;
+    url: '/quest/{quest_id}/accept';
+};
+
+export type AcceptQuestQuestQuestIdAcceptPostErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * 퀘스트를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type AcceptQuestQuestQuestIdAcceptPostError = AcceptQuestQuestQuestIdAcceptPostErrors[keyof AcceptQuestQuestQuestIdAcceptPostErrors];
+
+export type AcceptQuestQuestQuestIdAcceptPostResponses = {
+    /**
+     * 퀘스트 수락 성공
+     */
+    200: ResponseModelNoneType;
+};
+
+export type AcceptQuestQuestQuestIdAcceptPostResponse = AcceptQuestQuestQuestIdAcceptPostResponses[keyof AcceptQuestQuestQuestIdAcceptPostResponses];
+
+export type ListAcceptedStudentsQuestQuestIdAcceptedGetData = {
+    body?: never;
+    path: {
+        /**
+         * Quest Id
+         */
+        quest_id: number;
+    };
+    query?: never;
+    url: '/quest/{quest_id}/accepted';
+};
+
+export type ListAcceptedStudentsQuestQuestIdAcceptedGetErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * 퀘스트를 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ListAcceptedStudentsQuestQuestIdAcceptedGetError = ListAcceptedStudentsQuestQuestIdAcceptedGetErrors[keyof ListAcceptedStudentsQuestQuestIdAcceptedGetErrors];
+
+export type ListAcceptedStudentsQuestQuestIdAcceptedGetResponses = {
+    /**
+     * 수락한 학생 목록 조회 성공
+     */
+    200: ResponseModelListDict;
+};
+
+export type ListAcceptedStudentsQuestQuestIdAcceptedGetResponse = ListAcceptedStudentsQuestQuestIdAcceptedGetResponses[keyof ListAcceptedStudentsQuestQuestIdAcceptedGetResponses];
 
 export type GetPostsPostsGetData = {
     body?: never;

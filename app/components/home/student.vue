@@ -23,6 +23,9 @@ const session = useSession()
             <NuxtLink to="/system/stamp" v-slot="{ navigate }" custom>
                 <PageButton @click="navigate()" icon="material-symbols-light:festival-rounded" label="'탄소중립 동아리 페스티벌' 스탬프" />
             </NuxtLink>
+            <NuxtLink to="/system/quest-list" v-slot="{ navigate }" custom>
+                <PageButton @click="navigate()" icon="i-ph-list-checks" label="퀘스트 목록" />
+            </NuxtLink>
         </Section>
         <hr class="my-3 border-default" />
         <History />
