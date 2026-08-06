@@ -1,103 +1,112 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
-import { checkPasswordExistsAuthPasswordExistsUserIdGet, changePasswordNewAuthPasswordPost, loginAuthLoginPost } from "@/sdk"
 
 definePageMeta({
-    layout: false
-})
+    layout: false,
+});
 
-const toast = useToast()
-const { resetLastFetched } = useAuth()
+const toast = useToast();
+const { resetLastFetched } = useAuth();
 const serviceId_payload = ref<number[]>([]);
-const password = ref<string>('');
-const password_confirm = ref<string>('');
+const password = ref<string>("");
+const password_confirm = ref<string>("");
 let loadingTimeout: any = null;
 
 const step1 = reactive<{
-    password: boolean | null,
-    loading: boolean
-    error?: string
+    password: boolean | null;
+    loading: boolean;
+    error?: string;
 }>({
     password: null,
     loading: false,
-    error: undefined
-})
+    error: undefined,
+});
 
-const serviceId = computed<number>(() => Number(serviceId_payload.value?.join('')))
+const serviceId = computed<number>(() =>
+    Number(serviceId_payload.value?.join("")),
+);
 
 const passwordCheck = async () => {
     (document.activeElement as HTMLElement)?.blur();
-    if (!serviceId.value) return
-    step1.error = undefined
+    if (!serviceId.value) return;
+    step1.error = undefined;
 
     loadingTimeout = setTimeout(() => {
-        step1.loading = true
-    }, 100)
+        step1.loading = true;
+    }, 100);
 
-
-    const req = await checkPasswordExistsAuthPasswordExistsUserIdGet({
+    const req = await $API.checkPasswordExistsAuthPasswordExistsUserIdGet({
         path: {
             user_id: serviceId.value,
         },
         query: {
-            t: "service"
-        }
-    })
+            t: "service",
+        },
+    });
 
-    if (loadingTimeout) clearTimeout(loadingTimeout)
+    if (loadingTimeout) clearTimeout(loadingTimeout);
 
     if (req.error) {
-        step1.loading = false
-        step1.error = ""
+        step1.loading = false;
+        step1.error = "";
         toast.add({
-            title: '고유번호을 확인해주세요!',
-            description: '등록된 서비스을 찾지 못했어요. 동일한 문제가 발생하면 담당자에게 문의해주세요.',
-            color: "error"
-        })
-        return
+            title: "고유번호을 확인해주세요!",
+            description:
+                "등록된 서비스을 찾지 못했어요. 동일한 문제가 발생하면 담당자에게 문의해주세요.",
+            color: "error",
+        });
+        return;
     }
-    step1.password = req.data.data
-    step1.loading = false
-}
+    step1.password = req.data.data;
+    step1.loading = false;
+};
 
 const login = async () => {
     (document.activeElement as HTMLElement)?.blur();
-    if (step1.password == null? (serviceId.value ?? 0) < 5000:(password.value.length < 8 || password.value.length > 15 || (step1.password == false && password.value !== password_confirm.value))) return
+    if (
+        step1.password == null
+            ? (serviceId.value ?? 0) < 5000
+            : password.value.length < 8 ||
+              password.value.length > 15 ||
+              (step1.password == false &&
+                  password.value !== password_confirm.value)
+    )
+        return;
     if (step1.password == false) {
         // 초기 접속하여 비밀번호 변경을 해야하는 경우
-        const req = await changePasswordNewAuthPasswordPost({
+        const req = await $API.changePasswordNewAuthPasswordPost({
             body: {
                 user: serviceId.value,
-                password: password.value
-            }
-        })
+                password: password.value,
+            },
+        });
         if (req.error) {
             // TODO: 에러처리
-            return
+            return;
         }
     }
 
-    const req = await loginAuthLoginPost({
+    const req = await $API.loginAuthLoginPost({
         body: {
             id: serviceId.value,
-            password: password.value
-        }
-    })
+            password: password.value,
+        },
+    });
     if (req.error) {
         if (req.response.status == 401) {
             toast.add({
-                title: '비밀번호가 맞지 않아요.',
-                description: '비밀번호를 잊어다면 담당자에게 문의해주세요.',
-                color: "error"
-            })
+                title: "비밀번호가 맞지 않아요.",
+                description: "비밀번호를 잊어다면 담당자에게 문의해주세요.",
+                color: "error",
+            });
         }
-        return
+        return;
     }
 
     // 로그인 성공 시 lastFetched 초기화하여 미들웨어에서 새로 세션을 검증하도록 함
-    resetLastFetched()
-    await navigateTo("/", { replace: true })
-}
+    resetLastFetched();
+    await navigateTo("/", { replace: true });
+};
 </script>
 
 <template>
@@ -113,23 +122,47 @@ const login = async () => {
         ref="scope"
     >
         <div class="flex items-center mb-4">
-            <NuxtLink to="/login?disableOpening=true" v-slot="{ navigate }" custom replace>
-                <UButton @click="navigate()" color="neutral" variant="ghost" icon="i-ph-caret-left-bold" class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented" size="xl" />
+            <NuxtLink
+                to="/login?disableOpening=true"
+                v-slot="{ navigate }"
+                custom
+                replace
+            >
+                <UButton
+                    @click="navigate()"
+                    color="neutral"
+                    variant="ghost"
+                    icon="i-ph-caret-left-bold"
+                    class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented"
+                    size="xl"
+                />
             </NuxtLink>
         </div>
         <div class="flex-1 flex flex-col py-20">
-            <p class="text-h6 font-bold" v-if="step1.password == null">고유번호을<br />입력해주세요.</p>
-            <p class="text-h6 font-bold" v-if="step1.password == true">비밀번호를<br />입력해주세요.</p>
-            <p class="text-h6 font-bold" v-if="step1.password == false">비밀번호를<br />설정해주세요.</p>
+            <p class="text-h6 font-bold" v-if="step1.password == null">
+                고유번호을<br />입력해주세요.
+            </p>
+            <p class="text-h6 font-bold" v-if="step1.password == true">
+                비밀번호를<br />입력해주세요.
+            </p>
+            <p class="text-h6 font-bold" v-if="step1.password == false">
+                비밀번호를<br />설정해주세요.
+            </p>
             <div class="flex flex-col flex-1 gap-4 mt-15">
-                <UFormField label="고유번호" class="w-full" :error="step1.error">
+                <UFormField
+                    label="고유번호"
+                    class="w-full"
+                    :error="step1.error"
+                >
                     <UPinInput
                         type="number"
                         :length="4"
                         size="xl"
                         :disabled="step1.password != null"
                         v-model="serviceId_payload"
-                        @keydown.enter="step1.password == null? passwordCheck():login()"
+                        @keydown.enter="
+                            step1.password == null ? passwordCheck() : login()
+                        "
                     />
                 </UFormField>
                 <Motion
@@ -143,26 +176,74 @@ const login = async () => {
                     }"
                     v-if="step1.password != null"
                 >
-                    <UFormField label="비밀번호" class="w-full" v-if="step1.password == true">
-                        <UInput type="password" class="w-full" size="xl" v-model="password" @keydown.enter="login()" />
+                    <UFormField
+                        label="비밀번호"
+                        class="w-full"
+                        v-if="step1.password == true"
+                    >
+                        <UInput
+                            type="password"
+                            class="w-full"
+                            size="xl"
+                            v-model="password"
+                            @keydown.enter="login()"
+                        />
                     </UFormField>
 
-                    <UFormField label="비밀번호" class="w-full" v-if="step1.password == false" :error="password.length < 8 || password.length > 15? '비밀번호는 8~15자 사이여야 해요.':undefined">
-                        <UInput type="password" class="w-full" size="xl" v-model="password" @keydown.enter="login()" />
+                    <UFormField
+                        label="비밀번호"
+                        class="w-full"
+                        v-if="step1.password == false"
+                        :error="
+                            password.length < 8 || password.length > 15
+                                ? '비밀번호는 8~15자 사이여야 해요.'
+                                : undefined
+                        "
+                    >
+                        <UInput
+                            type="password"
+                            class="w-full"
+                            size="xl"
+                            v-model="password"
+                            @keydown.enter="login()"
+                        />
                     </UFormField>
-                    <UFormField label="비밀번호 검증" class="w-full" v-if="step1.password == false" :error="password !== password_confirm? '비밀번호가 일치하지 않아요.':undefined">
-                        <UInput type="password" class="w-full" size="xl" v-model="password_confirm" @keydown.enter="login()" />
+                    <UFormField
+                        label="비밀번호 검증"
+                        class="w-full"
+                        v-if="step1.password == false"
+                        :error="
+                            password !== password_confirm
+                                ? '비밀번호가 일치하지 않아요.'
+                                : undefined
+                        "
+                    >
+                        <UInput
+                            type="password"
+                            class="w-full"
+                            size="xl"
+                            v-model="password_confirm"
+                            @keydown.enter="login()"
+                        />
                     </UFormField>
                 </Motion>
             </div>
         </div>
         <UButton
             class="rounded-2xl justify-center flex py-4.5 transition-opacity"
-            :disabled="step1.password == null? (serviceId ?? 0) < 5000:(password.length < 8 || password.length > 15 || (step1.password == false && password !== password_confirm))"
+            :disabled="
+                step1.password == null
+                    ? (serviceId ?? 0) < 5000
+                    : password.length < 8 ||
+                      password.length > 15 ||
+                      (step1.password == false && password !== password_confirm)
+            "
             :loading="step1.loading"
-            @click="step1.password == null? passwordCheck():login()"
+            @click="step1.password == null ? passwordCheck() : login()"
         >
-            <p class="text-p0">{{ step1.password == null? '다음 단계':'로그인 하기' }}</p>
+            <p class="text-p0">
+                {{ step1.password == null ? "다음 단계" : "로그인 하기" }}
+            </p>
         </UButton>
     </Motion>
 </template>
