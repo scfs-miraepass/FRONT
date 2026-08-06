@@ -6,10 +6,9 @@ import * as z from 'zod';
  * AdminPointRequest
  */
 export const zAdminPointRequest = z.object({
-    user_ids: z.array(z.int()).nullish(),
+    user_ids: z.array(z.int()),
     amount: z.int(),
-    reason: z.string(),
-    is_all_students: z.boolean().optional().default(false)
+    reason: z.string()
 });
 
 /**
@@ -76,7 +75,7 @@ export const zPointHistory = z.object({
     reason: z.string(),
     memo: z.string().nullish(),
     type: zPointHistoryType.nullish(),
-    created_at: z.iso.datetime().optional()
+    created_at: z.iso.datetime({ offset: true }).optional()
 });
 
 /**
@@ -112,8 +111,8 @@ export const zPosts = z.object({
     id: z.int().nullish(),
     title: z.string(),
     views: z.int().optional().default(0),
-    created_at: z.iso.datetime().optional(),
-    updated_at: z.iso.datetime().optional(),
+    created_at: z.iso.datetime({ offset: true }).optional(),
+    updated_at: z.iso.datetime({ offset: true }).optional(),
     author_id: z.int()
 });
 
@@ -124,7 +123,7 @@ export const zQuestOperation = z.object({
     title: z.string(),
     description: z.string(),
     reward: z.int().gt(0),
-    end_date: z.iso.datetime(),
+    end_date: z.iso.datetime({ offset: true }),
     max_repeat: z.int().gte(1)
 });
 
@@ -135,7 +134,7 @@ export const zQuestUpdate = z.object({
     title: z.string().nullish(),
     description: z.string().nullish(),
     reward: z.int().gt(0).nullish(),
-    end_date: z.iso.datetime().nullish(),
+    end_date: z.iso.datetime({ offset: true }).nullish(),
     max_repeat: z.int().gte(1).nullish()
 });
 
@@ -147,9 +146,9 @@ export const zQuests = z.object({
     title: z.string(),
     description: z.string(),
     reward: z.int(),
-    end_date: z.iso.datetime(),
+    end_date: z.iso.datetime({ offset: true }),
     max_repeat: z.int().optional().default(1),
-    created_at: z.iso.datetime().optional(),
+    created_at: z.iso.datetime({ offset: true }).optional(),
     author_id: z.int()
 });
 
@@ -275,7 +274,7 @@ export const zStampsList = z.object({
     stamp: z.string(),
     name: z.string(),
     have: z.boolean(),
-    time: z.iso.datetime().nullable()
+    time: z.iso.datetime({ offset: true }).nullable()
 });
 
 /**
@@ -506,22 +505,24 @@ export const zTeacherGetByNameSearchTeacherUserNameGetPath = z.object({
  */
 export const zTeacherGetByNameSearchTeacherUserNameGetResponse = zResponseModelUser;
 
-export const zGetStudentsAdminStudentGetQuery = z.object({
+export const zGetUsersAdminUsersGetQuery = z.object({
     page: z.int().gte(1).optional().default(1),
-    size: z.int().gte(1).lte(100).optional().default(20)
+    size: z.int().gte(1).lte(100).optional().default(20),
+    user_type: zUserType.nullish(),
+    permission: zUserPermission.nullish()
 });
 
 /**
  * 정상적으로 처리 됨
  */
-export const zGetStudentsAdminStudentGetResponse = zResponseModelListUser;
+export const zGetUsersAdminUsersGetResponse = zResponseModelListUser;
 
-export const zUpdateStudentsPointAdminPointPostBody = zAdminPointRequest;
+export const zUpdateUsersPointAdminPointPostBody = zAdminPointRequest;
 
 /**
  * 정상 처리
  */
-export const zUpdateStudentsPointAdminPointPostResponse = z.void();
+export const zUpdateUsersPointAdminPointPostResponse = z.void();
 
 export const zCreateQuestQuestCreatePostBody = zQuestOperation;
 
