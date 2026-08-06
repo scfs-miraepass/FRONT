@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Obj from "@/components/ranking/object.vue";
 import type { RankingResponse } from "@/client";
-import type { Result } from "@/schemas/response";
 
 const props = defineProps<{
     type: "student" | "teacher";
@@ -16,23 +15,34 @@ const queryParams = computed(() => ({
     offset: (dataOffset.value - 1) * 15,
 }));
 
-const { pending } = await useAPI<Result<RankingResponse[]>>(
-    `/point/ranking/${props.type}`,
-    {
-        method: "GET",
-        query: queryParams,
-        async onResponse({ response }) {
-            maxOffset.value = Number(response.headers.get("X-MAX-PAGE"));
-            if (!response._data?.success) return;
+const dataFetchKey = computed(() => `point.ranking.${props.type}`)
+const { pending } = await useAsyncData(
+    dataFetchKey,
+    async (_nuxtApp, { signal }) => {
+        let req
+        if (props.type == "student") {
+            req = await $API.getStudentRankingPointRankingStudentGet({
+                query: queryParams.value,
+                ...signal
+            })
+        } else {
+            req = await $API.getTeacherRankingPointRankingTeacherGet({
+                query: queryParams.value,
+                ...signal
+            })
+        }
 
-            if (dataOffset.value === 1) {
-                payloadData.value = response._data.data;
-            } else {
-                payloadData.value.push(...response._data.data);
-            }
-        },
-    },
-);
+        if (!req.data?.success || req.response == undefined) return;
+        maxOffset.value = Number(req.response.headers.get("X-MAX-PAGE"));
+
+        if (dataOffset.value === 1) {
+            payloadData.value = req.data.data;
+        } else {
+            payloadData.value.push(...req.data.data);
+        }
+        return req
+    }, { watch: [ queryParams, dataFetchKey ] }
+)
 
 const { scrollYProgress } = useScroll();
 

@@ -3,7 +3,6 @@ import Group from "./days.vue";
 import Obj from "./object.vue";
 import { Motion } from "motion-v";
 import type { PointHistory } from "@/client";
-import type { Result } from "@/schemas/response";
 
 const maxOffset = ref<number>(0);
 const dataOffset = ref<number>(1);
@@ -15,8 +14,7 @@ const historyData = computed(() => {
     return historyPayload.value.reduce(
         (acc, item) => {
             const date = new Date(item.created_at!);
-            const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-            const key = `${kstDate.getMonth() + 1}월 ${kstDate.getDate()}일`;
+            const key = `${date.getMonth() + 1}월 ${date.getDate()}일`;
             if (!acc[key]) acc[key] = [];
             acc[key].push(item);
             return acc;
@@ -30,15 +28,21 @@ const queryParams = computed(() => ({
     offset: (dataOffset.value - 1) * 20,
 }));
 
-const { pending } = await useAPI<Result<PointHistory[]>>("/point/history", {
-    method: "GET",
-    query: queryParams,
-    async onResponse({ response }) {
-        maxOffset.value = Number(response.headers.get("X-MAX-PAGE"));
-        if (!response._data?.success) return;
+
+const { pending } = await useAsyncData(
+    'point.history',
+
+    async (_nuxtApp, { signal }) => {
+        const req = await $API.pointHistoryPointHistoryGet({
+            query: queryParams.value,
+            ...signal
+        })
+
+        if (!req.data?.success || req.response == undefined) return;
+        maxOffset.value = Number(req.response.headers.get("X-MAX-PAGE"));
 
         if (dataOffset.value === 1) {
-            const cached = response.headers.get("X-CACHED") === "true";
+            const cached = req.response.headers.get("X-CACHED") === "true";
             if (!cached) {
                 // 포인트 지급또는 차감시, 히스토리 추가되고 캐싱을 삭제함으로 = 캐싱이 안된 데이터가 응답한다면 포인트가 변했다는 소리겠지오..
                 console.log(
@@ -46,12 +50,14 @@ const { pending } = await useAPI<Result<PointHistory[]>>("/point/history", {
                 );
                 await fetchSession();
             }
-            historyPayload.value = response._data.data;
+            historyPayload.value = req.data.data;
         } else {
-            historyPayload.value.push(...response._data.data);
+            historyPayload.value.push(...req.data.data);
         }
+        return req
     },
-});
+    { watch: [ queryParams ] }
+)
 
 watch(
     pending,
