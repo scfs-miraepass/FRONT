@@ -7,9 +7,8 @@ const { time } = defineProps<StampsList>();
 const formattedTime = computed(() => {
     if (time == null) return "";
     const date = new Date(time);
-    const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-    const hours = kstDate.getHours();
-    const minutes = kstDate.getMinutes();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
     const ampm = hours >= 12 ? "오후" : "오전";
     const displayHours = hours % 12 || 12;
     return `${ampm} ${displayHours}시 ${minutes}분`;

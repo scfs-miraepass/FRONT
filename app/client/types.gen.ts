@@ -11,9 +11,9 @@ export type AdminPointRequest = {
     /**
      * User Ids
      *
-     * 포인트를 지급/차감할 학생 ID 목록. 전체 학생 대상일 경우 생략하거나 null/빈 리스트 전달
+     * 포인트를 지급/차감할 대상 유저 ID 목록
      */
-    user_ids?: Array<number> | null;
+    user_ids: Array<number>;
     /**
      * Amount
      *
@@ -26,12 +26,6 @@ export type AdminPointRequest = {
      * 포인트 변동 사유
      */
     reason: string;
-    /**
-     * Is All Students
-     *
-     * 전체 학생 대상 여부. true일 경우 user_ids는 무시됩니다.
-     */
-    is_all_students?: boolean;
 };
 
 /**
@@ -1319,7 +1313,7 @@ export type TeacherGetByNameSearchTeacherUserNameGetResponses = {
 
 export type TeacherGetByNameSearchTeacherUserNameGetResponse = TeacherGetByNameSearchTeacherUserNameGetResponses[keyof TeacherGetByNameSearchTeacherUserNameGetResponses];
 
-export type GetStudentsAdminStudentGetData = {
+export type GetUsersAdminUsersGetData = {
     body?: never;
     path?: never;
     query?: {
@@ -1335,11 +1329,23 @@ export type GetStudentsAdminStudentGetData = {
          * 페이지 당 유저 데이터 갯수 (최대 100)
          */
         size?: number;
+        /**
+         * User Type
+         *
+         * 유저 타입 필터 (student, teacher, service)
+         */
+        user_type?: UserType | null;
+        /**
+         * Permission
+         *
+         * 유저 권한 필터 (해당 권한을 포함하는 유저 검색)
+         */
+        permission?: UserPermission | null;
     };
-    url: '/admin/student';
+    url: '/admin/users';
 };
 
-export type GetStudentsAdminStudentGetErrors = {
+export type GetUsersAdminUsersGetErrors = {
     /**
      * 권한 거부
      */
@@ -1350,25 +1356,25 @@ export type GetStudentsAdminStudentGetErrors = {
     422: HttpValidationError;
 };
 
-export type GetStudentsAdminStudentGetError = GetStudentsAdminStudentGetErrors[keyof GetStudentsAdminStudentGetErrors];
+export type GetUsersAdminUsersGetError = GetUsersAdminUsersGetErrors[keyof GetUsersAdminUsersGetErrors];
 
-export type GetStudentsAdminStudentGetResponses = {
+export type GetUsersAdminUsersGetResponses = {
     /**
      * 정상적으로 처리 됨
      */
     200: ResponseModelListUser;
 };
 
-export type GetStudentsAdminStudentGetResponse = GetStudentsAdminStudentGetResponses[keyof GetStudentsAdminStudentGetResponses];
+export type GetUsersAdminUsersGetResponse = GetUsersAdminUsersGetResponses[keyof GetUsersAdminUsersGetResponses];
 
-export type UpdateStudentsPointAdminPointPostData = {
+export type UpdateUsersPointAdminPointPostData = {
     body: AdminPointRequest;
     path?: never;
     query?: never;
     url: '/admin/point';
 };
 
-export type UpdateStudentsPointAdminPointPostErrors = {
+export type UpdateUsersPointAdminPointPostErrors = {
     /**
      * 권한 거부
      */
@@ -1379,16 +1385,16 @@ export type UpdateStudentsPointAdminPointPostErrors = {
     422: HttpValidationError;
 };
 
-export type UpdateStudentsPointAdminPointPostError = UpdateStudentsPointAdminPointPostErrors[keyof UpdateStudentsPointAdminPointPostErrors];
+export type UpdateUsersPointAdminPointPostError = UpdateUsersPointAdminPointPostErrors[keyof UpdateUsersPointAdminPointPostErrors];
 
-export type UpdateStudentsPointAdminPointPostResponses = {
+export type UpdateUsersPointAdminPointPostResponses = {
     /**
      * 정상 처리
      */
     204: void;
 };
 
-export type UpdateStudentsPointAdminPointPostResponse = UpdateStudentsPointAdminPointPostResponses[keyof UpdateStudentsPointAdminPointPostResponses];
+export type UpdateUsersPointAdminPointPostResponse = UpdateUsersPointAdminPointPostResponses[keyof UpdateUsersPointAdminPointPostResponses];
 
 export type CreateQuestQuestCreatePostData = {
     body: QuestOperation;

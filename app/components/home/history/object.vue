@@ -7,8 +7,7 @@ const amountSign = computed(() => (props.changed_amount > 0 ? "+" : ""));
 
 const formattedTime = computed(() => {
     const date = new Date(props.created_at!);
-    const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-    return kstDate.toLocaleTimeString("ko-KR", {
+    return date.toLocaleTimeString("ko-KR", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
