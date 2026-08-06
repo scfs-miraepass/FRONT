@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import type { StampsList } from "~/sdk";
-import type { Result } from "~/schemas/response";
+import type { StampsList } from "@/client";
 
 const payload = ref<StampsList[]>([])
 
-await useAPI<Result<StampsList[]>>('/stamp', {
-    method: "GET",
-    async onResponse({ response }) {
-        if (!response._data?.success) return
-        payload.value = response._data.data
+await useAsyncData(
+    'stamp',
+    async (_nuxtApp, { signal }) => {
+        const req = await $API.getUserStampsStampGet()
+        if (!req.data?.success || req.response == undefined) return;
+        payload.value = req.data.data
+
+        return req
     }
-})
+)
 </script>
 
 <template>
