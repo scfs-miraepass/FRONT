@@ -1,5 +1,5 @@
-import type { UseFetchOptions, KeysOf } from 'nuxt/app'
-import { $fetch } from "./$fetch"
+import type { UseFetchOptions, KeysOf } from "nuxt/app";
+import { _fetch } from "./_fetch";
 
 export const useAPI = <T, ResT = T, Keys extends KeysOf<ResT> = KeysOf<ResT>>(
     url: string | (() => string),
@@ -7,6 +7,6 @@ export const useAPI = <T, ResT = T, Keys extends KeysOf<ResT> = KeysOf<ResT>>(
 ) => {
     return useFetch<T, ResT, Keys>(url, {
         ...options,
-        $fetch: $fetch as typeof globalThis.$fetch
-    })
-}
+        _fetch: _fetch as typeof globalThis.$fetch,
+    });
+};
