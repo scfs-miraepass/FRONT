@@ -5,6 +5,10 @@ import type { User, GetLimitResponse } from '@/client'
 definePageMeta({
     middleware: [
         (to, from) => {
+            const action = to.query.a as string | undefined
+            if (action != 'grant' && action != 'deduct') {
+                return navigateTo("/", { replace: true });
+            }
             const userData = useState<User | undefined>(
                 "system.user-select.uesr",
             );
@@ -16,13 +20,14 @@ definePageMeta({
     permissions: { or: [ UserPermission._GRANT_POINT, UserPermission._DEDUCT_POINT ] } as PermissionCondition
 });
 
+const route = useRoute();
 const session = useSession();
 const userData = useState<User>("system.user-select.uesr");
 const amount = ref<number>(0);
 const isConfirm = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
 const isComplete = ref<boolean>(false);
-const isDeduct = computed<boolean>(() => session.value?.type == "service");
+const isDeduct = computed<boolean>(() => route.query.a == "deduct");
 const pointLimit = ref<GetLimitResponse>({
     limit: 0,
     target_limit: 0,
@@ -106,24 +111,16 @@ const onButton = async () => {
     isLoading.value = true;
 
     let req;
+    const history_type = session.value!.history_type || (session.value?.type == "teacher"? "teacher":"etc")
+    const body = {
+        target_user_id: userData.value.id!,
+        amount: amount.value,
+        change_type: history_type,
+    }
     if (isDeduct.value) {
-        // 차감 처리
-        req = await $API.deductPointsPointDeductPost({
-            body: {
-                target_user_id: userData.value.id!,
-                amount: amount.value,
-                change_type: session.value!.history_type,
-            },
-        });
+        req = await $API.deductPointsPointDeductPost({ body: body });
     } else {
-        // 지급 처리
-        req = await $API.grantPointsPointGrantPost({
-            body: {
-                target_user_id: userData.value.id!,
-                amount: amount.value,
-                change_type: session.value!.history_type || "teacher",
-            },
-        });
+        req = await $API.grantPointsPointGrantPost({ body: body });
     }
     if (req.error) {
         // TODO: 에러처리
@@ -179,7 +176,7 @@ const onButton = async () => {
                             class="font-bold light:text-black dark:text-white"
                             >{{ userData.name }}</span
                         >
-                        학생에게 포인트를
+                        {{ userData.type == "student" ? "학생" : "선생님" }}에게 포인트를
                     </p>
                     <p
                         class="text-p0 text-black/70 dark:text-white/70 font-normal"
@@ -226,7 +223,7 @@ const onButton = async () => {
                 <UIcon name="i-ph-warning" class="mr-1" />
                 {{
                     isDeduct
-                        ? "결제가 진행된 이후에는 취소할 수 없어요."
+                        ? `${session?.type == 'service'? '결제가':'차감이'} 진행된 이후에는 취소할 수 없어요.`
                         : "지급된 이후에는 회수할 수 없어요."
                 }}
             </p>
@@ -254,7 +251,7 @@ const onButton = async () => {
                         {{
                             !isLoading
                                 ? isDeduct
-                                    ? "결제하기"
+                                    ? `${session?.type == 'service'? '결제':'차감'}하기`
                                     : "지급하기"
                                 : "처리중.."
                         }}
@@ -334,12 +331,12 @@ const onButton = async () => {
                 <UIcon name="i-ph-check-circle" class="text-h2 mb-1.5" />
                 {{
                     isDeduct
-                        ? "결제가 정상적으로 되었어요."
+                        ? `${session?.type == 'service'? '결제가':'차감이'} 정상적으로 되었어요.`
                         : "정상적으로 지급되었어요."
                 }}
             </div>
             <NuxtLink
-                to="/system/user-select?a=point"
+                :to="`/system/userSelect?a=${isDeduct? 'deduct-point':'grant-point'}`"
                 v-slot="{ navigate }"
                 custom
             >

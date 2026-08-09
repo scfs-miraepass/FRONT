@@ -35,7 +35,7 @@ const save = () => {
         color: "success",
     });
 
-    navigateTo("/system/user-select?a=service-stamp", { replace: true });
+    navigateTo("/system/userSelect?a=service-stamp", { replace: true });
 };
 </script>
 

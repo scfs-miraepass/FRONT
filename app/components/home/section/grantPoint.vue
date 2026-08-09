@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import PageButton from "~/components/setting/object.vue";
 
+const session = useSession();
 const { pending, data: limitResult } = await useAsyncData(
-    'teacher.point_limit',
+    'grant_point.point_limit',
     (_nuxtApp, { signal }) => $API.getLimitSessionPointLimitGet({ signal }),
     {
         transform(data) {
@@ -30,16 +31,15 @@ const pointLimit = computed<number>(() => {
 </script>
 
 <template>
-    <NuxtLink to="/system/user-select?a=point" v-slot="{ navigate }" custom>
-        <!-- 이거 권한에 따른 표기 처리해줘야함 -->
+    <NuxtLink to="/system/userSelect?a=grant-point" v-slot="{ navigate }" custom>
         <PageButton @click="navigate()" icon="i-ph-hand-coins" label="포인트 지급" :disabled="pointLimit <= 0">
             <template #value>
                 <USkeleton class="blur-xs" v-if="pending">
                     1000 포인트 남음
                 </USkeleton>
-                <!--                        <template v-else-if="session!.is_admin">-->
-                <!--                            제한 없음-->
-                <!--                        </template>-->
+                <template v-else-if="hasPermission(session!.permissions, UserPermission.NO_LIMIT_POINT)">
+                    제한 없음
+                </template>
                 <template v-else>
                     {{ pointLimit }} 포인트 남음
                 </template>

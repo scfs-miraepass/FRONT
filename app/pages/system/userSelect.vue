@@ -2,36 +2,40 @@
 import type { UserType, User } from "@/client";
 import { permissionsMiddleware } from "@/middleware/permissions.global";
 
-const actionList: {
-    [key: string]: {
-        title: () => string;
-        selectUrl: string;
-        searchTarget: () => UserType[];
-        permissions: PermissionCondition;
-    };
-} = {
-    point: {
-        title: () =>
-            session.value?.type == "teacher" ? "포인트 지급" : "포인트 결제",
-        selectUrl: "/system/point-processing",
-        searchTarget: () =>
-            session.value?.type == "teacher"
-                ? ["student"]
-                : ["student", "teacher"],
-        permissions: { or: [ UserPermission.GRANT_POINT, UserPermission.DEDUCT_POINT ] },
-    },
-    "service-stamp": {
-        title: () => "스탬프 지급",
-        selectUrl: "/service/stamp",
-        searchTarget: () => ["student", "teacher"],
-        permissions: [ UserPermission.GIVE_STAMP ],
-    },
-};
-
+const session = useSession()
 const route = useRoute();
-const action = actionList[route.query.a as string]!;
 
-const session = useSession();
+const actionList = computed<{
+    [key: string]: {
+        title: string;
+        selectUrl: string;
+        searchTarget: UserType[];
+        permissions: PermissionCondition;
+    }
+}>(() => {
+    return {
+        "service-stamp": {
+            title: "스탬프 지급",
+            selectUrl: "/service/stamp",
+            searchTarget: ["student", "teacher"],
+            permissions: [ UserPermission.GIVE_STAMP ]
+        },
+        "grant-point": {
+            title: "포인트 지급",
+            selectUrl: "/system/pointProcessing?a=grant",
+            searchTarget: session.value?.type == "teacher"? ["student"]:["student", "teacher"],
+            permissions: [ UserPermission.GRANT_POINT ]
+        },
+        "deduct-point": {
+            title: session.value?.type == "service"? "포인트 결제":"포인트 차감",
+            selectUrl: "/system/pointProcessing?a=deduct",
+            searchTarget: session.value?.type == "teacher"? ["student"]:["student", "teacher"],
+            permissions: [ UserPermission.DEDUCT_POINT ]
+        }
+    }
+})
+const action = computed(() => actionList.value[route.query.a as string]!);
+
 const search = ref<string>("");
 const searchResult = ref<User[]>([]);
 const hiddenResult = ref<boolean>(false);
@@ -47,13 +51,13 @@ watch(searchResult, () => {
 definePageMeta({
     middleware: [
         (to, from) => {
-            if (!to.query.a || !actionList[to.query.a as string]) {
+            if (!to.query.a || !actionList.value[to.query.a as string]) {
                 return navigateTo("/", { replace: true });
             }
             return permissionsMiddleware(
                 to,
                 from,
-                actionList[to.query.a as string]!.permissions,
+                actionList.value[to.query.a as string]!.permissions,
             );
         },
     ],
@@ -75,7 +79,7 @@ const userSearch = async () => {
     const req = await $API.searchSearchGet({
         query: {
             q: _search,
-            t: action.searchTarget(),
+            t: action.value.searchTarget,
         },
     });
     if (req.error) {
@@ -101,7 +105,7 @@ const onSelect = (user: User) => {
     );
     userData.value = user;
 
-    navigateTo(action.selectUrl);
+    navigateTo(action.value.selectUrl);
 };
 </script>
 
@@ -118,7 +122,7 @@ const onSelect = (user: User) => {
             />
         </NuxtLink>
         <p class="text-2xl font-bold text-gray-900 dark:text-white ml-1">
-            {{ action.title() }}
+            {{ action.title }}
         </p>
     </div>
     <div class="flex-1 flex flex-col">
