@@ -7,7 +7,7 @@ const actionList: {
         title: () => string;
         selectUrl: string;
         searchTarget: () => UserType[];
-        permissions: UserType[];
+        permissions: PermissionCondition;
     };
 } = {
     point: {
@@ -18,13 +18,13 @@ const actionList: {
             session.value?.type == "teacher"
                 ? ["student"]
                 : ["student", "teacher"],
-        permissions: ["teacher", "service"],
+        permissions: { or: [ UserPermission.GRANT_POINT, UserPermission.DEDUCT_POINT ] },
     },
     "service-stamp": {
         title: () => "스탬프 지급",
         selectUrl: "/service/stamp",
         searchTarget: () => ["student", "teacher"],
-        permissions: ["service"],
+        permissions: [ UserPermission.GIVE_STAMP ],
     },
 };
 

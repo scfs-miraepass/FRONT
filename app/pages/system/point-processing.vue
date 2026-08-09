@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
-import type { UserType, User, GetLimitResponse } from "@/client";
+import type { User, GetLimitResponse } from '@/client'
 
 definePageMeta({
     middleware: [
@@ -13,7 +13,7 @@ definePageMeta({
             }
         },
     ],
-    permissions: ["teacher", "service"] as UserType[],
+    permissions: { or: [ UserPermission._GRANT_POINT, UserPermission._DEDUCT_POINT ] } as PermissionCondition
 });
 
 const session = useSession();

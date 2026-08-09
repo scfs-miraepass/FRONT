@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import RankingList from "@/components/ranking/list.vue";
 
+definePageMeta({
+    permissions: [ UserPermission.VIEW_RANK ]
+});
+
 const items = [
     {
         label: '학생',

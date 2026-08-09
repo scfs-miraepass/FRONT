@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { StampsList } from "@/client";
 
+definePageMeta({
+    permissions: [ UserPermission.VIEW_STAMP ]
+});
+
 const payload = ref<StampsList[]>([])
 
 await useAsyncData(

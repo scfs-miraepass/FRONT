@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import type { StampType } from "@/client";
+import type { StampType, User } from "@/client";
+
+definePageMeta({
+    permissions: [ UserPermission.GIVE_STAMP ],
+});
 
 // 응애 하드코딩
 const items = ref<StampType[]>([
