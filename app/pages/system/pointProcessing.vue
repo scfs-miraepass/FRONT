@@ -258,7 +258,7 @@ const onButton = async () => {
                     </p>
                 </UButton>
                 <Motion
-                    class="h-auto aspect-square"
+                    class="aspect-square shrink-0 flex w-15"
                     :initial="{ marginRight: '-100%' }"
                     :animate="{
                         marginRight: !isConfirm || isLoading ? '-100%' : 0,
