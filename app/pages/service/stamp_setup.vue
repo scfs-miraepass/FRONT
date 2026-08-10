@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { StampType } from "@/client";
 
+definePageMeta({
+    permissions: [ UserPermission.GIVE_STAMP ],
+});
+
 // 응애 하드코딩
 const items = ref<StampType[]>([
     "쓰레기 투호",
@@ -31,7 +35,7 @@ const save = () => {
         color: "success",
     });
 
-    navigateTo("/system/user-select?a=service-stamp", { replace: true });
+    navigateTo("/system/userSelect?a=service-stamp", { replace: true });
 };
 </script>
 

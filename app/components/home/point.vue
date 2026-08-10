@@ -38,7 +38,6 @@ onMounted(() => {
             보유중인 미래 포인트
         </div>
         <div class="mt-2 text-p0 flex items-center -mb-1">
-
             <Motion
                 :initial="{ opacity: 0, translateX: '0' }"
                 :animate="{ opacity: 1, translateX: pointChangeAnimate? '0':`${pointWidth + 4}px` }"
@@ -48,7 +47,7 @@ onMounted(() => {
                     ease: [0, 0.71, 0.2, 1.01],
                 }"
                 class="absolute mt-2.5"
-                v-if="pointWidth"
+                v-if="pointWidth && pointNow != null"
             >P</Motion>
             <span ref="pointContainer" class="text-h5/10 tracking-tight flex items-center overflow-y-hidden">
                 <template v-for="(i, index) in pointNow" v-if="pointNow != null">

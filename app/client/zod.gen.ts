@@ -12,6 +12,14 @@ export const zAdminPointRequest = z.object({
 });
 
 /**
+ * AdminUserUpdateRequest
+ */
+export const zAdminUserUpdateRequest = z.object({
+    name: z.string().nullish(),
+    permissions: z.int().nullish()
+});
+
+/**
  * ChangePasswordForm
  */
 export const zChangePasswordForm = z.object({
@@ -295,19 +303,24 @@ export const zResponseModelListStampsList = z.object({
 export const zUserPermission = z.union([
     z.literal(0),
     z.literal(131072),
+    z.literal(1),
     z.literal(131073),
+    z.literal(2),
     z.literal(131074),
     z.literal(4),
     z.literal(8),
     z.literal(16),
+    z.literal(32),
     z.literal(131104),
     z.literal(64),
     z.literal(128),
     z.literal(256),
     z.literal(512),
     z.literal(1024),
+    z.literal(2048),
     z.literal(133120),
     z.literal(4096),
+    z.literal(8192),
     z.literal(139264),
     z.literal(16384),
     z.literal(32768),
@@ -327,6 +340,17 @@ export const zUserType = z.enum([
 ]);
 
 /**
+ * AdminUserCreateRequest
+ */
+export const zAdminUserCreateRequest = z.object({
+    name: z.string(),
+    user_type: zUserType,
+    grade: z.int().nullish(),
+    number: z.int().nullish(),
+    student_no: z.int().nullish()
+});
+
+/**
  * User
  */
 export const zUser = z.object({
@@ -337,7 +361,7 @@ export const zUser = z.object({
     number: z.int().nullable(),
     point: z.int().optional().default(0),
     total_point: z.int().optional().default(0),
-    permissions: zUserPermission.optional().default(0),
+    permissions: z.int().optional().default(0),
     history_type: zPointHistoryType.nullish()
 });
 
@@ -373,6 +397,10 @@ export const zValidationError = z.object({
  */
 export const zHttpValidationError = z.object({
     detail: z.array(zValidationError).optional()
+});
+
+export const zReadRootGetQuery = z.object({
+    _: zUserPermission.nullish()
 });
 
 export const zLoginAuthLoginPostBody = zLoginForm;
@@ -509,7 +537,7 @@ export const zGetUsersAdminUsersGetQuery = z.object({
     page: z.int().gte(1).optional().default(1),
     size: z.int().gte(1).lte(100).optional().default(20),
     user_type: zUserType.nullish(),
-    permission: zUserPermission.nullish()
+    permission: z.int().nullish()
 });
 
 /**
@@ -523,6 +551,42 @@ export const zUpdateUsersPointAdminPointPostBody = zAdminPointRequest;
  * 정상 처리
  */
 export const zUpdateUsersPointAdminPointPostResponse = z.void();
+
+export const zCreateUserAdminUserPostBody = zAdminUserCreateRequest;
+
+/**
+ * 사용자 생성 완료
+ */
+export const zCreateUserAdminUserPostResponse = zResponseModelUser;
+
+export const zResetUserPasswordAdminUsersUserIdPasswordPatchPath = z.object({
+    user_id: z.int()
+});
+
+/**
+ * 정상 처리 (비밀번호 초기화됨)
+ */
+export const zResetUserPasswordAdminUsersUserIdPasswordPatchResponse = z.void();
+
+export const zDeleteUserAdminUsersUserIdDeletePath = z.object({
+    user_id: z.int()
+});
+
+/**
+ * 정상 처리
+ */
+export const zDeleteUserAdminUsersUserIdDeleteResponse = z.void();
+
+export const zUpdateUserAdminUsersUserIdPatchBody = zAdminUserUpdateRequest;
+
+export const zUpdateUserAdminUsersUserIdPatchPath = z.object({
+    user_id: z.int()
+});
+
+/**
+ * 사용자 정보 수정 완료
+ */
+export const zUpdateUserAdminUsersUserIdPatchResponse = zResponseModelUser;
 
 export const zCreateQuestQuestCreatePostBody = zQuestOperation;
 

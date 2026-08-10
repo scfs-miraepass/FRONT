@@ -29,6 +29,58 @@ export type AdminPointRequest = {
 };
 
 /**
+ * AdminUserCreateRequest
+ */
+export type AdminUserCreateRequest = {
+    /**
+     * Name
+     *
+     * 사용자 이름
+     */
+    name: string;
+    /**
+     * 사용자 유형 (student, teacher, service)
+     */
+    user_type: UserType;
+    /**
+     * Grade
+     *
+     * 학년 (학생인 경우 필수)
+     */
+    grade?: number | null;
+    /**
+     * Number
+     *
+     * 반 (학생인 경우 필수)
+     */
+    number?: number | null;
+    /**
+     * Student No
+     *
+     * 번호 (학생인 경우 필수)
+     */
+    student_no?: number | null;
+};
+
+/**
+ * AdminUserUpdateRequest
+ */
+export type AdminUserUpdateRequest = {
+    /**
+     * Name
+     *
+     * 사용자 이름
+     */
+    name?: string | null;
+    /**
+     * Permissions
+     *
+     * 사용자 권한
+     */
+    permissions?: number | null;
+};
+
+/**
  * ChangePasswordForm
  */
 export type ChangePasswordForm = {
@@ -738,9 +790,11 @@ export type User = {
      */
     total_point?: number;
     /**
+     * Permissions
+     *
      * 관리자 여부
      */
-    permissions?: UserPermission;
+    permissions?: number;
     /**
      * 해당 유저가 포인트 지급/차감시 포인트 기록 타입
      */
@@ -764,9 +818,17 @@ export const UserPermission = {
      */
     SEARCH_USER: 131072,
     /**
+     * _DEDUCT_POINT
+     */
+    _DEDUCT_POINT: 1,
+    /**
      * DEDUCT_POINT
      */
     DEDUCT_POINT: 131073,
+    /**
+     * _GRANT_POINT
+     */
+    _GRANT_POINT: 2,
     /**
      * GRANT_POINT
      */
@@ -783,6 +845,10 @@ export const UserPermission = {
      * MANAGE_QUEST
      */
     MANAGE_QUEST: 16,
+    /**
+     * _GIVE_STAMP
+     */
+    _GIVE_STAMP: 32,
     /**
      * GIVE_STAMP
      */
@@ -808,6 +874,10 @@ export const UserPermission = {
      */
     CREATE_POST: 1024,
     /**
+     * _VIEW_USER_POINT
+     */
+    _VIEW_USER_POINT: 2048,
+    /**
      * VIEW_USER_POINT
      */
     VIEW_USER_POINT: 133120,
@@ -815,6 +885,10 @@ export const UserPermission = {
      * JOIN_QUEST
      */
     JOIN_QUEST: 4096,
+    /**
+     * _MANAGE_USER
+     */
+    _MANAGE_USER: 8192,
     /**
      * MANAGE_USER
      */
@@ -899,9 +973,23 @@ export type ValidationError = {
 export type ReadRootGetData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         *
+         */
+        _?: UserPermission | null;
+    };
     url: '/';
 };
+
+export type ReadRootGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ReadRootGetError = ReadRootGetErrors[keyof ReadRootGetErrors];
 
 export type ReadRootGetResponses = {
     /**
@@ -1505,7 +1593,7 @@ export type GetUsersAdminUsersGetData = {
          *
          * 유저 권한 필터 (해당 권한을 포함하는 유저 검색)
          */
-        permission?: UserPermission | null;
+        permission?: number | null;
     };
     url: '/admin/users';
 };
@@ -1560,6 +1648,161 @@ export type UpdateUsersPointAdminPointPostResponses = {
 };
 
 export type UpdateUsersPointAdminPointPostResponse = UpdateUsersPointAdminPointPostResponses[keyof UpdateUsersPointAdminPointPostResponses];
+
+export type CreateUserAdminUserPostData = {
+    body: AdminUserCreateRequest;
+    path?: never;
+    query?: never;
+    url: '/admin/user';
+};
+
+export type CreateUserAdminUserPostErrors = {
+    /**
+     * Invalid request parameters
+     */
+    400: ErrorResponse;
+    /**
+     * Permission denied
+     */
+    403: ErrorResponse;
+    /**
+     * User already exists (e.g., duplicated student ID)
+     */
+    409: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CreateUserAdminUserPostError = CreateUserAdminUserPostErrors[keyof CreateUserAdminUserPostErrors];
+
+export type CreateUserAdminUserPostResponses = {
+    /**
+     * 사용자 생성 완료
+     */
+    201: ResponseModelUser;
+};
+
+export type CreateUserAdminUserPostResponse = CreateUserAdminUserPostResponses[keyof CreateUserAdminUserPostResponses];
+
+export type ResetUserPasswordAdminUsersUserIdPasswordPatchData = {
+    body?: never;
+    path: {
+        /**
+         * User Id
+         */
+        user_id: number;
+    };
+    query?: never;
+    url: '/admin/users/{user_id}/password';
+};
+
+export type ResetUserPasswordAdminUsersUserIdPasswordPatchErrors = {
+    /**
+     * Permission denied
+     */
+    403: ErrorResponse;
+    /**
+     * User not found
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ResetUserPasswordAdminUsersUserIdPasswordPatchError = ResetUserPasswordAdminUsersUserIdPasswordPatchErrors[keyof ResetUserPasswordAdminUsersUserIdPasswordPatchErrors];
+
+export type ResetUserPasswordAdminUsersUserIdPasswordPatchResponses = {
+    /**
+     * 정상 처리 (비밀번호 초기화됨)
+     */
+    204: void;
+};
+
+export type ResetUserPasswordAdminUsersUserIdPasswordPatchResponse = ResetUserPasswordAdminUsersUserIdPasswordPatchResponses[keyof ResetUserPasswordAdminUsersUserIdPasswordPatchResponses];
+
+export type DeleteUserAdminUsersUserIdDeleteData = {
+    body?: never;
+    path: {
+        /**
+         * User Id
+         */
+        user_id: number;
+    };
+    query?: never;
+    url: '/admin/users/{user_id}';
+};
+
+export type DeleteUserAdminUsersUserIdDeleteErrors = {
+    /**
+     * Permission denied
+     */
+    403: ErrorResponse;
+    /**
+     * User not found
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteUserAdminUsersUserIdDeleteError = DeleteUserAdminUsersUserIdDeleteErrors[keyof DeleteUserAdminUsersUserIdDeleteErrors];
+
+export type DeleteUserAdminUsersUserIdDeleteResponses = {
+    /**
+     * 정상 처리
+     */
+    204: void;
+};
+
+export type DeleteUserAdminUsersUserIdDeleteResponse = DeleteUserAdminUsersUserIdDeleteResponses[keyof DeleteUserAdminUsersUserIdDeleteResponses];
+
+export type UpdateUserAdminUsersUserIdPatchData = {
+    body: AdminUserUpdateRequest;
+    path: {
+        /**
+         * User Id
+         */
+        user_id: number;
+    };
+    query?: never;
+    url: '/admin/users/{user_id}';
+};
+
+export type UpdateUserAdminUsersUserIdPatchErrors = {
+    /**
+     * Invalid request parameters
+     */
+    400: ErrorResponse;
+    /**
+     * Permission denied
+     */
+    403: ErrorResponse;
+    /**
+     * User not found
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type UpdateUserAdminUsersUserIdPatchError = UpdateUserAdminUsersUserIdPatchErrors[keyof UpdateUserAdminUsersUserIdPatchErrors];
+
+export type UpdateUserAdminUsersUserIdPatchResponses = {
+    /**
+     * 사용자 정보 수정 완료
+     */
+    200: ResponseModelUser;
+};
+
+export type UpdateUserAdminUsersUserIdPatchResponse = UpdateUserAdminUsersUserIdPatchResponses[keyof UpdateUserAdminUsersUserIdPatchResponses];
 
 export type CreateQuestQuestCreatePostData = {
     body: QuestOperation;

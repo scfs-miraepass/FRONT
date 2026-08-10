@@ -1,4 +1,3 @@
-import type { UserType } from "@/client";
 import type { RouteLocationNormalized } from "#vue-router";
 
 const consoleLog = (message: string, ...args: any[]) => {
@@ -13,32 +12,33 @@ const consoleLog = (message: string, ...args: any[]) => {
 export const permissionsMiddleware = (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
-    permissions?: UserType[],
+    permissions?: PermissionCondition,
 ) => {
     if (import.meta.client) {
         const session = useSession();
         const requiredPermissions =
-            permissions ?? (to.meta.permissions as UserType[]);
+            permissions ?? (to.meta.permissions as PermissionCondition);
 
         console.debug(
-            `%cPermissions Middleware%c ${requiredPermissions}`,
+            `%cPermissions Middleware%c`,
             "background: oklch(82.8% 0.189 84.429); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;",
             "color: inherit;",
+            requiredPermissions
         );
 
         // 페이지에 필요한 역할이 정의되지 않았으면 통과
-        if (!requiredPermissions || requiredPermissions.length <= 0) {
+        if (
+            requiredPermissions === undefined || 
+            requiredPermissions === null || 
+            (Array.isArray(requiredPermissions) && requiredPermissions.length === 0)
+        ) {
             consoleLog("페이지 권한이 설정되어 있지 않음.");
             return;
         }
 
         if (session.value) {
-            const userType = session.value.type;
             // 사용자의 역할이 페이지에서 요구하는 역할 중 하나가 아니라면
-            if (!requiredPermissions.includes(userType)) {
-                consoleLog(
-                    "세션 유저가 페이지가 요구하는 역할과 일치하지 않습니다.",
-                );
+            if (!hasPermission(session.value.permissions, requiredPermissions)) {
                 throw createError({
                     statusCode: 403,
                     statusMessage: "접근 권한이 없습니다.",
