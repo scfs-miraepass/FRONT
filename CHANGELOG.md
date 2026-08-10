@@ -1,3 +1,10 @@
+# [1.11.0-dev.1](https://github.com/scfs-miraepass/FRONT/compare/v1.10.1-dev.2...v1.11.0-dev.1) (2026-08-10)
+
+
+### Features
+
+* 새로운 권한에 따른 페이지 처리 ([#5](https://github.com/scfs-miraepass/FRONT/issues/5)) ([5b6f833](https://github.com/scfs-miraepass/FRONT/commit/5b6f833958315084b42b517015e25d913ad1e1cc))
+
 ## [1.10.1-dev.2](https://github.com/scfs-miraepass/FRONT/compare/v1.10.1-dev.1...v1.10.1-dev.2) (2026-08-09)
 
 
