@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserType, User } from "@/client";
+import type { User } from "@/client";
 import Icon from "~/components/stamp/icon.vue";
 
 definePageMeta({
@@ -13,7 +13,7 @@ definePageMeta({
             }
         },
     ],
-    permissions: ["service"] as UserType[],
+    permissions: [ UserPermission.GIVE_STAMP ],
 });
 
 const stampType = useStampType();
@@ -52,7 +52,7 @@ const giveStamp = async () => {
             color: "success",
         });
     }
-    navigateTo("/system/user-select?a=service-stamp", { replace: true });
+    navigateTo("/system/userSelect?a=service-stamp", { replace: true });
 };
 </script>
 
