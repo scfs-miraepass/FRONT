@@ -59,7 +59,7 @@ const icon = computed(() => {
 </script>
 
 <template>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between rounded-xl px-5 py-2 transition-all active:scale-95 active:opacity-50 active:bg-accented">
         <div class="flex items-center">
             <div
                 class="rounded-full bg-(--color) p-0.5"

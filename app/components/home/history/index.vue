@@ -88,7 +88,7 @@ useMotionValueEvent(scrollYProgress, "change", (current) => {
 
 <template>
     <div
-        class="w-full px-6 py-7 light:bg-default dark:bg-muted rounded-2xl flex-1 flex flex-col gap-y-6"
+        class="w-full px-1 py-7 light:bg-default dark:bg-muted rounded-2xl flex-1 flex flex-col gap-y-6"
     >
         <div
             class="flex items-center justify-between"
