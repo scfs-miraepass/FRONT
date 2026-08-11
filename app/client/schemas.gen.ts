@@ -710,6 +710,25 @@ export const ResponseModel_GetLimitResponse_Schema = {
     title: 'ResponseModel[GetLimitResponse]'
 } as const;
 
+export const ResponseModel_PointHistory_Schema = {
+    properties: {
+        success: {
+            type: 'boolean',
+            title: 'Success'
+        },
+        data: {
+            $ref: '#/components/schemas/PointHistory',
+            description: '응답 데이터'
+        }
+    },
+    type: 'object',
+    required: [
+        'success',
+        'data'
+    ],
+    title: 'ResponseModel[PointHistory]'
+} as const;
+
 export const ResponseModel_Posts_Schema = {
     properties: {
         success: {
