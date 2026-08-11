@@ -1,3 +1,10 @@
+# [1.11.0-dev.2](https://github.com/scfs-miraepass/FRONT/compare/v1.11.0-dev.1...v1.11.0-dev.2) (2026-08-11)
+
+
+### Features
+
+* 포인트 지급시, 메모를 추가할 수 있도록 기능 추가 ([47c6237](https://github.com/scfs-miraepass/FRONT/commit/47c623701ea16ab2f5e817bd7d571ef52ce03928))
+
 # [1.11.0-dev.1](https://github.com/scfs-miraepass/FRONT/compare/v1.10.1-dev.2...v1.11.0-dev.1) (2026-08-10)
 
 
