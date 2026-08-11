@@ -23,7 +23,7 @@ const { pending, data: limitResult } = await useAsyncData(
 )
 
 const pointLimit = computed<number>(() => {
-    if (limitResult.value.data?.success) {
+    if (limitResult.value?.data?.success) {
         return limitResult.value.data.data;
     }
     return 0;

@@ -512,6 +512,20 @@ export type ResponseModelGetLimitResponse = {
 };
 
 /**
+ * ResponseModel[PointHistory]
+ */
+export type ResponseModelPointHistory = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * 응답 데이터
+     */
+    data: PointHistory;
+};
+
+/**
  * ResponseModel[Posts]
  */
 export type ResponseModelPosts = {
@@ -1334,7 +1348,7 @@ export type DeductPointsPointDeductPostResponses = {
 
 export type DeductPointsPointDeductPostResponse = DeductPointsPointDeductPostResponses[keyof DeductPointsPointDeductPostResponses];
 
-export type PointHistoryPointHistoryGetData = {
+export type GetHistoryListPointHistoryGetData = {
     body?: never;
     path?: never;
     query?: {
@@ -1350,7 +1364,7 @@ export type PointHistoryPointHistoryGetData = {
     url: '/point/history';
 };
 
-export type PointHistoryPointHistoryGetErrors = {
+export type GetHistoryListPointHistoryGetErrors = {
     /**
      * 세션이 만료되었거나 유효하지 않음
      */
@@ -1365,16 +1379,58 @@ export type PointHistoryPointHistoryGetErrors = {
     422: HttpValidationError;
 };
 
-export type PointHistoryPointHistoryGetError = PointHistoryPointHistoryGetErrors[keyof PointHistoryPointHistoryGetErrors];
+export type GetHistoryListPointHistoryGetError = GetHistoryListPointHistoryGetErrors[keyof GetHistoryListPointHistoryGetErrors];
 
-export type PointHistoryPointHistoryGetResponses = {
+export type GetHistoryListPointHistoryGetResponses = {
     /**
      * 정상처리
      */
     200: ResponseModelListPointHistory;
 };
 
-export type PointHistoryPointHistoryGetResponse = PointHistoryPointHistoryGetResponses[keyof PointHistoryPointHistoryGetResponses];
+export type GetHistoryListPointHistoryGetResponse = GetHistoryListPointHistoryGetResponses[keyof GetHistoryListPointHistoryGetResponses];
+
+export type GetHistoryPointHistoryTargetIdGetData = {
+    body?: never;
+    path: {
+        /**
+         * Target Id
+         */
+        target_id: number;
+    };
+    query?: never;
+    url: '/point/history/{target_id}';
+};
+
+export type GetHistoryPointHistoryTargetIdGetErrors = {
+    /**
+     * 세션이 만료되었거나 유효하지 않음
+     */
+    401: ErrorResponse;
+    /**
+     * 포인트 기록을 볼 권한이 없습니다.
+     */
+    403: ErrorResponse;
+    /**
+     * 포인트 기록을 찾을 수 없음
+     */
+    404: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetHistoryPointHistoryTargetIdGetError = GetHistoryPointHistoryTargetIdGetErrors[keyof GetHistoryPointHistoryTargetIdGetErrors];
+
+export type GetHistoryPointHistoryTargetIdGetResponses = {
+    /**
+     * 정상처리
+     */
+    200: ResponseModelPointHistory;
+};
+
+export type GetHistoryPointHistoryTargetIdGetResponse = GetHistoryPointHistoryTargetIdGetResponses[keyof GetHistoryPointHistoryTargetIdGetResponses];
 
 export type GetStudentRankingPointRankingStudentGetData = {
     body?: never;
