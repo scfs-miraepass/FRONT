@@ -91,7 +91,7 @@ useMotionValueEvent(scrollYProgress, "change", (current) => {
         class="w-full px-1 py-7 light:bg-default dark:bg-muted rounded-2xl flex-1 flex flex-col gap-y-6"
     >
         <div
-            class="flex items-center justify-between"
+            class="flex items-center justify-between px-5"
             v-for="i in 6"
             :key="i"
             v-if="showLoading"
