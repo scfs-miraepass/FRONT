@@ -33,7 +33,7 @@ const { pending } = await useAsyncData(
     'point.history',
 
     async (_nuxtApp, { signal }) => {
-        const req = await $API.pointHistoryPointHistoryGet({
+        const req = await $API.getHistoryListPointHistoryGet({
             query: queryParams.value,
             ...signal
         })
@@ -88,10 +88,10 @@ useMotionValueEvent(scrollYProgress, "change", (current) => {
 
 <template>
     <div
-        class="w-full px-6 py-7 light:bg-default dark:bg-muted rounded-2xl flex-1 flex flex-col gap-y-6"
+        class="w-full px-1 py-7 light:bg-default dark:bg-muted rounded-2xl flex-1 flex flex-col gap-y-6"
     >
         <div
-            class="flex items-center justify-between"
+            class="flex items-center justify-between px-5"
             v-for="i in 6"
             :key="i"
             v-if="showLoading"

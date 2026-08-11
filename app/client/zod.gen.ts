@@ -181,6 +181,14 @@ export const zResponseModelGetLimitResponse = z.object({
 });
 
 /**
+ * ResponseModel[PointHistory]
+ */
+export const zResponseModelPointHistory = z.object({
+    success: z.boolean(),
+    data: zPointHistory
+});
+
+/**
  * ResponseModel[Posts]
  */
 export const zResponseModelPosts = z.object({
@@ -475,7 +483,7 @@ export const zDeductPointsPointDeductPostResponse = z.union([
     z.void()
 ]);
 
-export const zPointHistoryPointHistoryGetQuery = z.object({
+export const zGetHistoryListPointHistoryGetQuery = z.object({
     limit: z.int().optional().default(20),
     offset: z.int().optional().default(0)
 });
@@ -483,7 +491,16 @@ export const zPointHistoryPointHistoryGetQuery = z.object({
 /**
  * 정상처리
  */
-export const zPointHistoryPointHistoryGetResponse = zResponseModelListPointHistory;
+export const zGetHistoryListPointHistoryGetResponse = zResponseModelListPointHistory;
+
+export const zGetHistoryPointHistoryTargetIdGetPath = z.object({
+    target_id: z.int()
+});
+
+/**
+ * 정상처리
+ */
+export const zGetHistoryPointHistoryTargetIdGetResponse = zResponseModelPointHistory;
 
 export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
     limit: z.int().optional().default(20),

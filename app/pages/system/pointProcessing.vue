@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Motion } from "motion-v";
 import type { User, GetLimitResponse } from '@/client'
+import { useElementSize } from '@vueuse/core'
 
 definePageMeta({
     middleware: [
@@ -27,6 +28,9 @@ const amount = ref<number>(0);
 const isConfirm = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
 const isComplete = ref<boolean>(false);
+const memoContainer = ref();
+const memoValue = ref<string>('');
+const { width: memoWidth } = useElementSize(memoContainer)
 const isDeduct = computed<boolean>(() => route.query.a == "deduct");
 const pointLimit = ref<GetLimitResponse>({
     limit: 0,
@@ -116,6 +120,7 @@ const onButton = async () => {
         target_user_id: userData.value.id!,
         amount: amount.value,
         change_type: history_type,
+        memo: memoValue.value.length > 0? memoValue.value : undefined
     }
     if (isDeduct.value) {
         req = await $API.deductPointsPointDeductPost({ body: body });
@@ -128,6 +133,10 @@ const onButton = async () => {
     }
     isComplete.value = true;
 };
+
+const onMemoInput = (event: InputEvent) => {
+    memoValue.value = (event.target as HTMLInputElement).value;
+}
 </script>
 
 <template>
@@ -196,7 +205,7 @@ const onButton = async () => {
                         <span class="text-h4">P</span>
                     </div>
                     <p
-                        class="text-ui-p2 mt-2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40 transition-colors"
+                        class="text-ui-p2 mt-2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40"
                         :class="{ 'text-error!': pointError }"
                         ref="pointScope"
                     >
@@ -214,6 +223,23 @@ const onButton = async () => {
                             포인트 지급가능
                         </template>
                     </p>
+
+                    <Motion
+                        as="button"
+                        class="flex justify-end max-w-[90%] overflow-clip w-fit text-ui-p2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40 disabled:opacity-50"
+                        :initial="{ marginTop: '-1.625rem', opacity: 0 }"
+                        :animate="{
+                            marginTop: !isConfirm ? '-1.625rem' : '0.5rem',
+                            opacity: !isConfirm ? 0 : 1
+                        }"
+                        :transition="{
+                            duration: 0.8,
+                            ease: [0, 0.71, 0.2, 1.01],
+                        }"
+                    >
+                        <span class="absolute opacity-0 pointer-events-none" ref="memoContainer">{{ memoValue || '메모' }}</span>
+                        <input type="text" class="outline-none min-w-6" placeholder="메모" v-model="memoValue" @input="onMemoInput" :style="{ width: `${memoWidth}px` }" />
+                    </Motion>
                 </div>
             </div>
             <p
@@ -258,7 +284,7 @@ const onButton = async () => {
                     </p>
                 </UButton>
                 <Motion
-                    class="h-auto aspect-square"
+                    class="aspect-square shrink-0 flex w-15"
                     :initial="{ marginRight: '-100%' }"
                     :animate="{
                         marginRight: !isConfirm || isLoading ? '-100%' : 0,
