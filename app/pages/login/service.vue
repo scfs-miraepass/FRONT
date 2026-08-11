@@ -93,7 +93,7 @@ const login = async () => {
         },
     });
     if (req.error) {
-        if (req.response.status == 401) {
+        if (req.response?.status == 401) {
             toast.add({
                 title: "비밀번호가 맞지 않아요.",
                 description: "비밀번호를 잊어다면 담당자에게 문의해주세요.",
