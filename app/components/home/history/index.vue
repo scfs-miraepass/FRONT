@@ -33,7 +33,7 @@ const { pending } = await useAsyncData(
     'point.history',
 
     async (_nuxtApp, { signal }) => {
-        const req = await $API.pointHistoryPointHistoryGet({
+        const req = await $API.getHistoryListPointHistoryGet({
             query: queryParams.value,
             ...signal
         })
