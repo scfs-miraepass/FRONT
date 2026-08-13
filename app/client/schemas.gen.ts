@@ -456,6 +456,21 @@ export const PostsSchema = {
     title: 'Posts'
 } as const;
 
+export const QuestCompleteRequestSchema = {
+    properties: {
+        target_user_id: {
+            type: 'integer',
+            title: 'Target User Id',
+            description: '완료 처리할 학생의 ID'
+        }
+    },
+    type: 'object',
+    required: [
+        'target_user_id'
+    ],
+    title: 'QuestCompleteRequest'
+} as const;
+
 export const QuestOperationSchema = {
     properties: {
         title: {
@@ -484,7 +499,8 @@ export const QuestOperationSchema = {
             type: 'integer',
             minimum: 1,
             title: 'Max Repeat',
-            description: '퀘스트 반복 가능 횟수'
+            description: '퀘스트 반복 가능 횟수',
+            default: 1
         }
     },
     type: 'object',
@@ -492,8 +508,7 @@ export const QuestOperationSchema = {
         'title',
         'description',
         'reward',
-        'end_date',
-        'max_repeat'
+        'end_date'
     ],
     title: 'QuestOperation'
 } as const;
@@ -602,12 +617,6 @@ export const QuestsSchema = {
             format: 'date-time',
             title: 'End Date',
             description: '퀘스트 종료 날짜'
-        },
-        max_repeat: {
-            type: 'integer',
-            title: 'Max Repeat',
-            description: '학생 당 최대 반복 완료 횟수',
-            default: 1
         },
         created_at: {
             type: 'string',
@@ -964,6 +973,29 @@ export const ResponseModel_list_User__Schema = {
     title: 'ResponseModel[list[User]]'
 } as const;
 
+export const ResponseModel_list_Users__Schema = {
+    properties: {
+        success: {
+            type: 'boolean',
+            title: 'Success'
+        },
+        data: {
+            items: {
+                $ref: '#/components/schemas/Users'
+            },
+            type: 'array',
+            title: 'Data',
+            description: '응답 데이터'
+        }
+    },
+    type: 'object',
+    required: [
+        'success',
+        'data'
+    ],
+    title: 'ResponseModel[list[Users]]'
+} as const;
+
 export const StampCreateSchema = {
     properties: {
         user_id: {
@@ -1229,6 +1261,106 @@ export const UserTypeSchema = {
         'service'
     ],
     title: 'UserType'
+} as const;
+
+export const UsersSchema = {
+    properties: {
+        id: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Id',
+            description: '고유 ID. 교사, 서비스의 경우 자동생성. 학생의 경우 학번 사용'
+        },
+        type: {
+            $ref: '#/components/schemas/UserType',
+            description: '유저 종류 (학생, 교사, 서비스)'
+        },
+        name: {
+            type: 'string',
+            title: 'Name',
+            description: '이름'
+        },
+        grade: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Grade',
+            description: '학년'
+        },
+        number: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Number',
+            description: '반'
+        },
+        point: {
+            type: 'integer',
+            title: 'Point',
+            description: '보유 포인트',
+            default: 0
+        },
+        total_point: {
+            type: 'integer',
+            title: 'Total Point',
+            description: '누적 포인트',
+            default: 0
+        },
+        permissions: {
+            type: 'integer',
+            title: 'Permissions',
+            description: '관리자 여부',
+            default: 0
+        },
+        history_type: {
+            anyOf: [
+                {
+                    $ref: '#/components/schemas/PointHistoryType'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            description: '해당 유저가 포인트 지급/차감시 포인트 기록 타입'
+        },
+        password: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Password',
+            description: '비밀번호'
+        }
+    },
+    type: 'object',
+    required: [
+        'type',
+        'name',
+        'grade',
+        'number',
+        'password'
+    ],
+    title: 'Users'
 } as const;
 
 export const ValidationErrorSchema = {
