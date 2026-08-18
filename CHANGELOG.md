@@ -1,3 +1,22 @@
+# [1.11.0](https://github.com/scfs-miraepass/FRONT/compare/v1.10.0...v1.11.0) (2026-08-18)
+
+
+### Bug Fixes
+
+* useAPI가 정상적으로 동작하지 않던 문제 해결 ([eb6fc44](https://github.com/scfs-miraepass/FRONT/commit/eb6fc44a4b1e4c56c44e762413dd1b2883529cd2))
+
+
+### Features
+
+* 새로운 권한에 따른 페이지 처리 ([#5](https://github.com/scfs-miraepass/FRONT/issues/5)) ([5b6f833](https://github.com/scfs-miraepass/FRONT/commit/5b6f833958315084b42b517015e25d913ad1e1cc))
+* 포인트 지급시, 메모를 추가할 수 있도록 기능 추가 ([47c6237](https://github.com/scfs-miraepass/FRONT/commit/47c623701ea16ab2f5e817bd7d571ef52ce03928))
+
+
+### Performance Improvements
+
+* useAPI 삭제 ([6b84926](https://github.com/scfs-miraepass/FRONT/commit/6b8492657dcc285499f31ffe6e8cac102097eff1))
+* 시간대 처리 수정 ([61cee17](https://github.com/scfs-miraepass/FRONT/commit/61cee175639dc989814be764d6e01eefffe414ee))
+
 # [1.11.0-dev.2](https://github.com/scfs-miraepass/FRONT/compare/v1.11.0-dev.1...v1.11.0-dev.2) (2026-08-11)
 
 
