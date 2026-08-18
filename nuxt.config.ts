@@ -6,7 +6,7 @@ import pkg from './package.json'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
-    devtools: { enabled: false },
+    devtools: { enabled: true },
 
     future: {
         compatibilityVersion: 4,
@@ -123,7 +123,7 @@ export default defineNuxtConfig({
         },
     },
 
-    css: ["./app/assets/styles/main.css", "./app/assets/styles/tossface.css"],
+    css: ["~/assets/styles/main.css", "~/assets/styles/tossface.css"],
 
     routeRules: {
         '/api/**': {
