@@ -125,6 +125,13 @@ export const zPosts = z.object({
 });
 
 /**
+ * QuestCompleteRequest
+ */
+export const zQuestCompleteRequest = z.object({
+    target_user_id: z.int()
+});
+
+/**
  * QuestOperation
  */
 export const zQuestOperation = z.object({
@@ -132,7 +139,7 @@ export const zQuestOperation = z.object({
     description: z.string(),
     reward: z.int().gt(0),
     end_date: z.iso.datetime({ offset: true }),
-    max_repeat: z.int().gte(1)
+    max_repeat: z.int().gte(1).optional().default(1)
 });
 
 /**
@@ -155,7 +162,6 @@ export const zQuests = z.object({
     description: z.string(),
     reward: z.int(),
     end_date: z.iso.datetime({ offset: true }),
-    max_repeat: z.int().optional().default(1),
     created_at: z.iso.datetime({ offset: true }).optional(),
     author_id: z.int()
 });
@@ -387,6 +393,30 @@ export const zResponseModelUser = z.object({
 export const zResponseModelListUser = z.object({
     success: z.boolean(),
     data: z.array(zUser)
+});
+
+/**
+ * Users
+ */
+export const zUsers = z.object({
+    id: z.int().nullish(),
+    type: zUserType,
+    name: z.string(),
+    grade: z.int().nullable(),
+    number: z.int().nullable(),
+    point: z.int().optional().default(0),
+    total_point: z.int().optional().default(0),
+    permissions: z.int().optional().default(0),
+    history_type: zPointHistoryType.nullish(),
+    password: z.string().nullable()
+});
+
+/**
+ * ResponseModel[list[Users]]
+ */
+export const zResponseModelListUsers = z.object({
+    success: z.boolean(),
+    data: z.array(zUsers)
 });
 
 /**
@@ -651,6 +681,8 @@ export const zUpdateQuestQuestQuestIdPutPath = z.object({
  */
 export const zUpdateQuestQuestQuestIdPutResponse = zResponseModelQuests;
 
+export const zCompleteQuestQuestQuestIdCompletePostBody = zQuestCompleteRequest;
+
 export const zCompleteQuestQuestQuestIdCompletePostPath = z.object({
     quest_id: z.int()
 });
@@ -659,6 +691,33 @@ export const zCompleteQuestQuestQuestIdCompletePostPath = z.object({
  * 퀘스트 완료 처리 성공
  */
 export const zCompleteQuestQuestQuestIdCompletePostResponse = zResponseModelInt;
+
+export const zCancelAcceptQuestQuestQuestIdAcceptDeletePath = z.object({
+    quest_id: z.int()
+});
+
+/**
+ * 퀘스트 수락 취소 성공
+ */
+export const zCancelAcceptQuestQuestQuestIdAcceptDeleteResponse = z.void();
+
+export const zListQuestAcceptancesQuestQuestIdAcceptGetPath = z.object({
+    quest_id: z.int()
+});
+
+/**
+ * 퀘스트 수락 유저 목록 조회 성공
+ */
+export const zListQuestAcceptancesQuestQuestIdAcceptGetResponse = zResponseModelListUsers;
+
+export const zAcceptQuestQuestQuestIdAcceptPostPath = z.object({
+    quest_id: z.int()
+});
+
+/**
+ * 퀘스트 수락 성공
+ */
+export const zAcceptQuestQuestQuestIdAcceptPostResponse = zResponseModelBool;
 
 export const zGetPostsPostsGetQuery = z.object({
     page: z.int().gte(1).optional().default(1),
