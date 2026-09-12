@@ -77,6 +77,14 @@ const icon = computed(() => {
             icon: "🎄",
             color: "#a191ff",
         },
+        karaoke_bid: {
+            icon: "🎤",
+            color: "#f2a154",
+        },
+        karaoke_cancel: {
+            icon: "🎤",
+            color: "#586475",
+        },
     }[props.type];
 });
 </script>

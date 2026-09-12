@@ -7,6 +7,8 @@ import Stamp from "@/components/home/section/stamp.vue";
 import StampGive from "@/components/home/section/stampGive.vue";
 import GrantPoint from "@/components/home/section/grantPoint.vue";
 import DeductPoint from "@/components/home/section/deductPoint.vue";
+import Karaoke from "@/components/home/section/karaoke.vue";
+import KaraokeManage from "@/components/home/section/karaokeManage.vue";
 
 const session = useSession()
 const sectionItem = computed(() => {
@@ -18,6 +20,8 @@ const sectionItem = computed(() => {
     if (hasPermission(permissions, UserPermission.VIEW_RANK)) items.push(Ranking)
     if (hasPermission(permissions, UserPermission.GIVE_STAMP)) items.push(StampGive)
     if (hasPermission(permissions, UserPermission.VIEW_STAMP)) items.push(Stamp)
+    if (hasPermission(permissions, UserPermission.VIEW_KARAOKE)) items.push(Karaoke)
+    if (hasPermission(permissions, UserPermission.MANAGE_KARAOKE)) items.push(KaraokeManage)
 
     return items
 })
