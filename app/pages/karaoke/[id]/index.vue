@@ -2,6 +2,8 @@
 import type { KaraokeFinalBidResponse, KaraokePartyDetail, KaraokeResponse } from "@/client";
 import { KaraokeStatus } from "@/client";
 import { karaokeTimeLabel, karaokeStatusLabel, calcDutchPay } from "@/utils/karaoke";
+import PageButton from "~/components/setting/object.vue";
+import Section from "~/components/setting/section.vue";
 
 definePageMeta({
     permissions: [UserPermission.VIEW_KARAOKE] as PermissionCondition,
@@ -226,33 +228,27 @@ const dateTimeLabel = computed(() => {
             </div>
 
             <!-- 파티 상태 -->
-            <div class="rounded-2xl light:bg-default dark:bg-muted p-4" v-if="!partyPending">
-                <div v-if="!party" class="flex items-center justify-between gap-2">
+
+
+            <Section v-if="!partyPending">
+                <div v-if="!party" class="flex items-center justify-between gap-2 px-5.5 py-3">
                     <p class="text-p2 leading-4.5 light:text-black/60 dark:text-white/60">혼자 입찰하거나, <br />파티를 만들어 함께 낼 수 있어요.</p>
                     <UButton size="sm" class="rounded-lg shrink-0" :loading="creatingParty" @click="createParty">파티 만들기</UButton>
                 </div>
-                <div v-else class="flex items-center justify-between gap-2">
-                    <div class="flex flex-col">
-                        <p class="text-p2 font-bold">
-                            {{ isLeader ? `내 파티 (${partyHeadcount}명)` : `${party.leader.name}님의 파티` }}
-                        </p>
-                        <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-0.5" v-if="!isLeader">
-                            파티장만 입찰할 수 있어요.
-                        </p>
-                        <p
-                            class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-0.5"
-                            v-else-if="dutchPreview"
-                        >
-                            1인당 {{ dutchPreview.perMember.toLocaleString() }}P (나 {{ dutchPreview.leaderShare.toLocaleString() }}P)
-                        </p>
-                    </div>
-                    <NuxtLink :to="`/karaoke/${karaokeId}/party`" v-slot="{ navigate }" custom>
-                        <UButton size="sm" color="neutral" variant="soft" class="rounded-xl shrink-0" @click="navigate()">
-                            파티 관리
-                        </UButton>
-                    </NuxtLink>
-                </div>
-            </div>
+
+                <NuxtLink v-else :to="`/karaoke/${karaokeId}/party`" v-slot="{ navigate }" custom>
+                    <PageButton @click="navigate()" :label="isLeader ? `내 파티 (${partyHeadcount}명)` : `${party.leader.name}님의 파티`">
+                        <template #value>
+                            <template v-if="!isLeader">
+                                파티장만 입찰할 수 있어요.
+                            </template>
+                            <template v-else-if="dutchPreview">
+                                1인당 {{ dutchPreview.perMember.toLocaleString() }}P (나 {{ dutchPreview.leaderShare.toLocaleString() }}P)
+                            </template>
+                        </template>
+                    </PageButton>
+                </NuxtLink>
+            </Section>
 
             <!-- 입찰 폼 -->
             <div class="rounded-2xl light:bg-default dark:bg-muted p-4" v-if="canBid">
