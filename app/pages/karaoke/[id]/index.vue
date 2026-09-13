@@ -228,8 +228,8 @@ const dateTimeLabel = computed(() => {
             <!-- 파티 상태 -->
             <div class="rounded-2xl light:bg-default dark:bg-muted p-4" v-if="!partyPending">
                 <div v-if="!party" class="flex items-center justify-between gap-2">
-                    <p class="text-p2 light:text-black/60 dark:text-white/60">혼자 입찰하거나, 파티를 만들어 함께 낼 수 있어요.</p>
-                    <UButton size="sm" class="rounded-xl shrink-0" :loading="creatingParty" @click="createParty">파티 만들기</UButton>
+                    <p class="text-p2 leading-4.5 light:text-black/60 dark:text-white/60">혼자 입찰하거나, <br />파티를 만들어 함께 낼 수 있어요.</p>
+                    <UButton size="sm" class="rounded-lg shrink-0" :loading="creatingParty" @click="createParty">파티 만들기</UButton>
                 </div>
                 <div v-else class="flex items-center justify-between gap-2">
                     <div class="flex flex-col">
@@ -268,7 +268,7 @@ const dateTimeLabel = computed(() => {
                         />
                         <UButton
                             size="xl"
-                            class="rounded-xl shrink-0"
+                            class="rounded-lg shrink-0"
                             :disabled="bidAmount < minBid"
                             :loading="bidding"
                             @click="submitBid"
@@ -283,8 +283,8 @@ const dateTimeLabel = computed(() => {
             </p>
 
             <!-- 입찰 기록 -->
-            <div class="flex-1 rounded-2xl light:bg-default dark:bg-muted p-1 py-2.5 flex flex-col overflow-y-auto" v-if="detail.status === KaraokeStatus.IN_PROGRESS">
-                <p class="text-ui-p2 light:text-black/50 dark:text-white/50 px-4 pb-1.5">입찰 기록</p>
+            <div class="flex-1 rounded-2xl light:bg-default dark:bg-muted p-4 flex flex-col overflow-y-auto" v-if="detail.status === KaraokeStatus.IN_PROGRESS">
+                <p class="text-ui-p2 light:text-black/50 dark:text-white/50">입찰 기록</p>
                 <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50 py-6" v-if="bidsHistory.length <= 0">
                     아직 입찰이 없어요.
                 </div>
