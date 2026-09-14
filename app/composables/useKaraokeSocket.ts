@@ -1,4 +1,4 @@
-import type { KaraokeBids } from "@/client";
+import { type KaraokeBids, KaraokeStatus } from "@/client";
 
 export interface KaraokeSocketState {
     highest_bid: KaraokeBids | null;
@@ -6,12 +6,18 @@ export interface KaraokeSocketState {
     remaining_time: number;
 }
 
+type KaraokeSubData =
+    | { type: "status"; data: KaraokeStatus }
+    | { type: "highest"; data: KaraokeSocketState }
+    | { type: "sync"; data: number };
+
 // 노래방 경매 실시간 상태 구독. `/karaoke/{id}/ws`는 OpenAPI 스펙에 포함되지 않아 SDK가 생성되지 않으므로 직접 연결한다.
 export const useKaraokeSocket = (
     karaokeId: MaybeRefOrGetter<number>,
     enabled: MaybeRefOrGetter<boolean> = true,
 ) => {
-    const state = ref<KaraokeSocketState | null>(null);
+    const status = ref<KaraokeStatus | null>(null);
+    const highestState = ref<KaraokeSocketState | null>(null);
     const remainingTime = ref<number>(0);
     const isConnected = ref<boolean>(false);
 
@@ -47,9 +53,20 @@ export const useKaraokeSocket = (
             reconnectDelay = 1000;
         };
         socket.onmessage = (event) => {
-            const payload = JSON.parse(event.data) as KaraokeSocketState;
-            state.value = payload;
-            remainingTime.value = payload.remaining_time;
+            const payload = JSON.parse(event.data) as KaraokeSubData;
+
+            switch (payload.type) {
+                case "highest":
+                    highestState.value = payload.data;
+                    remainingTime.value = payload.data.remaining_time;
+                    break;
+                case "status":
+                    status.value = payload.data;
+                    break;
+                case "sync":
+                    remainingTime.value = payload.data;
+                    break;
+            }
         };
         socket.onclose = () => {
             isConnected.value = false;
@@ -84,5 +101,5 @@ export const useKaraokeSocket = (
         cleanupSocket();
     });
 
-    return { state, remainingTime, isConnected };
+    return { status, highestState, remainingTime, isConnected };
 };

@@ -21,16 +21,57 @@ const moveDate = (days: number) => {
     selectedDate.value = toDateInputValue(addDays(new Date(`${selectedDate.value}T00:00:00`), days));
 };
 
+const fetchKaraokeList = async () => {
+    // 생성된 SDK 타입은 date 필드를 Date로 표기하지만, 요청 검증기는 "YYYY-MM-DD" 문자열을 기대한다.
+    const req = await $API.getKaraokeList({ query: { date: selectedDate.value as unknown as Date } });
+    if (req.error || !req.data) return [];
+    return req.data.data;
+};
+
 const { data: karaokeList, pending } = await useAsyncData<KaraokeResponse[]>(
     "karaoke.list",
-    async () => {
-        // 생성된 SDK 타입은 date 필드를 Date로 표기하지만, 요청 검증기는 "YYYY-MM-DD" 문자열을 기대한다.
-        const req = await $API.getKaraokeList({ query: { date: selectedDate.value as unknown as Date } });
-        if (req.error || !req.data) return [];
-        return req.data.data;
-    },
+    fetchKaraokeList,
     { watch: [selectedDate], default: () => [] },
 );
+
+// 예정(Pending) 경매의 시작 시간, 진행중(In_Progress) 경매의 종료 시간이 지나면
+// 서버 상태가 갱신될 때까지 잠시 후 목록을 다시 불러와 화면을 최신 상태로 맞춘다.
+const now = ref<number>(Date.now());
+const hasStaleStatus = computed(() =>
+    (karaokeList.value ?? []).some((item) => {
+        if (item.status === "Pending") return new Date(item.start_time).getTime() <= now.value;
+        if (item.status === "In_Progress") return new Date(item.end_time).getTime() <= now.value;
+        return false;
+    }),
+);
+
+if (import.meta.client) {
+    const nowTicker = setInterval(() => (now.value = Date.now()), 1000);
+    let staleRetryInterval: ReturnType<typeof setInterval> | undefined;
+
+    watch(
+        hasStaleStatus,
+        async (stale) => {
+            if (!stale) {
+                if (staleRetryInterval) {
+                    clearInterval(staleRetryInterval);
+                    staleRetryInterval = undefined;
+                }
+                return;
+            }
+            if (staleRetryInterval) return;
+            staleRetryInterval = setInterval(async () => {
+                karaokeList.value = await fetchKaraokeList();
+            }, 3000);
+        },
+        { immediate: true },
+    );
+
+    onUnmounted(() => {
+        clearInterval(nowTicker);
+        if (staleRetryInterval) clearInterval(staleRetryInterval);
+    });
+}
 
 if (import.meta.client && hasPermission(session.value?.permissions, UserPermission.JOIN_KARAOKE)) {
     const req = await $API.getMyKaraokePartyInvites();

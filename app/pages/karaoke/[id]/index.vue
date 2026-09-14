@@ -51,31 +51,13 @@ else partyPending.value = false;
 
 // 소켓은 마감된 경매에는 연결하지 않는다 (7장: WS는 상태와 무관하게 동작하지만 마감 후엔 final-bid를 사용).
 const socketEnabled = computed(() => detail.value?.status !== KaraokeStatus.CONFIRMED);
-const { state, remainingTime } = useKaraokeSocket(karaokeId, socketEnabled);
+const { status: socketStatus, highestState, remainingTime } = useKaraokeSocket(karaokeId, socketEnabled);
 
-// 스케줄러가 최대 30초 지연되므로, 종료 시각이 지나면 상태가 바뀔 때까지 짧게 폴링한다.
-let settleInterval: ReturnType<typeof setInterval> | undefined;
-watch(remainingTime, (value) => {
-    if (value > 0 || detail.value?.status !== KaraokeStatus.IN_PROGRESS || settleInterval) return;
-    settleInterval = setInterval(async () => {
-        const ok = await fetchDetail();
-        if (ok && detail.value?.status === KaraokeStatus.CONFIRMED) {
-            clearInterval(settleInterval);
-            settleInterval = undefined;
-            await fetchFinalBid();
-        }
-    }, 4000);
-});
-onScopeDispose(() => clearInterval(settleInterval));
-
-// Pending 상태의 "시작까지 남은 시간"은 로컬에서 계산한다 (WS의 remaining_time은 종료 시각 기준이라 그대로 쓸 수 없음).
-const now = ref<number>(Date.now());
-const nowTicker = import.meta.client ? setInterval(() => (now.value = Date.now()), 1000) : undefined;
-onScopeDispose(() => clearInterval(nowTicker));
-
-const secondsUntilStart = computed(() => {
-    if (!detail.value) return 0;
-    return Math.max(0, Math.floor((new Date(detail.value.start_time).getTime() - now.value) / 1000));
+// 서버가 상태 전이를 실시간으로 푸시해주므로, 시작/종료 시각을 로컬에서 추적할 필요가 없다.
+watch(socketStatus, async (value) => {
+    if (!value || !detail.value) return;
+    detail.value.status = value;
+    if (value === KaraokeStatus.CONFIRMED) await fetchFinalBid();
 });
 
 const formatDuration = (total: number) => {
@@ -87,8 +69,8 @@ const formatDuration = (total: number) => {
     return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
 };
 
-const highestAmount = computed(() => state.value?.highest_bid?.amount ?? detail.value?.highest_bid ?? null);
-const bidsHistory = computed(() => state.value?.bids_history ?? []);
+const highestAmount = computed(() => highestState.value?.highest_bid?.amount ?? detail.value?.highest_bid ?? null);
+const bidsHistory = computed(() => highestState.value?.bids_history ?? []);
 const minBid = computed(() => (highestAmount.value != null ? highestAmount.value + 1 : (detail.value?.min_point ?? 0)));
 
 const isLeader = computed(() => !!party.value && party.value.leader_id === session.value?.id);
@@ -207,7 +189,7 @@ const dateTimeLabel = computed(() => {
 
                 <template v-if="detail.status === KaraokeStatus.PENDING">
                     <p class="text-ui-p2 light:text-black/50 dark:text-white/50">시작까지</p>
-                    <p class="text-h5 font-bold my-1">{{ formatDuration(secondsUntilStart) }}</p>
+                    <p class="text-h5 font-bold my-1">{{ formatDuration(remainingTime) }}</p>
                     <p class="text-ui-p2 light:text-black/50 dark:text-white/50">
                         최소 입찰가 {{ (detail.min_point ?? 0).toLocaleString() }}P
                     </p>
@@ -220,9 +202,9 @@ const dateTimeLabel = computed(() => {
                         <template v-if="highestAmount != null">{{ highestAmount.toLocaleString() }}P</template>
                         <template v-else>입찰 없음</template>
                     </div>
-                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-0.5" v-if="state?.highest_bid">
-                        {{ state.highest_bid.bidder_id === session?.id ? "나" : `학번 ${state.highest_bid.bidder_id}` }}
-                        {{ state.highest_bid.party_id ? "(파티)" : "" }} 최고가
+                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-0.5" v-if="highestState?.highest_bid">
+                        {{ highestState.highest_bid.bidder_id === session?.id ? "나" : `학번 ${highestState.highest_bid.bidder_id}` }}
+                        {{ highestState.highest_bid.party_id ? "(파티)" : "" }} 최고가
                     </p>
                 </template>
             </div>
