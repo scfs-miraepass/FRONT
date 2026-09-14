@@ -21,10 +21,15 @@ export const useKaraokeSocket = (
     const remainingTime = ref<number>(0);
     const isConnected = ref<boolean>(false);
 
+    // 재연결에 성공할 때마다 갱신되는 타임스탬프. 끊겨 있던 동안 놓쳤을 수 있는 상태 전이를
+    // 호출 측이 REST로 다시 맞출 수 있도록 신호를 준다 (최초 연결 시에는 갱신되지 않는다).
+    const reconnectedAt = ref<number>(0);
+
     let ws: WebSocket | null = null;
     let reconnectTimeout: ReturnType<typeof setTimeout> | undefined;
     let reconnectDelay = 1000;
     let stopped = false;
+    let hasConnectedOnce = false;
 
     const cleanupSocket = () => {
         clearTimeout(reconnectTimeout);
@@ -51,6 +56,8 @@ export const useKaraokeSocket = (
         socket.onopen = () => {
             isConnected.value = true;
             reconnectDelay = 1000;
+            if (hasConnectedOnce) reconnectedAt.value = Date.now();
+            hasConnectedOnce = true;
         };
         socket.onmessage = (event) => {
             const payload = JSON.parse(event.data) as KaraokeSubData;
@@ -101,5 +108,5 @@ export const useKaraokeSocket = (
         cleanupSocket();
     });
 
-    return { status, highestState, remainingTime, isConnected };
+    return { status, highestState, remainingTime, isConnected, reconnectedAt };
 };

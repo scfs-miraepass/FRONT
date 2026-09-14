@@ -51,13 +51,19 @@ else partyPending.value = false;
 
 // 소켓은 마감된 경매에는 연결하지 않는다 (7장: WS는 상태와 무관하게 동작하지만 마감 후엔 final-bid를 사용).
 const socketEnabled = computed(() => detail.value?.status !== KaraokeStatus.CONFIRMED);
-const { status: socketStatus, highestState, remainingTime } = useKaraokeSocket(karaokeId, socketEnabled);
+const { status: socketStatus, highestState, remainingTime, reconnectedAt } = useKaraokeSocket(karaokeId, socketEnabled);
 
 // 서버가 상태 전이를 실시간으로 푸시해주므로, 시작/종료 시각을 로컬에서 추적할 필요가 없다.
 watch(socketStatus, async (value) => {
     if (!value || !detail.value) return;
     detail.value.status = value;
     if (value === KaraokeStatus.CONFIRMED) await fetchFinalBid();
+});
+
+// 소켓이 끊겼다 재연결되면 그 사이 상태 전이 메시지를 놓쳤을 수 있으므로 REST로 한 번 맞춘다.
+watch(reconnectedAt, async () => {
+    const ok = await fetchDetail();
+    if (ok && detail.value?.status === KaraokeStatus.CONFIRMED) await fetchFinalBid();
 });
 
 const formatDuration = (total: number) => {
