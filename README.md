@@ -22,7 +22,7 @@ yarn dev
 `http://localhost:8000/openapi.json`는 백엔드 서버의 openapi.json 파일입니다. 개발시 주소가 다를 경우 주소를 수정해주세요.
 ### SDK 생성
 ```bash
-npx @hey-api/openapi-ts -i http://localhost:8000/openapi.json -o app/sdk -c @hey-api/client-ofetch
+yarn sdk-gen
 ```
 
 ### 버전 지정
