@@ -96,25 +96,33 @@ export const useKaraokeSocket = (
         socket.onerror = () => socket.close();
     };
 
+    let countdownInterval: ReturnType<typeof setInterval> | undefined;
+    const startCountdown = () => {
+        if (countdownInterval) return;
+        countdownInterval = setInterval(() => {
+            if (remainingTime.value > 0) remainingTime.value -= 1;
+        }, 1000);
+    };
+    const stopCountdown = () => {
+        clearInterval(countdownInterval);
+        countdownInterval = undefined;
+    };
+
     if (import.meta.client) {
         watchEffect(() => {
             if (toValue(enabled)) {
                 connect();
+                startCountdown();
             } else {
                 cleanupSocket();
+                stopCountdown();
             }
         });
     }
 
-    const countdownInterval = import.meta.client
-        ? setInterval(() => {
-              if (remainingTime.value > 0) remainingTime.value -= 1;
-          }, 1000)
-        : undefined;
-
     onScopeDispose(() => {
         stopped = true;
-        clearInterval(countdownInterval);
+        stopCountdown();
         cleanupSocket();
     });
 
