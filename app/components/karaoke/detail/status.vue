@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { KaraokeBids } from "@/client";
+import type { KaraokeSocketBid } from "@/composables/useKaraokeSocket";
 import { KaraokeStatus } from "@/client";
 import { karaokeStatusLabel, formatDuration } from "@/utils/karaoke";
 
@@ -8,8 +8,7 @@ defineProps<{
     remainingTime: number;
     minPoint: number;
     highestAmount: number | null;
-    highestBid: KaraokeBids | null | undefined;
-    sessionId: number | null | undefined;
+    highestBid: KaraokeSocketBid | null | undefined;
 }>();
 </script>
 
@@ -39,7 +38,7 @@ defineProps<{
                 <template v-else>입찰 없음</template>
             </div>
             <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-0.5" v-if="highestBid">
-                {{ highestBid.bidder_id === sessionId ? "나" : `학번 ${highestBid.bidder_id}` }}
+                {{ highestBid.bidder?.name ?? "알 수 없음" }}
                 {{ highestBid.party_id ? "(파티)" : "" }} 최고가
             </p>
         </template>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { KaraokeBids } from "@/client";
+import type { KaraokeSocketBid } from "@/composables/useKaraokeSocket";
 
 // 화면에는 최근 입찰만 보여주고, 전체 기록은 bids prop으로 그대로 유지한다 (최신순으로 정렬되어 내려온다).
 const RECENT_BID_COUNT = 3;
 
 const props = defineProps<{
-    bids: KaraokeBids[];
-    sessionId: number | null | undefined;
+    bids: KaraokeSocketBid[];
 }>();
 
 const recentBids = computed(() => props.bids.slice(0, RECENT_BID_COUNT));
@@ -25,7 +24,7 @@ const recentBids = computed(() => props.bids.slice(0, RECENT_BID_COUNT));
                 class="flex items-center justify-between"
             >
                 <p class="text-p1">
-                    {{ bid.bidder_id === sessionId ? "나" : `학번 ${bid.bidder_id}` }}
+                    {{ bid.bidder?.name ?? "알 수 없음" }}
                     <span class="opacity-50" v-if="bid.party_id">(파티)</span>
                 </p>
                 <p class="text-p1 font-bold">{{ bid.amount.toLocaleString() }}P</p>

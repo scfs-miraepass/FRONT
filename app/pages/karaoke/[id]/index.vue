@@ -168,7 +168,6 @@ const dateTimeLabel = computed(() => {
                 :min-point="detail.min_point ?? 0"
                 :highest-amount="highestAmount"
                 :highest-bid="highestState?.highest_bid"
-                :session-id="session?.id"
             />
 
             <!-- 파티 패널: 파티 만들기 / 내 파티 요약 -->
@@ -197,7 +196,7 @@ const dateTimeLabel = computed(() => {
             </p>
 
             <!-- 입찰 기록 -->
-            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" :session-id="session?.id" />
+            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
         </template>
     </div>
 </template>

@@ -1,8 +1,18 @@
-import { type KaraokeBids, KaraokeStatus } from "@/client";
+import { type User, KaraokeStatus } from "@/client";
+
+// 백엔드 KaraokeBidHistoryItem과 동일한 형태. WS 전용 응답이라 OpenAPI 스펙에는 포함되지 않는다.
+export interface KaraokeSocketBid {
+    id: number;
+    auction_id: number;
+    party_id: number | null;
+    amount: number;
+    created_at: string;
+    bidder: User | null;
+}
 
 export interface KaraokeSocketState {
-    highest_bid: KaraokeBids | null;
-    bids_history: KaraokeBids[];
+    highest_bid: KaraokeSocketBid | null;
+    bids_history: KaraokeSocketBid[];
     remaining_time: number;
 }
 
