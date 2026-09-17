@@ -357,6 +357,14 @@ export const KaraokeFinalBidResponseSchema = {
         },
         bidder: {
             $ref: '#/components/schemas/User'
+        },
+        members: {
+            items: {
+                $ref: '#/components/schemas/User'
+            },
+            type: 'array',
+            title: 'Members',
+            description: '파티로 입찰한 경우, 낙찰자(파티장)를 제외한 파티 멤버 목록'
         }
     },
     type: 'object',

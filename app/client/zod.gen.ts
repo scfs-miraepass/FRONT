@@ -534,7 +534,8 @@ export const zKaraokeFinalBidResponse = z.object({
     party_id: z.int().nullable(),
     amount: z.int(),
     created_at: z.iso.datetime({ offset: true }),
-    bidder: zUser
+    bidder: zUser,
+    members: z.array(zUser).optional()
 });
 
 /**
