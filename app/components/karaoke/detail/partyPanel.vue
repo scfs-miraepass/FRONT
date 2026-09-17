@@ -18,7 +18,7 @@ defineEmits<{ create: [] }>();
 <template>
     <Section>
         <div v-if="!party" class="flex items-center justify-between gap-2 px-5.5 py-3">
-            <p class="text-p2 leading-4.5 light:text-black/60 dark:text-white/60">혼자 입찰하거나, <br />파티를 만들어 함께 낼 수 있어요.</p>
+            <p class="text-ui-p2 leading-4.5 light:text-black/60 dark:text-white/60">혼자 입찰하거나, <br />파티를 만들어 함께 낼 수 있어요.</p>
             <UButton size="sm" class="rounded-lg shrink-0" :loading="creatingParty" @click="$emit('create')">파티 만들기</UButton>
         </div>
 
