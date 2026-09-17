@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import type { DutchPayShare } from "@/utils/karaoke";
+
 const amount = defineModel<number>("amount", { required: true });
 const props = defineProps<{
     minBid: number;
     isValid: boolean;
     bidding: boolean;
+    dutchPreview: DutchPayShare | null;
 }>();
 defineEmits<{ submit: [] }>();
 
@@ -39,12 +42,12 @@ const decrease = () => {
                 <span class="text-h2 font-bold">{{amount.toLocaleString() }}</span>
                 <span class="text-h4">P</span>
             </div>
-<!--            <p-->
-<!--                class="text-ui-p2 mt-2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40"-->
-<!--                ref="pointScope"-->
-<!--            >-->
-<!--                &lt;!&ndash; TODO: 현재 입찰할 수 있는 최대 금액 표기 되도록 해야함 &ndash;&gt;-->
-<!--            </p>-->
+            <p
+                v-if="dutchPreview"
+                class="text-ui-p2 mt-2 px-3 py-1.5 rounded-xl dark:bg-muted light:text-black/45 dark:text-white/40"
+            >
+                나 {{ dutchPreview.leaderShare.toLocaleString() }}P · 팀원 1인당 {{ dutchPreview.perMember.toLocaleString() }}P
+            </p>
 
             <div class="space-x-3 mt-5">
                 <UButton icon="i-ph-plus" variant="subtle" size="xl" class="rounded-lg" @click="increase" />

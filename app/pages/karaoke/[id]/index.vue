@@ -190,6 +190,7 @@ const dateTimeLabel = computed(() => {
                     :min-bid="minBid"
                     :is-valid="isValidBid"
                     :bidding="bidding"
+                    :dutch-preview="dutchPreview"
                     @submit="submitBid"
                 />
                 <p class="text-ui-p2 text-center light:text-black/45 dark:text-white/40 mt-4 mb-5" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
