@@ -168,6 +168,7 @@ const dateTimeLabel = computed(() => {
                 :min-point="detail.min_point ?? 0"
                 :highest-amount="highestAmount"
                 :highest-bid="highestState?.highest_bid"
+                :class="{ 'flex-1': detail.status === KaraokeStatus.PENDING }"
             />
 
             <!-- 파티 패널: 파티 만들기 / 내 파티 요약 -->
@@ -182,6 +183,9 @@ const dateTimeLabel = computed(() => {
                 @create="createParty"
             />
 
+            <!-- 입찰 기록 -->
+            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
+
             <!-- 입찰 폼: 금액 조절 + 입찰하기 -->
             <BidForm
                 v-if="canBid"
@@ -194,9 +198,6 @@ const dateTimeLabel = computed(() => {
             <p class="text-ui-p2 text-center opacity-50" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
                 파티장만 입찰할 수 있어요.
             </p>
-
-            <!-- 입찰 기록 -->
-            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
         </template>
     </div>
 </template>

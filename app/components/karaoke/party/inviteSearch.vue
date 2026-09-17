@@ -58,36 +58,36 @@ const invite = async (user: User) => {
 </script>
 
 <template>
-    <div class="rounded-2xl light:bg-default dark:bg-muted p-4">
-        <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mb-2">멤버 초대</p>
+    <div class="rounded-2xl light:bg-default dark:bg-muted p-6">
+        <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mb-3">멤버 초대</p>
         <UInput
             type="text"
             size="xl"
             class="w-full"
             icon="i-ph-magnifying-glass"
             placeholder="이름 또는 학번"
-            :ui="{ base: 'rounded-2xl' }"
+            :ui="{ base: 'rounded-xl' }"
             :model-value="search"
             :disabled="!canSearch"
             @input="onSearchInput"
         />
-        <p class="text-ui-p2 text-error mt-2" v-if="!canSearch">
+        <p class="text-ui-p2 text-error mt-5" v-if="!canSearch">
             유저 검색 권한이 없어요. 담당자에게 문의해주세요.
         </p>
-        <div class="flex flex-col mt-2" v-if="searching">
-            <p class="text-ui-p2 opacity-50 py-2">검색중..</p>
+        <div class="flex flex-col" v-if="searching">
+            <p class="text-ui-p2 opacity-50">검색중..</p>
         </div>
-        <div class="flex flex-col mt-1" v-else-if="search.length > 0">
-            <p class="text-ui-p2 opacity-50 py-2" v-if="searchResult.length <= 0">찾지 못했어요.</p>
+        <div class="flex flex-col space-y-4 mt-5" v-else-if="search.length > 0">
+            <p class="text-ui-p2 opacity-50" v-if="searchResult.length <= 0">찾지 못했어요.</p>
             <div
                 v-else
                 v-for="u in searchResult"
                 :key="u.id!"
-                class="flex items-center justify-between py-2"
+                class="flex items-center justify-between"
             >
                 <p class="text-p2">{{ u.name }}{{ u.number ? ` (${u.grade}학년 ${u.number}반)` : "" }}</p>
                 <UButton
-                    size="xs"
+                    size="md"
                     class="rounded-lg"
                     :disabled="takenIds.has(u.id!) || invitingId === u.id"
                     :loading="invitingId === u.id"

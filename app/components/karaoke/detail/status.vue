@@ -13,7 +13,7 @@ defineProps<{
 </script>
 
 <template>
-    <div class="rounded-2xl light:bg-default dark:bg-muted p-5 flex flex-col items-center">
+    <div class="rounded-2xl light:bg-default dark:bg-muted p-5 flex flex-col items-center justify-center">
         <UBadge
             :color="status === KaraokeStatus.IN_PROGRESS ? 'primary' : 'warning'"
             variant="subtle"
@@ -24,7 +24,7 @@ defineProps<{
 
         <template v-if="status === KaraokeStatus.PENDING">
             <p class="text-ui-p2 light:text-black/50 dark:text-white/50">시작까지</p>
-            <p class="text-h5 font-bold my-1">{{ formatDuration(remainingTime) }}</p>
+            <p class="text-h4 font-bold my-1">{{ formatDuration(remainingTime) }}</p>
             <p class="text-ui-p2 light:text-black/50 dark:text-white/50">
                 최소 입찰가 {{ minPoint.toLocaleString() }}P
             </p>
