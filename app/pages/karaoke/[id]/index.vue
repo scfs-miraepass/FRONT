@@ -94,7 +94,7 @@ watch(
     { immediate: true },
 );
 
-const isValidBid = computed(() => bidAmount.value >= minBid.value && bidAmount.value % KARAOKE_BID_UNIT === 0);
+const isValidBid = computed(() => bidAmount.value >= minBid.value && bidAmount.value % KARAOKE_BID_UNIT === 0 && bidAmount.value != 0);
 
 const dutchPreview = computed(() =>
     isLeader.value && partyHeadcount.value > 1 ? calcDutchPay(bidAmount.value, partyHeadcount.value) : null,
@@ -168,7 +168,7 @@ const dateTimeLabel = computed(() => {
                 :min-point="detail.min_point ?? 0"
                 :highest-amount="highestAmount"
                 :highest-bid="highestState?.highest_bid"
-                :class="{ 'flex-1': detail.status === KaraokeStatus.PENDING }"
+                :class="{ 'flex-1': detail.status === KaraokeStatus.PENDING || (isMember && detail.status === KaraokeStatus.IN_PROGRESS) }"
             />
 
             <!-- 파티 패널: 파티 만들기 / 내 파티 요약 -->
@@ -183,8 +183,7 @@ const dateTimeLabel = computed(() => {
                 @create="createParty"
             />
 
-            <!-- 입찰 기록 -->
-            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
+
 
             <!-- 입찰 폼: 금액 조절 + 입찰하기 -->
             <BidForm
@@ -195,9 +194,12 @@ const dateTimeLabel = computed(() => {
                 :bidding="bidding"
                 @submit="submitBid"
             />
-            <p class="text-ui-p2 text-center opacity-50" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
+            <p class="text-ui-p2 text-center light:text-black/45 dark:text-white/40 mt-4 mb-5" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
                 파티장만 입찰할 수 있어요.
             </p>
+
+            <!-- 입찰 기록 -->
+            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
         </template>
     </div>
 </template>

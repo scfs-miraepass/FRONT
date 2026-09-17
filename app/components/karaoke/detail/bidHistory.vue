@@ -12,8 +12,8 @@ const recentBids = computed(() => props.bids.slice(0, RECENT_BID_COUNT));
 </script>
 
 <template>
-    <div class="rounded-2xl light:bg-default dark:bg-muted p-6 flex flex-col overflow-y-auto">
-        <div class="flex-1 flex flex-col items-center justify-center text-p1 py-6 light:text-black/50 dark:text-white/50" v-if="recentBids.length <= 0">
+    <div class="rounded-2xl light:bg-default dark:bg-muted p-6 flex flex-col overflow-y-auto min-h-38">
+        <div class="flex-1 flex flex-col items-center justify-center text-p1 my-auto light:text-black/50 dark:text-white/50" v-if="recentBids.length <= 0">
             아직 입찰이 없어요
         </div>
         <TransitionGroup v-else tag="div" name="bid" class="relative flex flex-col gap-y-5">
