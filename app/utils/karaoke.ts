@@ -62,3 +62,8 @@ export const calcDutchPay = (amount: number, headcount: number): DutchPayShare =
     const leaderShare = amount - perMember * (headcount - 1);
     return { perMember, leaderShare };
 };
+
+// API 응답 에러 객체에서 사람이 읽을 수 있는 메시지를 뽑아낸다. 형태를 보장할 수 없는 unknown 에러이므로
+// message 필드가 있는지 확인 후 없으면 fallback 문구를 사용한다.
+export const karaokeErrorMessage = (err: unknown, fallback = "요청을 처리하지 못했어요.") =>
+    err && typeof err === "object" && "message" in err ? String((err as { message: unknown }).message) : fallback;

@@ -20,23 +20,6 @@ const decrease = () => {
 
 <template>
     <div class="flex-1 rounded-2xl light:bg-default dark:bg-muted p-6 flex flex-col">
-<!--        <UInputNumber-->
-<!--            v-model="amount"-->
-<!--            :min="minBid"-->
-<!--            :step="KARAOKE_BID_UNIT"-->
-<!--            size="xl"-->
-<!--            class="w-full"-->
-<!--            :ui="{ base: 'text-center' }"-->
-<!--        />-->
-<!--        <UButton-->
-<!--            size="xl"-->
-<!--            class="rounded-lg w-full justify-center"-->
-<!--            :disabled="!isValid"-->
-<!--            :loading="bidding"-->
-<!--            @click="$emit('submit')"-->
-<!--        >-->
-<!--            입찰하기-->
-<!--        </UButton>-->
         <div class="flex flex-col items-center flex-1 justify-center">
             <div class="flex items-center">
                 <span class="text-h2 font-bold">{{amount.toLocaleString() }}</span>
@@ -62,9 +45,6 @@ const decrease = () => {
                 />
             </div>
         </div>
-
-
-
 
         <p class="text-ui-p2 light:text-black/50 dark:text-white/50 text-center mb-4">{{ minBid.toLocaleString() }}P 이상 입찰할 수 있어요</p>
         <UButton

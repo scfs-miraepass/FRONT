@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { User } from "@/client";
+import { karaokeErrorMessage } from "@/utils/karaoke";
 
 const props = defineProps<{
     partyId: number;
@@ -10,9 +11,6 @@ const emit = defineEmits<{ invited: [user: User] }>();
 
 const toast = useToast();
 const session = useSession();
-
-const errorMessage = (err: unknown) =>
-    err && typeof err === "object" && "message" in err ? String((err as any).message) : "요청을 처리하지 못했어요.";
 
 const search = ref<string>("");
 const searchResult = ref<User[]>([]);
@@ -33,7 +31,7 @@ const onSearchInput = (event: InputEvent) => {
         const req = await $API.searchSearchGet({ query: { q, t: ["student", "teacher"] } });
         searching.value = false;
         if (req.error) {
-            toast.add({ title: "검색하지 못했어요.", description: errorMessage(req.error), color: "error" });
+            toast.add({ title: "검색하지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
             return;
         }
         searchResult.value = req.data.data.filter((u) => u.id !== session.value?.id);
@@ -49,7 +47,7 @@ const invite = async (user: User) => {
     invitingId.value = null;
 
     if (req.error) {
-        toast.add({ title: "초대하지 못했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "초대하지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         return;
     }
     toast.add({ title: `${user.name}님을 초대했어요.`, color: "success" });

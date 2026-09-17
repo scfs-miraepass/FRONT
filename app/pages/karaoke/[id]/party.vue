@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { KaraokePartyDetail, User } from "@/client";
+import { karaokeErrorMessage } from "@/utils/karaoke";
 import KaraokeHeader from "~/components/karaoke/header.vue";
 import LeaderCard from "~/components/karaoke/party/leaderCard.vue";
 import MembersCard from "~/components/karaoke/party/membersCard.vue";
@@ -14,9 +15,6 @@ const route = useRoute();
 const toast = useToast();
 const session = useSession();
 const karaokeId = computed(() => Number(route.params.id));
-
-const errorMessage = (err: unknown, fallback = "요청을 처리하지 못했어요.") =>
-    err && typeof err === "object" && "message" in err ? String((err as any).message) : fallback;
 
 const party = ref<KaraokePartyDetail | null>(null);
 const pending = ref<boolean>(true);
@@ -53,7 +51,7 @@ const kick = async (user: User) => {
     busy.value = false;
 
     if (req.error) {
-        toast.add({ title: "내보내지 못했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "내보내지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         return;
     }
     party.value = req.data.data;
@@ -66,7 +64,7 @@ const leave = async () => {
     busy.value = false;
 
     if (req.error) {
-        toast.add({ title: "탈퇴하지 못했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "탈퇴하지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         return;
     }
     toast.add({ title: "파티에서 나왔어요.", color: "success" });
@@ -79,7 +77,7 @@ const disperse = async () => {
     busy.value = false;
 
     if (req.error) {
-        toast.add({ title: "해산하지 못했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "해산하지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         return;
     }
     toast.add({ title: "파티를 해산했어요.", color: "success" });

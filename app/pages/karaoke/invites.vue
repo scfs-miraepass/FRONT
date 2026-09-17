@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { karaokeTimeLabel } from "@/utils/karaoke";
+import { karaokeTimeLabel, karaokeErrorMessage } from "@/utils/karaoke";
 import KaraokeHeader from "~/components/karaoke/header.vue";
 import InviteCard from "~/components/karaoke/invites/card.vue";
 
@@ -20,9 +20,6 @@ interface InviteRow {
 
 const rows = ref<InviteRow[]>([]);
 const pending = ref<boolean>(true);
-
-const errorMessage = (err: unknown) =>
-    err && typeof err === "object" && "message" in err ? String((err as any).message) : "요청을 처리하지 못했어요.";
 
 const load = async () => {
     pending.value = true;
@@ -69,7 +66,7 @@ const decide = async (row: InviteRow, accept: boolean) => {
     row.deciding = false;
 
     if (req.error) {
-        toast.add({ title: "처리하지 못했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "처리하지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         return;
     }
 

@@ -19,7 +19,7 @@ const recentBids = computed(() => props.bids.slice(0, RECENT_BID_COUNT));
         <TransitionGroup v-else tag="div" name="bid" class="relative flex flex-col gap-y-5">
             <div
                 v-for="bid in recentBids"
-                :key="bid.id ?? bid.created_at?.toString()"
+                :key="bid.id"
                 class="flex items-center justify-between"
             >
                 <p class="text-p1">

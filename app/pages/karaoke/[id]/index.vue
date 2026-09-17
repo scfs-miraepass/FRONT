@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { KaraokeFinalBidResponse, KaraokePartyDetail, KaraokeResponse } from "@/client";
 import { KaraokeStatus } from "@/client";
-import { karaokeTimeLabel, calcDutchPay, KARAOKE_BID_UNIT } from "@/utils/karaoke";
+import { karaokeTimeLabel, calcDutchPay, karaokeErrorMessage, KARAOKE_BID_UNIT } from "@/utils/karaoke";
 import KaraokeHeader from "~/components/karaoke/header.vue";
 import AuctionResult from "~/components/karaoke/detail/result.vue";
 import AuctionStatus from "~/components/karaoke/detail/status.vue";
@@ -17,9 +17,6 @@ const route = useRoute();
 const toast = useToast();
 const session = useSession();
 const karaokeId = computed(() => Number(route.params.id));
-
-const errorMessage = (err: unknown, fallback = "요청을 처리하지 못했어요.") =>
-    err && typeof err === "object" && "message" in err ? String((err as any).message) : fallback;
 
 const detail = ref<KaraokeResponse | null>(null);
 const detailPending = ref<boolean>(true);
@@ -112,7 +109,7 @@ const submitBid = async () => {
     bidding.value = false;
 
     if (req.error) {
-        toast.add({ title: "입찰에 실패했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "입찰에 실패했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         await fetchDetail();
         return;
     }
@@ -127,7 +124,7 @@ const createParty = async () => {
     creatingParty.value = false;
 
     if (req.error) {
-        toast.add({ title: "파티를 만들지 못했어요.", description: errorMessage(req.error), color: "error" });
+        toast.add({ title: "파티를 만들지 못했어요.", description: karaokeErrorMessage(req.error), color: "error" });
         return;
     }
     await fetchParty();
