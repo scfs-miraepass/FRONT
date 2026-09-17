@@ -1,3 +1,11 @@
+# [1.12.0](https://github.com/scfs-miraepass/FRONT/compare/v1.10.0...v1.11.0) (2026-09-18)
+
+
+### Features
+
+* 노래방 예약 시스템 추가 ([b5348b9](https://github.com/scfs-miraepass/FRONT/commit/b5348b97a4df693979f8fa76828757510d716eec))
+
+
 # [1.11.0](https://github.com/scfs-miraepass/FRONT/compare/v1.10.0...v1.11.0) (2026-08-18)
 
 
