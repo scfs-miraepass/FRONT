@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { karaokeTimeLabel } from "@/utils/karaoke";
+import KaraokeHeader from "~/components/karaoke/header.vue";
+import InviteCard from "~/components/karaoke/invites/card.vue";
 
 definePageMeta({
     permissions: [UserPermission.JOIN_KARAOKE] as PermissionCondition,
@@ -81,20 +83,10 @@ const decide = async (row: InviteRow, accept: boolean) => {
 </script>
 
 <template>
-    <div class="flex items-center mb-4">
-        <NuxtLink to="/karaoke" v-slot="{ navigate }" custom>
-            <UButton
-                @click="navigate()"
-                color="neutral"
-                variant="ghost"
-                icon="i-ph-caret-left-bold"
-                class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented"
-                size="xl"
-            />
-        </NuxtLink>
-        <p class="text-2xl font-bold text-gray-900 dark:text-white ml-1">파티 초대함</p>
-    </div>
+    <!-- 상단 헤더: 뒤로가기 + 제목 -->
+    <KaraokeHeader to="/karaoke" title="파티 초대함" />
 
+    <!-- 초대 목록: 로딩/빈 상태 및 초대 카드 -->
     <div class="flex-1 flex flex-col gap-2">
         <template v-if="pending">
             <USkeleton v-for="i in 3" :key="i" class="w-full h-20 rounded-2xl" />
@@ -106,30 +98,15 @@ const decide = async (row: InviteRow, accept: boolean) => {
             <UIcon name="i-ph-bell-slash" class="text-h2 mb-1.5" />
             받은 초대가 없어요.
         </div>
-        <div
+        <InviteCard
             v-else
             v-for="row in rows"
             :key="row.partyId"
-            class="w-full rounded-2xl light:bg-default dark:bg-muted px-5 py-4"
-        >
-            <p class="text-p1 font-bold">{{ row.leaderName }}님의 파티</p>
-            <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-1">
-                {{ row.dateLabel }} {{ row.timeLabel }} 노래방 예약
-            </p>
-            <div class="flex gap-2 mt-3">
-                <UButton
-                    class="rounded-xl justify-center flex-1"
-                    color="neutral"
-                    variant="soft"
-                    :disabled="row.deciding"
-                    @click="decide(row, false)"
-                >
-                    거절
-                </UButton>
-                <UButton class="rounded-xl justify-center flex-1" :disabled="row.deciding" @click="decide(row, true)">
-                    수락
-                </UButton>
-            </div>
-        </div>
+            :leader-name="row.leaderName"
+            :date-label="row.dateLabel"
+            :time-label="row.timeLabel"
+            :deciding="row.deciding"
+            @decide="(accept) => decide(row, accept)"
+        />
     </div>
 </template>

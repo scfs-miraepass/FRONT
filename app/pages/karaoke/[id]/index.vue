@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import type { KaraokeFinalBidResponse, KaraokePartyDetail, KaraokeResponse } from "@/client";
 import { KaraokeStatus } from "@/client";
-import { karaokeTimeLabel, karaokeStatusLabel, calcDutchPay } from "@/utils/karaoke";
-import PageButton from "~/components/setting/object.vue";
-import Section from "~/components/setting/section.vue";
+import { karaokeTimeLabel, calcDutchPay, KARAOKE_BID_UNIT } from "@/utils/karaoke";
+import KaraokeHeader from "~/components/karaoke/header.vue";
+import AuctionResult from "~/components/karaoke/detail/result.vue";
+import AuctionStatus from "~/components/karaoke/detail/status.vue";
+import PartyPanel from "~/components/karaoke/detail/partyPanel.vue";
+import BidForm from "~/components/karaoke/detail/bidForm.vue";
+import BidHistory from "~/components/karaoke/detail/bidHistory.vue";
 
 definePageMeta({
     permissions: [UserPermission.VIEW_KARAOKE] as PermissionCondition,
@@ -66,18 +70,13 @@ watch(reconnectedAt, async () => {
     if (ok && detail.value?.status === KaraokeStatus.CONFIRMED) await fetchFinalBid();
 });
 
-const formatDuration = (total: number) => {
-    const h = Math.floor(total / 3600);
-    const m = Math.floor((total % 3600) / 60);
-    const s = total % 60;
-    const mm = String(m).padStart(2, "0");
-    const ss = String(s).padStart(2, "0");
-    return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
-};
-
 const highestAmount = computed(() => highestState.value?.highest_bid?.amount ?? detail.value?.highest_bid ?? null);
 const bidsHistory = computed(() => highestState.value?.bids_history ?? []);
-const minBid = computed(() => (highestAmount.value != null ? highestAmount.value + 1 : (detail.value?.min_point ?? 0)));
+
+const roundUpToUnit = (value: number) => Math.ceil(value / KARAOKE_BID_UNIT) * KARAOKE_BID_UNIT;
+const minBid = computed(() =>
+    roundUpToUnit(highestAmount.value != null ? highestAmount.value + 1 : (detail.value?.min_point ?? 0)),
+);
 
 const isLeader = computed(() => !!party.value && party.value.leader_id === session.value?.id);
 const isMember = computed(() => !!party.value && !isLeader.value);
@@ -95,6 +94,8 @@ watch(
     { immediate: true },
 );
 
+const isValidBid = computed(() => bidAmount.value >= minBid.value && bidAmount.value % KARAOKE_BID_UNIT === 0);
+
 const dutchPreview = computed(() =>
     isLeader.value && partyHeadcount.value > 1 ? calcDutchPay(bidAmount.value, partyHeadcount.value) : null,
 );
@@ -102,7 +103,7 @@ const dutchPreview = computed(() =>
 const canBid = computed(() => detail.value?.status === KaraokeStatus.IN_PROGRESS && !isMember.value);
 
 const submitBid = async () => {
-    if (bidAmount.value < minBid.value) return;
+    if (!isValidBid.value) return;
     bidding.value = true;
     const req = await $API.createKaraokeBid({
         path: { karaoke_id: karaokeId.value },
@@ -141,19 +142,8 @@ const dateTimeLabel = computed(() => {
 </script>
 
 <template>
-    <div class="flex items-center mb-4">
-        <NuxtLink to="/karaoke" v-slot="{ navigate }" custom>
-            <UButton
-                @click="navigate()"
-                color="neutral"
-                variant="ghost"
-                icon="i-ph-caret-left-bold"
-                class="p-2 rounded-2xl hover:bg-accented active:bg-accented focus-visible:bg-accented"
-                size="xl"
-            />
-        </NuxtLink>
-        <p class="text-2xl font-bold text-gray-900 dark:text-white ml-1">{{ dateTimeLabel }}</p>
-    </div>
+    <!-- 상단 헤더: 뒤로가기 + 날짜/교시 제목 -->
+    <KaraokeHeader to="/karaoke" :title="dateTimeLabel" />
 
     <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50" v-if="detailPending">
         <UIcon name="i-ph-spinner-gap" class="text-h2 mb-1.5 animate-spin" />
@@ -167,124 +157,47 @@ const dateTimeLabel = computed(() => {
 
     <div class="flex-1 flex flex-col gap-3" v-else>
         <!-- 마감된 경매: 최종 낙찰 정보만 표시 -->
-        <div class="rounded-2xl light:bg-default dark:bg-muted p-5 flex flex-col items-center" v-if="detail.status === KaraokeStatus.CONFIRMED">
-            <UBadge color="neutral" variant="subtle" class="rounded-full mb-3">마감됨</UBadge>
-            <template v-if="finalBid">
-                <UIcon name="i-ph-crown-simple-fill" class="text-h4 mb-2" />
-                <p class="text-p1 font-bold">
-                    {{ finalBid.bidder.name }}{{ finalBid.bidder.number ? ` (${finalBid.bidder.grade}학년 ${finalBid.bidder.number}반)` : "" }}
-                </p>
-                <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-1">
-                    {{ finalBid.amount.toLocaleString() }}P에 낙찰
-                    <template v-if="finalBid.party_id">(파티)</template>
-                </p>
-            </template>
-            <p class="text-ui-p1 opacity-50 mt-2" v-else>입찰 기록이 없어 낙찰자가 없어요.</p>
-        </div>
+        <AuctionResult v-if="detail.status === KaraokeStatus.CONFIRMED" :final-bid="finalBid" />
 
         <!-- 진행중 / 예정: 실시간 경매 화면 -->
         <template v-else>
-            <div class="rounded-2xl light:bg-default dark:bg-muted p-5 flex flex-col items-center">
-                <UBadge
-                    :color="detail.status === KaraokeStatus.IN_PROGRESS ? 'primary' : 'warning'"
-                    variant="subtle"
-                    class="rounded-full mb-3"
-                >
-                    {{ karaokeStatusLabel(detail.status) }}
-                </UBadge>
+            <!-- 상태 패널: 배지 + 남은시간 + 최고입찰가 -->
+            <AuctionStatus
+                :status="detail.status"
+                :remaining-time="remainingTime"
+                :min-point="detail.min_point ?? 0"
+                :highest-amount="highestAmount"
+                :highest-bid="highestState?.highest_bid"
+                :session-id="session?.id"
+            />
 
-                <template v-if="detail.status === KaraokeStatus.PENDING">
-                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50">시작까지</p>
-                    <p class="text-h5 font-bold my-1">{{ formatDuration(remainingTime) }}</p>
-                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50">
-                        최소 입찰가 {{ (detail.min_point ?? 0).toLocaleString() }}P
-                    </p>
-                </template>
-                <template v-else>
-                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50">종료까지</p>
-                    <p class="text-h5 font-bold my-1">{{ formatDuration(remainingTime) }}</p>
-                    <div class="flex items-center gap-1.5 text-p1 font-bold">
-                        <UIcon name="i-ph-crown-simple-fill" v-if="highestAmount != null" />
-                        <template v-if="highestAmount != null">{{ highestAmount.toLocaleString() }}P</template>
-                        <template v-else>입찰 없음</template>
-                    </div>
-                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50 mt-0.5" v-if="highestState?.highest_bid">
-                        {{ highestState.highest_bid.bidder_id === session?.id ? "나" : `학번 ${highestState.highest_bid.bidder_id}` }}
-                        {{ highestState.highest_bid.party_id ? "(파티)" : "" }} 최고가
-                    </p>
-                </template>
-            </div>
+            <!-- 파티 패널: 파티 만들기 / 내 파티 요약 -->
+            <PartyPanel
+                v-if="!partyPending"
+                :karaoke-id="karaokeId"
+                :party="party"
+                :is-leader="isLeader"
+                :party-headcount="partyHeadcount"
+                :dutch-preview="dutchPreview"
+                :creating-party="creatingParty"
+                @create="createParty"
+            />
 
-            <!-- 파티 상태 -->
-
-
-            <Section v-if="!partyPending">
-                <div v-if="!party" class="flex items-center justify-between gap-2 px-5.5 py-3">
-                    <p class="text-p2 leading-4.5 light:text-black/60 dark:text-white/60">혼자 입찰하거나, <br />파티를 만들어 함께 낼 수 있어요.</p>
-                    <UButton size="sm" class="rounded-lg shrink-0" :loading="creatingParty" @click="createParty">파티 만들기</UButton>
-                </div>
-
-                <NuxtLink v-else :to="`/karaoke/${karaokeId}/party`" v-slot="{ navigate }" custom>
-                    <PageButton @click="navigate()" :label="isLeader ? `내 파티 (${partyHeadcount}명)` : `${party.leader.name}님의 파티`">
-                        <template #value>
-                            <template v-if="!isLeader">
-                                파티장만 입찰할 수 있어요.
-                            </template>
-                            <template v-else-if="dutchPreview">
-                                1인당 {{ dutchPreview.perMember.toLocaleString() }}P (나 {{ dutchPreview.leaderShare.toLocaleString() }}P)
-                            </template>
-                        </template>
-                    </PageButton>
-                </NuxtLink>
-            </Section>
-
-            <!-- 입찰 폼 -->
-            <div class="rounded-2xl light:bg-default dark:bg-muted p-4" v-if="canBid">
-                <UFormField :label="`최소 ${minBid.toLocaleString()}P 이상`" class="w-full">
-                    <div class="flex gap-2">
-                        <UInput
-                            type="number"
-                            :min="minBid"
-                            step="100"
-                            size="xl"
-                            class="flex-1"
-                            v-model.number="bidAmount"
-                        />
-                        <UButton
-                            size="xl"
-                            class="rounded-lg shrink-0"
-                            :disabled="bidAmount < minBid"
-                            :loading="bidding"
-                            @click="submitBid"
-                        >
-                            입찰하기
-                        </UButton>
-                    </div>
-                </UFormField>
-            </div>
+            <!-- 입찰 폼: 금액 조절 + 입찰하기 -->
+            <BidForm
+                v-if="canBid"
+                v-model:amount="bidAmount"
+                :min-bid="minBid"
+                :is-valid="isValidBid"
+                :bidding="bidding"
+                @submit="submitBid"
+            />
             <p class="text-ui-p2 text-center opacity-50" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
                 파티장만 입찰할 수 있어요.
             </p>
 
             <!-- 입찰 기록 -->
-            <div class="flex-1 rounded-2xl light:bg-default dark:bg-muted p-4 flex flex-col overflow-y-auto" v-if="detail.status === KaraokeStatus.IN_PROGRESS">
-                <p class="text-ui-p2 light:text-black/50 dark:text-white/50">입찰 기록</p>
-                <div class="flex-1 flex flex-col items-center justify-center text-ui-p1 opacity-50 py-6" v-if="bidsHistory.length <= 0">
-                    아직 입찰이 없어요.
-                </div>
-                <div
-                    v-else
-                    v-for="bid in bidsHistory"
-                    :key="bid.id ?? bid.created_at?.toString()"
-                    class="flex items-center justify-between px-4 py-2"
-                >
-                    <p class="text-p2">
-                        {{ bid.bidder_id === session?.id ? "나" : `학번 ${bid.bidder_id}` }}
-                        <span class="opacity-50" v-if="bid.party_id">(파티)</span>
-                    </p>
-                    <p class="text-p2 font-bold">{{ bid.amount.toLocaleString() }}P</p>
-                </div>
-            </div>
+            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" :session-id="session?.id" />
         </template>
     </div>
 </template>
