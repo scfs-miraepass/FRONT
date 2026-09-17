@@ -155,51 +155,50 @@ const dateTimeLabel = computed(() => {
         경매를 찾지 못했어요.
     </div>
 
-    <div class="flex-1 flex flex-col gap-3" v-else>
-        <!-- 마감된 경매: 최종 낙찰 정보만 표시 -->
-        <AuctionResult v-if="detail.status === KaraokeStatus.CONFIRMED" :final-bid="finalBid" />
+    <template v-else>
+        <div class="min-h-[calc(100vh-(var(--spacing)*19))] flex flex-col gap-3 pb-6" >
+            <!-- 마감된 경매: 최종 낙찰 정보만 표시 -->
+            <AuctionResult v-if="detail.status === KaraokeStatus.CONFIRMED" :final-bid="finalBid" />
 
-        <!-- 진행중 / 예정: 실시간 경매 화면 -->
-        <template v-else>
-            <!-- 상태 패널: 배지 + 남은시간 + 최고입찰가 -->
-            <AuctionStatus
-                :status="detail.status"
-                :remaining-time="remainingTime"
-                :min-point="detail.min_point ?? 0"
-                :highest-amount="highestAmount"
-                :highest-bid="highestState?.highest_bid"
-                :class="{ 'flex-1': detail.status === KaraokeStatus.PENDING || (isMember && detail.status === KaraokeStatus.IN_PROGRESS) }"
-            />
+            <!-- 진행중 / 예정: 실시간 경매 화면 -->
+            <template v-else>
+                <!-- 상태 패널: 배지 + 남은시간 + 최고입찰가 -->
+                <AuctionStatus
+                    :status="detail.status"
+                    :remaining-time="remainingTime"
+                    :min-point="detail.min_point ?? 0"
+                    :highest-amount="highestAmount"
+                    :highest-bid="highestState?.highest_bid"
+                    :class="{ 'flex-1': detail.status === KaraokeStatus.PENDING || (isMember && detail.status === KaraokeStatus.IN_PROGRESS) }"
+                />
 
-            <!-- 파티 패널: 파티 만들기 / 내 파티 요약 -->
-            <PartyPanel
-                v-if="!partyPending"
-                :karaoke-id="karaokeId"
-                :party="party"
-                :is-leader="isLeader"
-                :party-headcount="partyHeadcount"
-                :dutch-preview="dutchPreview"
-                :creating-party="creatingParty"
-                @create="createParty"
-            />
+                <!-- 파티 패널: 파티 만들기 / 내 파티 요약 -->
+                <PartyPanel
+                    v-if="!partyPending"
+                    :karaoke-id="karaokeId"
+                    :party="party"
+                    :is-leader="isLeader"
+                    :party-headcount="partyHeadcount"
+                    :dutch-preview="dutchPreview"
+                    :creating-party="creatingParty"
+                    @create="createParty"
+                />
+                <!-- 입찰 폼: 금액 조절 + 입찰하기 -->
+                <BidForm
+                    v-if="canBid"
+                    v-model:amount="bidAmount"
+                    :min-bid="minBid"
+                    :is-valid="isValidBid"
+                    :bidding="bidding"
+                    @submit="submitBid"
+                />
+                <p class="text-ui-p2 text-center light:text-black/45 dark:text-white/40 mt-4 mb-5" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
+                    파티장만 입찰할 수 있어요.
+                </p>
+            </template>
+        </div>
+        <!-- 입찰 기록 -->
+        <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
+    </template>
 
-
-
-            <!-- 입찰 폼: 금액 조절 + 입찰하기 -->
-            <BidForm
-                v-if="canBid"
-                v-model:amount="bidAmount"
-                :min-bid="minBid"
-                :is-valid="isValidBid"
-                :bidding="bidding"
-                @submit="submitBid"
-            />
-            <p class="text-ui-p2 text-center light:text-black/45 dark:text-white/40 mt-4 mb-5" v-else-if="detail.status === KaraokeStatus.IN_PROGRESS && isMember">
-                파티장만 입찰할 수 있어요.
-            </p>
-
-            <!-- 입찰 기록 -->
-            <BidHistory v-if="detail.status === KaraokeStatus.IN_PROGRESS" :bids="bidsHistory" />
-        </template>
-    </div>
 </template>
