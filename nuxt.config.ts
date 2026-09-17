@@ -3,6 +3,10 @@ import pkg from './package.json'
 
 // iOS 보안상 빌드해야지 PWA가 정상 작동함 Tlqkf
 
+// Nitro의 routeRules proxy(h3 proxyRequest)는 일반 HTTP 요청만 중계할 뿐 WebSocket Upgrade는 지원하지 않는다.
+// 그래서 이 값은 routeRules(일반 API 요청)와 server/routes의 수동 WS 프록시(노래방 실시간 경매)가 함께 참조한다.
+const backendOrigin = process.env.NODE_ENV === 'production' ? 'http://backend:8000' : 'http://localhost:8000';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
@@ -127,14 +131,22 @@ export default defineNuxtConfig({
 
     routeRules: {
         '/api/**': {
-            proxy: process.env.NODE_ENV === 'production' ? 'http://backend:8000/**' : 'http://localhost:8000/**',
+            proxy: `${backendOrigin}/**`,
         },
         '/admin/**': {
             proxy: process.env.NODE_ENV === 'production' ? 'http://dashboard:5234/**' : 'http://localhost:5234/**',
         },
     },
 
+    nitro: {
+        experimental: {
+            // /api/karaoke/{id}/ws 수동 WS 프록시(server/routes)를 등록하기 위해 필요
+            websocket: true,
+        },
+    },
+
     runtimeConfig: {
+        apiOrigin: backendOrigin, // NUXT_API_ORIGIN (서버 전용, WS 프록시가 참조)
         public: {
             buildDate: new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 16), // NUXT_PUBLIC_BUILD_DATE
             clientVersion: pkg.version, // NUXT_PUBLIC_CLIENT_VERSION
