@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import RankingList from "@/components/ranking/list.vue";
 
+type RankingPeriod = "total" | "weekly";
+
 definePageMeta({
     permissions: [ UserPermission.VIEW_RANK ]
 });
@@ -17,6 +19,8 @@ const items = [
         slot: 'teacher' as const
     }
 ]
+
+const period = ref<RankingPeriod>("total");
 </script>
 
 <template>
@@ -27,12 +31,25 @@ const items = [
         <p class="text-2xl font-bold text-gray-900 dark:text-white ml-1">포인트 순위</p>
     </div>
 
+    <UButtonGroup class="mb-4">
+        <UButton
+            label="누적"
+            :variant="period === 'total' ? 'solid' : 'outline'"
+            @click="period = 'total'"
+        />
+        <UButton
+            label="주간"
+            :variant="period === 'weekly' ? 'solid' : 'outline'"
+            @click="period = 'weekly'"
+        />
+    </UButtonGroup>
+
     <UTabs variant="link" :items="items" class="w-full" :ui="{ content: 'space-y-10 pt-10' }">
         <template #student>
-            <RankingList type="student" />
+            <RankingList type="student" :period="period" />
         </template>
         <template #teacher>
-            <RankingList type="teacher" />
+            <RankingList type="teacher" :period="period" />
         </template>
     </UTabs>
 </template>
