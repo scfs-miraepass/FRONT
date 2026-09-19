@@ -426,6 +426,19 @@ export const KaraokeMembersSchema = {
             title: 'Pending',
             description: '멤버 참여가 수락 대기중인지 여부',
             default: true
+        },
+        accepted_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Accepted At',
+            description: '초대를 수락한 시간 (대기중이면 None). 입찰 취소시 당시 파티원을 복원하는 데 사용됨'
         }
     },
     type: 'object',
@@ -1776,7 +1789,7 @@ export const UserPermissionSchema = {
         1048576,
         1561024,
         182730,
-        665104
+        1713680
     ],
     title: 'UserPermission',
     description: '유저 권한 IntFlag.\n작명시 `동사_목적`으로 작성하며, 대문자로만 작성한다.\n예) 포인트 관리 -> MANAGE_POINT',
