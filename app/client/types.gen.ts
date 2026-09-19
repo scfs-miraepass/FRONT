@@ -315,6 +315,12 @@ export type KaraokeMembers = {
      * 멤버 참여가 수락 대기중인지 여부
      */
     pending?: boolean;
+    /**
+     * Accepted At
+     *
+     * 초대를 수락한 시간 (대기중이면 None). 입찰 취소시 당시 파티원을 복원하는 데 사용됨
+     */
+    accepted_at?: Date | null;
 };
 
 /**
@@ -1398,7 +1404,7 @@ export const UserPermission = {
     /**
      * ADMIN
      */
-    ADMIN: 665104
+    ADMIN: 1713680
 } as const;
 
 /**
@@ -1975,6 +1981,82 @@ export type GetTeacherRankingPointRankingTeacherGetResponses = {
 };
 
 export type GetTeacherRankingPointRankingTeacherGetResponse = GetTeacherRankingPointRankingTeacherGetResponses[keyof GetTeacherRankingPointRankingTeacherGetResponses];
+
+export type GetWeeklyStudentRankingPointRankingWeeklyStudentGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking/weekly/student';
+};
+
+export type GetWeeklyStudentRankingPointRankingWeeklyStudentGetErrors = {
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetWeeklyStudentRankingPointRankingWeeklyStudentGetError = GetWeeklyStudentRankingPointRankingWeeklyStudentGetErrors[keyof GetWeeklyStudentRankingPointRankingWeeklyStudentGetErrors];
+
+export type GetWeeklyStudentRankingPointRankingWeeklyStudentGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetWeeklyStudentRankingPointRankingWeeklyStudentGetResponse = GetWeeklyStudentRankingPointRankingWeeklyStudentGetResponses[keyof GetWeeklyStudentRankingPointRankingWeeklyStudentGetResponses];
+
+export type GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking/weekly/teacher';
+};
+
+export type GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetErrors = {
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetError = GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetErrors[keyof GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetErrors];
+
+export type GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetResponse = GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetResponses[keyof GetWeeklyTeacherRankingPointRankingWeeklyTeacherGetResponses];
 
 export type GetPointBalancePointTargetUserIdGetData = {
     body?: never;
