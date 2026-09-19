@@ -101,7 +101,8 @@ export const zKaraokeInviteCreate = z.object({
 export const zKaraokeMembers = z.object({
     party_id: z.int(),
     user_id: z.int(),
-    pending: z.boolean().optional().default(true)
+    pending: z.boolean().optional().default(true),
+    accepted_at: z.iso.datetime({ offset: true }).nullish()
 });
 
 /**
@@ -487,7 +488,7 @@ export const zUserPermission = z.union([
     z.literal(1048576),
     z.literal(1561024),
     z.literal(182730),
-    z.literal(665104)
+    z.literal(1713680)
 ]);
 
 /**
@@ -715,6 +716,26 @@ export const zGetTeacherRankingPointRankingTeacherGetQuery = z.object({
  * 정상 처리
  */
 export const zGetTeacherRankingPointRankingTeacherGetResponse = zResponseModelListRankingResponse;
+
+export const zGetWeeklyStudentRankingPointRankingWeeklyStudentGetQuery = z.object({
+    limit: z.int().optional().default(20),
+    offset: z.int().optional().default(0)
+});
+
+/**
+ * 정상 처리
+ */
+export const zGetWeeklyStudentRankingPointRankingWeeklyStudentGetResponse = zResponseModelListRankingResponse;
+
+export const zGetWeeklyTeacherRankingPointRankingWeeklyTeacherGetQuery = z.object({
+    limit: z.int().optional().default(20),
+    offset: z.int().optional().default(0)
+});
+
+/**
+ * 정상 처리
+ */
+export const zGetWeeklyTeacherRankingPointRankingWeeklyTeacherGetResponse = zResponseModelListRankingResponse;
 
 export const zGetPointBalancePointTargetUserIdGetPath = z.object({
     target_user_id: z.int()
