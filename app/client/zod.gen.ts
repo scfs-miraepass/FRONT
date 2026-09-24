@@ -263,6 +263,11 @@ export const zQuests = z.object({
 });
 
 /**
+ * RankingPeriod
+ */
+export const zRankingPeriod = z.enum(['total', 'weekly']);
+
+/**
  * RankingResponse
  */
 export const zRankingResponse = z.object({
@@ -697,7 +702,9 @@ export const zGetHistoryPointHistoryTargetIdGetPath = z.object({
  */
 export const zGetHistoryPointHistoryTargetIdGetResponse = zResponseModelPointHistory;
 
-export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
+export const zGetRankingPointRankingGetQuery = z.object({
+    type: zUserType.optional().default('student'),
+    period: zRankingPeriod.optional().default('total'),
     limit: z.int().optional().default(20),
     offset: z.int().optional().default(0)
 });
@@ -705,37 +712,7 @@ export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
 /**
  * 정상 처리
  */
-export const zGetStudentRankingPointRankingStudentGetResponse = zResponseModelListRankingResponse;
-
-export const zGetTeacherRankingPointRankingTeacherGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
-});
-
-/**
- * 정상 처리
- */
-export const zGetTeacherRankingPointRankingTeacherGetResponse = zResponseModelListRankingResponse;
-
-export const zGetWeeklyStudentRankingPointRankingWeeklyStudentGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
-});
-
-/**
- * 정상 처리
- */
-export const zGetWeeklyStudentRankingPointRankingWeeklyStudentGetResponse = zResponseModelListRankingResponse;
-
-export const zGetWeeklyTeacherRankingPointRankingWeeklyTeacherGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
-});
-
-/**
- * 정상 처리
- */
-export const zGetWeeklyTeacherRankingPointRankingWeeklyTeacherGetResponse = zResponseModelListRankingResponse;
+export const zGetRankingPointRankingGetResponse = zResponseModelListRankingResponse;
 
 export const zGetPointBalancePointTargetUserIdGetPath = z.object({
     target_user_id: z.int()
