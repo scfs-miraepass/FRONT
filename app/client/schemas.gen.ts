@@ -1101,6 +1101,15 @@ export const QuestsSchema = {
     title: 'Quests'
 } as const;
 
+export const RankingPeriodSchema = {
+    type: 'string',
+    enum: [
+        'total',
+        'weekly'
+    ],
+    title: 'RankingPeriod'
+} as const;
+
 export const RankingResponseSchema = {
     properties: {
         id: {
