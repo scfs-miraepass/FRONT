@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { RankingResponse } from "@/client";
 
-defineProps<RankingResponse>();
+const props = defineProps<RankingResponse & { period: "total" | "weekly" }>();
+const pointLabel = computed(() => props.period === "weekly" ? "이번 주 포인트" : "누적 포인트");
 </script>
 
 <template>
@@ -43,7 +44,7 @@ defineProps<RankingResponse>();
                     </template>
                 </div>
                 <p class="text-ui-p2 light:text-black/50 dark:text-white/50">
-                    누적 포인트 {{ total_point.toLocaleString() }} P
+                    {{ pointLabel }} {{ total_point.toLocaleString() }} P
                 </p>
             </div>
         </div>

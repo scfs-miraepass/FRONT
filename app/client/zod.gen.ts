@@ -101,7 +101,8 @@ export const zKaraokeInviteCreate = z.object({
 export const zKaraokeMembers = z.object({
     party_id: z.int(),
     user_id: z.int(),
-    pending: z.boolean().optional().default(true)
+    pending: z.boolean().optional().default(true),
+    accepted_at: z.iso.datetime({ offset: true }).nullish()
 });
 
 /**
@@ -260,6 +261,11 @@ export const zQuests = z.object({
     created_at: z.iso.datetime({ offset: true }).optional(),
     author_id: z.int()
 });
+
+/**
+ * RankingPeriod
+ */
+export const zRankingPeriod = z.enum(['total', 'weekly']);
 
 /**
  * RankingResponse
@@ -487,7 +493,7 @@ export const zUserPermission = z.union([
     z.literal(1048576),
     z.literal(1561024),
     z.literal(182730),
-    z.literal(665104)
+    z.literal(1713680)
 ]);
 
 /**
@@ -696,7 +702,9 @@ export const zGetHistoryPointHistoryTargetIdGetPath = z.object({
  */
 export const zGetHistoryPointHistoryTargetIdGetResponse = zResponseModelPointHistory;
 
-export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
+export const zGetRankingPointRankingGetQuery = z.object({
+    type: zUserType.optional().default('student'),
+    period: zRankingPeriod.optional().default('total'),
     limit: z.int().optional().default(20),
     offset: z.int().optional().default(0)
 });
@@ -704,17 +712,7 @@ export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
 /**
  * 정상 처리
  */
-export const zGetStudentRankingPointRankingStudentGetResponse = zResponseModelListRankingResponse;
-
-export const zGetTeacherRankingPointRankingTeacherGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
-});
-
-/**
- * 정상 처리
- */
-export const zGetTeacherRankingPointRankingTeacherGetResponse = zResponseModelListRankingResponse;
+export const zGetRankingPointRankingGetResponse = zResponseModelListRankingResponse;
 
 export const zGetPointBalancePointTargetUserIdGetPath = z.object({
     target_user_id: z.int()

@@ -315,6 +315,12 @@ export type KaraokeMembers = {
      * 멤버 참여가 수락 대기중인지 여부
      */
     pending?: boolean;
+    /**
+     * Accepted At
+     *
+     * 초대를 수락한 시간 (대기중이면 None). 입찰 취소시 당시 파티원을 복원하는 데 사용됨
+     */
+    accepted_at?: Date | null;
 };
 
 /**
@@ -794,6 +800,16 @@ export type Quests = {
      */
     author_id: number;
 };
+
+/**
+ * RankingPeriod
+ */
+export const RankingPeriod = { TOTAL: 'total', WEEKLY: 'weekly' } as const;
+
+/**
+ * RankingPeriod
+ */
+export type RankingPeriod = typeof RankingPeriod[keyof typeof RankingPeriod];
 
 /**
  * RankingResponse
@@ -1398,7 +1414,7 @@ export const UserPermission = {
     /**
      * ADMIN
      */
-    ADMIN: 665104
+    ADMIN: 1713680
 } as const;
 
 /**
@@ -1900,10 +1916,18 @@ export type GetHistoryPointHistoryTargetIdGetResponses = {
 
 export type GetHistoryPointHistoryTargetIdGetResponse = GetHistoryPointHistoryTargetIdGetResponses[keyof GetHistoryPointHistoryTargetIdGetResponses];
 
-export type GetStudentRankingPointRankingStudentGetData = {
+export type GetRankingPointRankingGetData = {
     body?: never;
     path?: never;
     query?: {
+        /**
+         * 랭킹 대상 (student, teacher)
+         */
+        type?: UserType;
+        /**
+         * 랭킹 기간 (total, weekly)
+         */
+        period?: RankingPeriod;
         /**
          * Limit
          */
@@ -1913,10 +1937,10 @@ export type GetStudentRankingPointRankingStudentGetData = {
          */
         offset?: number;
     };
-    url: '/point/ranking/student';
+    url: '/point/ranking';
 };
 
-export type GetStudentRankingPointRankingStudentGetErrors = {
+export type GetRankingPointRankingGetErrors = {
     /**
      * 권한이 없음
      */
@@ -1927,54 +1951,16 @@ export type GetStudentRankingPointRankingStudentGetErrors = {
     422: HttpValidationError;
 };
 
-export type GetStudentRankingPointRankingStudentGetError = GetStudentRankingPointRankingStudentGetErrors[keyof GetStudentRankingPointRankingStudentGetErrors];
+export type GetRankingPointRankingGetError = GetRankingPointRankingGetErrors[keyof GetRankingPointRankingGetErrors];
 
-export type GetStudentRankingPointRankingStudentGetResponses = {
+export type GetRankingPointRankingGetResponses = {
     /**
      * 정상 처리
      */
     200: ResponseModelListRankingResponse;
 };
 
-export type GetStudentRankingPointRankingStudentGetResponse = GetStudentRankingPointRankingStudentGetResponses[keyof GetStudentRankingPointRankingStudentGetResponses];
-
-export type GetTeacherRankingPointRankingTeacherGetData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * Limit
-         */
-        limit?: number;
-        /**
-         * Offset
-         */
-        offset?: number;
-    };
-    url: '/point/ranking/teacher';
-};
-
-export type GetTeacherRankingPointRankingTeacherGetErrors = {
-    /**
-     * 권한이 없음
-     */
-    403: ErrorResponse;
-    /**
-     * Validation Error
-     */
-    422: HttpValidationError;
-};
-
-export type GetTeacherRankingPointRankingTeacherGetError = GetTeacherRankingPointRankingTeacherGetErrors[keyof GetTeacherRankingPointRankingTeacherGetErrors];
-
-export type GetTeacherRankingPointRankingTeacherGetResponses = {
-    /**
-     * 정상 처리
-     */
-    200: ResponseModelListRankingResponse;
-};
-
-export type GetTeacherRankingPointRankingTeacherGetResponse = GetTeacherRankingPointRankingTeacherGetResponses[keyof GetTeacherRankingPointRankingTeacherGetResponses];
+export type GetRankingPointRankingGetResponse = GetRankingPointRankingGetResponses[keyof GetRankingPointRankingGetResponses];
 
 export type GetPointBalancePointTargetUserIdGetData = {
     body?: never;
