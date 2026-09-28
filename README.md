@@ -10,10 +10,6 @@ cd front
 # 필요 라이브러리 설치및 환경 구성
 yarn install
 
-# 환경변수 설정
-cp example.env .env
-vi .env
-
 # 개발 환경 실행
 yarn dev
 ```
