@@ -31,7 +31,7 @@ const period = ref<RankingPeriod>("total");
         <p class="text-2xl font-bold text-gray-900 dark:text-white ml-1">포인트 순위</p>
     </div>
 
-    <UButtonGroup class="mb-4">
+    <div class="mb-4 space-x-2">
         <UButton
             label="누적"
             :variant="period === 'total' ? 'solid' : 'outline'"
@@ -42,7 +42,7 @@ const period = ref<RankingPeriod>("total");
             :variant="period === 'weekly' ? 'solid' : 'outline'"
             @click="period = 'weekly'"
         />
-    </UButtonGroup>
+    </div>
 
     <UTabs variant="link" :items="items" class="w-full" :ui="{ content: 'space-y-10 pt-10' }">
         <template #student>
