@@ -714,6 +714,26 @@ export const zGetRankingPointRankingGetQuery = z.object({
  */
 export const zGetRankingPointRankingGetResponse = zResponseModelListRankingResponse;
 
+export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
+    limit: z.int().optional().default(20),
+    offset: z.int().optional().default(0)
+});
+
+/**
+ * 정상 처리
+ */
+export const zGetStudentRankingPointRankingStudentGetResponse = zResponseModelListRankingResponse;
+
+export const zGetTeacherRankingPointRankingTeacherGetQuery = z.object({
+    limit: z.int().optional().default(20),
+    offset: z.int().optional().default(0)
+});
+
+/**
+ * 정상 처리
+ */
+export const zGetTeacherRankingPointRankingTeacherGetResponse = zResponseModelListRankingResponse;
+
 export const zGetPointBalancePointTargetUserIdGetPath = z.object({
     target_user_id: z.int()
 });

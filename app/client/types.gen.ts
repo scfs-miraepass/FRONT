@@ -1942,6 +1942,10 @@ export type GetRankingPointRankingGetData = {
 
 export type GetRankingPointRankingGetErrors = {
     /**
+     * 지원하지 않는 랭킹 대상
+     */
+    400: ErrorResponse;
+    /**
      * 권한이 없음
      */
     403: ErrorResponse;
@@ -1961,6 +1965,82 @@ export type GetRankingPointRankingGetResponses = {
 };
 
 export type GetRankingPointRankingGetResponse = GetRankingPointRankingGetResponses[keyof GetRankingPointRankingGetResponses];
+
+export type GetStudentRankingPointRankingStudentGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking/student';
+};
+
+export type GetStudentRankingPointRankingStudentGetErrors = {
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetStudentRankingPointRankingStudentGetError = GetStudentRankingPointRankingStudentGetErrors[keyof GetStudentRankingPointRankingStudentGetErrors];
+
+export type GetStudentRankingPointRankingStudentGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetStudentRankingPointRankingStudentGetResponse = GetStudentRankingPointRankingStudentGetResponses[keyof GetStudentRankingPointRankingStudentGetResponses];
+
+export type GetTeacherRankingPointRankingTeacherGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking/teacher';
+};
+
+export type GetTeacherRankingPointRankingTeacherGetErrors = {
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetTeacherRankingPointRankingTeacherGetError = GetTeacherRankingPointRankingTeacherGetErrors[keyof GetTeacherRankingPointRankingTeacherGetErrors];
+
+export type GetTeacherRankingPointRankingTeacherGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetTeacherRankingPointRankingTeacherGetResponse = GetTeacherRankingPointRankingTeacherGetResponses[keyof GetTeacherRankingPointRankingTeacherGetResponses];
 
 export type GetPointBalancePointTargetUserIdGetData = {
     body?: never;
