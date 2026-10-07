@@ -4,33 +4,40 @@ import type { RankingResponse } from "@/client";
 
 const props = defineProps<{
     type: "student" | "teacher";
+    period: "total" | "weekly";
 }>();
 
 const maxOffset = ref<number>(0);
 const dataOffset = ref<number>(1);
 const payloadData = ref<RankingResponse[]>([]);
 
+watch(
+    () => props.period,
+    () => {
+        dataOffset.value = 1;
+        maxOffset.value = 0;
+        payloadData.value = [];
+    },
+    { flush: "sync" },
+);
+
 const queryParams = computed(() => ({
     limit: 15,
     offset: (dataOffset.value - 1) * 15,
 }));
 
-const dataFetchKey = computed(() => `point.ranking.${props.type}`)
+const dataFetchKey = computed(() => `point.ranking.${props.period}.${props.type}`)
 const { pending } = await useAsyncData(
     dataFetchKey,
     async (_nuxtApp, { signal }) => {
-        let req
-        if (props.type == "student") {
-            req = await $API.getStudentRankingPointRankingStudentGet({
-                query: queryParams.value,
-                ...signal
-            })
-        } else {
-            req = await $API.getTeacherRankingPointRankingTeacherGet({
-                query: queryParams.value,
-                ...signal
-            })
-        }
+        const req = await $API.getRankingPointRankingGet({
+            query: {
+                ...queryParams.value,
+                type: props.type,
+                period: props.period,
+            },
+            ...signal,
+        });
 
         if (!req.data?.success || req.response == undefined) return;
         maxOffset.value = Number(req.response.headers.get("X-MAX-PAGE"));
@@ -60,6 +67,7 @@ useMotionValueEvent(scrollYProgress, "change", (current) => {
     <Obj
         v-for="(i, index) in payloadData"
         v-bind="i"
+        :period="period"
         :keys="i.id"
         :style="{
             animationDelay: dataOffset == 1 ? `${index * 100}ms` : undefined,
