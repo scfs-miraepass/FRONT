@@ -1,3 +1,12 @@
+# [1.12.0](https://github.com/scfs-miraepass/FRONT/compare/v1.11.0...v1.12.0) (2026-10-07)
+
+
+### Features
+
+* 주간 랭킹 API 클라이언트 생성 ([c926de8](https://github.com/scfs-miraepass/FRONT/commit/c926de844fb2b151c19ce69c1919b1c100ebe3a3))
+* 주간 랭킹 기간 전환 추가 ([229f8e2](https://github.com/scfs-miraepass/FRONT/commit/229f8e23e14b48852582577036216ef37c5159ef))
+* 통합 랭킹 API 호출로 변경 ([285bd0b](https://github.com/scfs-miraepass/FRONT/commit/285bd0b6274c7e2259d7fcf44b990005f39e517b))
+
 # [1.12.0-dev.1](https://github.com/scfs-miraepass/FRONT/compare/v1.11.0...v1.12.0-dev.1) (2026-10-06)
 
 
