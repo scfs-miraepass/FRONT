@@ -426,6 +426,19 @@ export const KaraokeMembersSchema = {
             title: 'Pending',
             description: '멤버 참여가 수락 대기중인지 여부',
             default: true
+        },
+        accepted_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Accepted At',
+            description: '초대를 수락한 시간 (대기중이면 None). 입찰 취소시 당시 파티원을 복원하는 데 사용됨'
         }
     },
     type: 'object',
@@ -1086,6 +1099,15 @@ export const QuestsSchema = {
         'author_id'
     ],
     title: 'Quests'
+} as const;
+
+export const RankingPeriodSchema = {
+    type: 'string',
+    enum: [
+        'total',
+        'weekly'
+    ],
+    title: 'RankingPeriod'
 } as const;
 
 export const RankingResponseSchema = {
@@ -1772,11 +1794,12 @@ export const UserPermissionSchema = {
         32768,
         65536,
         262144,
+        393216,
         524288,
         1048576,
-        1561024,
-        182730,
-        665104
+        1458624,
+        1493442,
+        1713680
     ],
     title: 'UserPermission',
     description: '유저 권한 IntFlag.\n작명시 `동사_목적`으로 작성하며, 대문자로만 작성한다.\n예) 포인트 관리 -> MANAGE_POINT',
@@ -1805,6 +1828,7 @@ export const UserPermissionSchema = {
         'VIEW_POST',
         'VIEW_STAMP',
         'VIEW_QUEST',
+        '_JOIN_KARAOKE',
         'JOIN_KARAOKE',
         'MANAGE_KARAOKE',
         'VIEW_KARAOKE',
@@ -1837,6 +1861,7 @@ export const UserPermissionSchema = {
         'VIEW_POST',
         'VIEW_STAMP',
         'VIEW_QUEST',
+        '_JOIN_KARAOKE',
         'JOIN_KARAOKE',
         'MANAGE_KARAOKE',
         'VIEW_KARAOKE',

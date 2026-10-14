@@ -315,6 +315,12 @@ export type KaraokeMembers = {
      * 멤버 참여가 수락 대기중인지 여부
      */
     pending?: boolean;
+    /**
+     * Accepted At
+     *
+     * 초대를 수락한 시간 (대기중이면 None). 입찰 취소시 당시 파티원을 복원하는 데 사용됨
+     */
+    accepted_at?: Date | null;
 };
 
 /**
@@ -794,6 +800,16 @@ export type Quests = {
      */
     author_id: number;
 };
+
+/**
+ * RankingPeriod
+ */
+export const RankingPeriod = { TOTAL: 'total', WEEKLY: 'weekly' } as const;
+
+/**
+ * RankingPeriod
+ */
+export type RankingPeriod = typeof RankingPeriod[keyof typeof RankingPeriod];
 
 /**
  * RankingResponse
@@ -1376,9 +1392,13 @@ export const UserPermission = {
      */
     VIEW_QUEST: 65536,
     /**
+     * _JOIN_KARAOKE
+     */
+    _JOIN_KARAOKE: 262144,
+    /**
      * JOIN_KARAOKE
      */
-    JOIN_KARAOKE: 262144,
+    JOIN_KARAOKE: 393216,
     /**
      * MANAGE_KARAOKE
      */
@@ -1390,15 +1410,15 @@ export const UserPermission = {
     /**
      * STUDENT
      */
-    STUDENT: 1561024,
+    STUDENT: 1458624,
     /**
      * TEACHER
      */
-    TEACHER: 182730,
+    TEACHER: 1493442,
     /**
      * ADMIN
      */
-    ADMIN: 665104
+    ADMIN: 1713680
 } as const;
 
 /**
@@ -1822,6 +1842,8 @@ export type GetHistoryListPointHistoryGetData = {
     query?: {
         /**
          * Limit
+         *
+         * 페이지 당 데이터 갯수 (최대 100)
          */
         limit?: number;
         /**
@@ -1899,6 +1921,58 @@ export type GetHistoryPointHistoryTargetIdGetResponses = {
 };
 
 export type GetHistoryPointHistoryTargetIdGetResponse = GetHistoryPointHistoryTargetIdGetResponses[keyof GetHistoryPointHistoryTargetIdGetResponses];
+
+export type GetRankingPointRankingGetData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * 랭킹 대상 (student, teacher)
+         */
+        type?: UserType;
+        /**
+         * 랭킹 기간 (total, weekly)
+         */
+        period?: RankingPeriod;
+        /**
+         * Limit
+         *
+         * 페이지 당 데이터 갯수 (최대 100)
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/point/ranking';
+};
+
+export type GetRankingPointRankingGetErrors = {
+    /**
+     * 지원하지 않는 랭킹 대상
+     */
+    400: ErrorResponse;
+    /**
+     * 권한이 없음
+     */
+    403: ErrorResponse;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type GetRankingPointRankingGetError = GetRankingPointRankingGetErrors[keyof GetRankingPointRankingGetErrors];
+
+export type GetRankingPointRankingGetResponses = {
+    /**
+     * 정상 처리
+     */
+    200: ResponseModelListRankingResponse;
+};
+
+export type GetRankingPointRankingGetResponse = GetRankingPointRankingGetResponses[keyof GetRankingPointRankingGetResponses];
 
 export type GetStudentRankingPointRankingStudentGetData = {
     body?: never;
@@ -2371,6 +2445,8 @@ export type ListQuestsQuestGetData = {
     query?: {
         /**
          * Limit
+         *
+         * 페이지 당 데이터 갯수 (최대 100)
          */
         limit?: number;
         /**
@@ -2862,6 +2938,14 @@ export type GetKaraokeListData = {
     body?: never;
     path?: never;
     query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
         /**
          * Date
          */
@@ -3363,7 +3447,7 @@ export type InviteKaraokePartyMemberErrors = {
      */
     404: ErrorResponse;
     /**
-     * 이미 이 경매의 파티에 소속되었거나 초대된 유저
+     * 이미 이 경매의 파티에 소속되었거나 초대된 유저또는 최대 초대 초과
      */
     409: ErrorResponse;
     /**

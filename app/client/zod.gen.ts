@@ -101,7 +101,8 @@ export const zKaraokeInviteCreate = z.object({
 export const zKaraokeMembers = z.object({
     party_id: z.int(),
     user_id: z.int(),
-    pending: z.boolean().optional().default(true)
+    pending: z.boolean().optional().default(true),
+    accepted_at: z.iso.datetime({ offset: true }).nullish()
 });
 
 /**
@@ -260,6 +261,11 @@ export const zQuests = z.object({
     created_at: z.iso.datetime({ offset: true }).optional(),
     author_id: z.int()
 });
+
+/**
+ * RankingPeriod
+ */
+export const zRankingPeriod = z.enum(['total', 'weekly']);
 
 /**
  * RankingResponse
@@ -483,11 +489,12 @@ export const zUserPermission = z.union([
     z.literal(32768),
     z.literal(65536),
     z.literal(262144),
+    z.literal(393216),
     z.literal(524288),
     z.literal(1048576),
-    z.literal(1561024),
-    z.literal(182730),
-    z.literal(665104)
+    z.literal(1458624),
+    z.literal(1493442),
+    z.literal(1713680)
 ]);
 
 /**
@@ -678,8 +685,8 @@ export const zDeductPointsPointDeductPostResponse = z.union([
 ]);
 
 export const zGetHistoryListPointHistoryGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
+    limit: z.int().gte(1).lte(100).optional().default(20),
+    offset: z.int().gte(0).optional().default(0)
 });
 
 /**
@@ -696,9 +703,21 @@ export const zGetHistoryPointHistoryTargetIdGetPath = z.object({
  */
 export const zGetHistoryPointHistoryTargetIdGetResponse = zResponseModelPointHistory;
 
+export const zGetRankingPointRankingGetQuery = z.object({
+    type: zUserType.optional().default('student'),
+    period: zRankingPeriod.optional().default('total'),
+    limit: z.int().gte(1).lte(100).optional().default(20),
+    offset: z.int().gte(0).optional().default(0)
+});
+
+/**
+ * 정상 처리
+ */
+export const zGetRankingPointRankingGetResponse = zResponseModelListRankingResponse;
+
 export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
+    limit: z.int().gte(1).lte(100).optional().default(20),
+    offset: z.int().gte(0).optional().default(0)
 });
 
 /**
@@ -707,8 +726,8 @@ export const zGetStudentRankingPointRankingStudentGetQuery = z.object({
 export const zGetStudentRankingPointRankingStudentGetResponse = zResponseModelListRankingResponse;
 
 export const zGetTeacherRankingPointRankingTeacherGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
+    limit: z.int().gte(1).lte(100).optional().default(20),
+    offset: z.int().gte(0).optional().default(0)
 });
 
 /**
@@ -807,8 +826,8 @@ export const zCreateQuestQuestCreatePostBody = zQuestOperation;
 export const zCreateQuestQuestCreatePostResponse = zResponseModelQuests;
 
 export const zListQuestsQuestGetQuery = z.object({
-    limit: z.int().optional().default(20),
-    offset: z.int().optional().default(0)
+    limit: z.int().gte(1).lte(100).optional().default(20),
+    offset: z.int().gte(0).optional().default(0)
 });
 
 /**
@@ -913,6 +932,8 @@ export const zCreateStampStampPostBody = zStampCreate;
 export const zCreateStampStampPostResponse = z.void();
 
 export const zGetKaraokeListQuery = z.object({
+    limit: z.int().optional().default(20),
+    offset: z.int().optional().default(0),
     date: z.iso.date().nullish()
 });
 
