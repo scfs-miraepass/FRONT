@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { KaraokeResponse } from "@/client";
-import { toDateInputValue } from "@/utils/karaoke";
 import KaraokeHeader from "~/components/karaoke/header.vue";
-import DateNav from "~/components/karaoke/list/dateNav.vue";
 import KaraokeList from "~/components/karaoke/list/list.vue";
 
 definePageMeta({
@@ -10,12 +8,11 @@ definePageMeta({
 });
 
 const session = useSession();
-const selectedDate = ref<string>(toDateInputValue(new Date()));
 const inviteCount = ref<number>(0);
 
 const fetchKaraokeList = async () => {
-    // 생성된 SDK 타입은 date 필드를 Date로 표기하지만, 요청 검증기는 "YYYY-MM-DD" 문자열을 기대한다.
-    const req = await $API.getKaraokeList({ query: { date: selectedDate.value as unknown as Date } });
+    // date 쿼리를 생략하면 날짜에 상관없이 전체 경매 목록을 받아온다.
+    const req = await $API.getKaraokeList();
     if (req.error || !req.data) return [];
     return req.data.data;
 };
@@ -23,7 +20,7 @@ const fetchKaraokeList = async () => {
 const { data: karaokeList, pending } = await useAsyncData<KaraokeResponse[]>(
     "karaoke.list",
     fetchKaraokeList,
-    { watch: [selectedDate], default: () => [] },
+    { default: () => [] },
 );
 
 // 예정(Pending) 경매의 시작 시간, 진행중(In_Progress) 경매의 종료 시간이 지나면
@@ -102,9 +99,6 @@ const onCardClick = (item: KaraokeResponse) => {
         </NuxtLink>
     </KaraokeHeader>
 
-    <!-- 날짜 네비게이션: 이전/다음 날짜 이동 + 날짜 선택 -->
-    <DateNav v-model:date="selectedDate" />
-
-    <!-- 경매 목록: 로딩/빈 상태 및 카드 목록 -->
+    <!-- 경매 목록: 로딩/빈 상태 및 날짜별로 묶인 전체 카드 목록 -->
     <KaraokeList :items="karaokeList" :pending="pending" @select="onCardClick" />
 </template>
