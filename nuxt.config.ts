@@ -172,7 +172,7 @@ export default defineNuxtConfig({
             installPrompt: true,
         },
         devOptions: {
-            enabled: true, // DEV Only
+            enabled: import.meta.dev,
             type: "module",
         },
         registerType: "autoUpdate",

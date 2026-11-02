@@ -68,6 +68,7 @@ const IOS_GUIDE = [
     { id: '5', text: '"웹 앱으로 열기"를 활성화 하고. "추가"를 클릭합니다.' },
 ]
 
+const isDev = import.meta.dev
 const isPwaReady = computed(() => !nuxtApp.$pwa?.isPWAInstalled && !_load.value)
 const isMacIpad = computed<boolean>(() => {
     if (import.meta.client) {
@@ -83,7 +84,7 @@ const isMacIpad = computed<boolean>(() => {
         <div>
             <div
                 class="w-screen min-h-screen flex items-center justify-center"
-                v-if="!$device.isMobileOrTablet && !isMacIpad && !_load"
+                v-if="!$device.isMobileOrTablet && !isMacIpad && !_load && !isDev"
             >
                 <p class="text-p1">모바일 전용 서비스입니다! 모바일 기기에서 접속해주세요.</p>
             </div>
@@ -94,7 +95,7 @@ const isMacIpad = computed<boolean>(() => {
                         새로고침
                     </UButton>
                 </div>
-                <div class="w-dvw h-dvh flex flex-col items-center justify-center pwa-only-error p-7" v-if="isPwaReady">
+                <div class="w-dvw h-dvh flex flex-col items-center justify-center pwa-only-error p-7" v-if="isPwaReady && !isDev">
                     <div class="flex flex-col items-center justify-center">
                         <p class="text-p1">미래패스 앱 설치 안내</p>
 
@@ -166,7 +167,7 @@ const isMacIpad = computed<boolean>(() => {
                     </div>
                 </div>
                 <NuxtLoadingIndicator color="var(--ui-primary)" errorColor="var(--ui-error)" class="ease-[cubic-bezier(0,0.71,0.2,1.01)]" :class="{ 'opacity-0!': !showLoading }" />
-                <div class="pwa-only-content" ref="scope">
+                <div :class="[isDev? 'block!':'pwa-only-content']" ref="scope">
                     <NuxtLayout>
                         <NuxtPage />
                     </NuxtLayout>

@@ -20,8 +20,8 @@ export const KARAOKE_STATUS_LABEL: Record<string, string> = {
 export const karaokeStatusLabel = (status?: string | null) =>
     (status && KARAOKE_STATUS_LABEL[status]) ?? "알 수 없음";
 
-// date input(<input type="date">)은 로컬 날짜 기준 "YYYY-MM-DD" 문자열을 그대로 사용해야
-// toISOString() 사용시 UTC로 변환되어 자정 근처에 날짜가 하루 밀리는 문제가 생긴다.
+// 로컬 날짜 기준 "YYYY-MM-DD" 문자열을 만든다. toISOString()을 쓰면 UTC로 변환되어
+// 자정 근처에 날짜가 하루 밀리는 문제가 생기므로 직접 조합한다.
 export const toDateInputValue = (date: Date) => {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -29,11 +29,12 @@ export const toDateInputValue = (date: Date) => {
     return `${y}-${m}-${d}`;
 };
 
-export const addDays = (date: Date, days: number) => {
-    const next = new Date(date);
-    next.setDate(next.getDate() + days);
-    return next;
-};
+// "YYYY-MM-DD" 문자열을 "10월 22일 (수)" 형태의 라벨로 바꾼다.
+// 시간대 없이 "T00:00:00"을 붙여 로컬 자정으로 파싱해야 날짜가 밀리지 않는다.
+export const karaokeDateLabel = (date: string) =>
+    new Date(`${date}T00:00:00`).toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" });
+
+export const isKaraokeToday = (date: string) => date === toDateInputValue(new Date());
 
 // 100포인트 단위로만 입찰할 수 있다.
 export const KARAOKE_BID_UNIT = 100;

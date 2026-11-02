@@ -1392,9 +1392,13 @@ export const UserPermission = {
      */
     VIEW_QUEST: 65536,
     /**
+     * _JOIN_KARAOKE
+     */
+    _JOIN_KARAOKE: 262144,
+    /**
      * JOIN_KARAOKE
      */
-    JOIN_KARAOKE: 262144,
+    JOIN_KARAOKE: 393216,
     /**
      * MANAGE_KARAOKE
      */
@@ -1406,11 +1410,11 @@ export const UserPermission = {
     /**
      * STUDENT
      */
-    STUDENT: 1561024,
+    STUDENT: 1458624,
     /**
      * TEACHER
      */
-    TEACHER: 182730,
+    TEACHER: 1493442,
     /**
      * ADMIN
      */
@@ -1838,6 +1842,8 @@ export type GetHistoryListPointHistoryGetData = {
     query?: {
         /**
          * Limit
+         *
+         * 페이지 당 데이터 갯수 (최대 100)
          */
         limit?: number;
         /**
@@ -1930,6 +1936,8 @@ export type GetRankingPointRankingGetData = {
         period?: RankingPeriod;
         /**
          * Limit
+         *
+         * 페이지 당 데이터 갯수 (최대 100)
          */
         limit?: number;
         /**
@@ -2437,6 +2445,8 @@ export type ListQuestsQuestGetData = {
     query?: {
         /**
          * Limit
+         *
+         * 페이지 당 데이터 갯수 (최대 100)
          */
         limit?: number;
         /**
@@ -2928,6 +2938,14 @@ export type GetKaraokeListData = {
     body?: never;
     path?: never;
     query?: {
+        /**
+         * Limit
+         */
+        limit?: number;
+        /**
+         * Offset
+         */
+        offset?: number;
         /**
          * Date
          */
@@ -3429,7 +3447,7 @@ export type InviteKaraokePartyMemberErrors = {
      */
     404: ErrorResponse;
     /**
-     * 이미 이 경매의 파티에 소속되었거나 초대된 유저
+     * 이미 이 경매의 파티에 소속되었거나 초대된 유저또는 최대 초대 초과
      */
     409: ErrorResponse;
     /**

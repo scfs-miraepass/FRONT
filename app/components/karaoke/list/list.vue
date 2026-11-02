@@ -1,12 +1,26 @@
 <script setup lang="ts">
 import type { KaraokeResponse } from "@/client";
+import { karaokeDateLabel, isKaraokeToday } from "@/utils/karaoke";
 import Card from "./card.vue";
 
-defineProps<{
+const props = defineProps<{
     items: KaraokeResponse[];
     pending: boolean;
+    hasMore?: boolean;
 }>();
 defineEmits<{ select: [item: KaraokeResponse] }>();
+
+// 서버가 date, time 순으로 정렬해 내려주므로 순서를 유지한 채 같은 날짜끼리 묶는다.
+// 런타임에서 date 필드는 "YYYY-MM-DD" 문자열이므로 String()으로 키를 만든다.
+const groups = computed(() => {
+    const map = new Map<string, KaraokeResponse[]>();
+    for (const item of props.items) {
+        const key = String(item.date);
+        if (!map.has(key)) map.set(key, []);
+        map.get(key)!.push(item);
+    }
+    return [...map.entries()].map(([date, list]) => ({ date, items: list }));
+});
 </script>
 
 <template>
@@ -19,8 +33,26 @@ defineEmits<{ select: [item: KaraokeResponse] }>();
             v-else-if="items.length <= 0"
         >
             <UIcon name="i-ph-calendar-blank" class="text-h2 mb-1.5" />
-            이 날짜엔 예정된 경매가 없어요.
+            등록된 경매가 없어요.
         </div>
-        <Card v-else v-for="item in items" :key="item.id!" :item="item" @click="$emit('select', item)" />
+        <template v-else>
+            <section v-for="group in groups" :key="group.date" class="flex flex-col gap-2 not-first:mt-3">
+                <div class="flex items-center gap-1.5 px-1">
+                    <p class="text-p1 font-bold">{{ karaokeDateLabel(group.date) }}</p>
+                    <p class="text-ui-p2 light:text-black/50 dark:text-white/50" v-if="isKaraokeToday(group.date)">
+                        오늘
+                    </p>
+                </div>
+                <Card
+                    v-for="item in group.items"
+                    :key="item.id!"
+                    :item="item"
+                    @click="$emit('select', item)"
+                />
+            </section>
+            <p class="text-ui-p2 light:text-black/50 dark:text-white/50 text-center py-4" v-if="!hasMore">
+                더이상 없어요
+            </p>
+        </template>
     </div>
 </template>
